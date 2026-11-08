@@ -1,0 +1,50 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFile, access } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+
+const root = new URL("../", import.meta.url);
+const html = await readFile(new URL("index.html", root), "utf8");
+
+test("the agreed four projects retain their titles and order", () => {
+  const titles = ["Copilot Content", "Midterm Elections", "AI Generated Content Consumption", "AI-Native Tools / Royal Academy"];
+  const links = [...html.matchAll(/<a href="#(?:copilot-content|midterm-elections|ai-content|ai-native)">.*?<span>(.*?)<\/span>/g)].map((match) => match[1]);
+  assert.deepEqual(links, titles);
+});
+
+test("the original biography is preserved except the current-role sentence", () => {
+  assert.ok(html.includes("Chloe Varelidi is a design and technology startup veteran with over 12+ years of experience building consumer products. She is a recognized expert in using the power of play to drive impact and innovation."));
+  assert.ok(html.includes("She currently leads the Content Intelligence team at Microsoft, focusing on generative user interfaces across Microsoft’s billion-user ecosystem in verticals such as news, finance, sports, and games."));
+  const paragraphs = [...html.matchAll(/<div class="bio">\s*<p>(.*?)<\/p>\s*<p>(.*?)<\/p>\s*<p>(.*?)<\/p>/gs)][0];
+  assert.ok(paragraphs);
+  assert.equal(paragraphs[2].replaceAll("&amp;", "&"), "Previously, as the Founder and Managing Director at humans who play, Chloe worked with organizations like The LEGO Foundation, General Motors, and The New York Public Schools to bring learning & technology products and services to more than 500,000 caregivers, children, and teachers around the world. As the inventor of Follies, she introduced art into the toy industry, earning a prestigious TOTY nomination. She has held product leadership positions at Mozilla, the startup littleBits (acq. by Sphero) and Quest to Learn, where she was also a founding staff.");
+  assert.equal(paragraphs[3], "In addition to her industry roles, Chloe is an Adjunct Professor at GW's Corcoran School of Art and Design, where she mentors the next generation of interaction designers. She holds an MFA from Parson’s Design and Technology program. Most recently she was named one of AIGA50 in Washington, DC, for her contributions to design and innovation.");
+  assert.ok(!html.includes("Principal Product Designer on"));
+  assert.ok(!html.includes("permanent collection"));
+});
+
+test("every image is local, present and has alternative text and dimensions", async () => {
+  for (const match of html.matchAll(/<img ([^>]+)>/g)) {
+    const attributes = match[1];
+    const source = attributes.match(/src="([^"]+)"/)[1];
+    assert.ok(source.startsWith("/media/"));
+    assert.match(attributes, /alt="[^"]+"/);
+    assert.match(attributes, /width="\d+"/);
+    assert.match(attributes, /height="\d+"/);
+    await access(fileURLToPath(new URL(`public${source}`, root)));
+  }
+});
+
+test("all in-page links target existing IDs", () => {
+  const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
+  for (const match of html.matchAll(/href="#([^"]+)"/g)) {
+    assert.ok(ids.has(match[1]), `Missing anchor target: ${match[1]}`);
+  }
+});
+
+test("unprovided case studies remain explicit placeholders", () => {
+  assert.ok(html.includes("Project images coming soon"));
+  assert.ok(html.includes("Project details &amp; imagery to follow."));
+  assert.ok(html.includes("Interactive builds to follow."));
+  assert.ok(!html.includes("figma.com/api/mcp/asset"));
+});
