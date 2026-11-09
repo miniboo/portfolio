@@ -182,18 +182,28 @@ test("Discover has the approved consumer story and an honest pending-prototype p
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
 });
 
-test("Daily Brief follows the orange slide and uses the exact corrected Figma screen at every width", async () => {
+test("Daily Brief groups all three actual Figma mocks in one visuals-only section", async () => {
   const work = original.match(/<div id="work">(.*?)<\/div>\s*<section class="project project-edge/s)[1];
   assert.match(work, /class="discover-statement.*?<\/section>\s*<section class="daily-brief/s);
   const brief = work.match(/<section class="daily-brief.*?<\/section>/s)[0];
-  assert.ok(brief.includes('aria-labelledby="daily-brief-title"'));
-  assert.ok(brief.includes('src="/media/discover-daily-brief.png" width="393" height="852" loading="lazy"'));
+  assert.ok(brief.includes('id="daily-brief-title" aria-label="Copilot Discover daily brief"'));
+  assert.ok(brief.includes('role="group" tabindex="0"'));
+  const sources = [...brief.matchAll(/src="\/media\/(.*?)"/g)].map(match => match[1]);
+  const mocks = [
+    ["discover-daily-brief.png", "b53f0408ef0642950cb8a9f4b1c7c39304749b4f5be806174960e6526a52f6ff"],
+    ["discover-daily-brief-feed.png", "32dc1e0e624d4609cf4af4d8a54f83e94721e7dec87c29d13c8bd85fc6e0c3a0"],
+    ["discover-daily-brief-agents.png", "4cdb6f0d39c99b526aeac666c2fc2f5253f63f82ad811c37ce74483a36b5ac11"],
+  ];
+  assert.deepEqual(sources, mocks.map(([name]) => name));
+  assert.equal([...brief.matchAll(/width="393" height="852" loading="lazy"/g)].length, 3);
+  for (const [name, hash] of mocks) {
+    const image = await readFile(new URL(`public/media/${name}`, root));
+    assert.equal(createHash("sha256").update(image).digest("hex"), hash);
+  }
   assert.ok(!brief.includes("<source"));
   assert.ok(!brief.includes("discover-feed.png"));
   assert.ok(!brief.includes("discover-mobile-feed.png"));
-  const image = await readFile(new URL("public/media/discover-daily-brief.png", root));
-  assert.equal(createHash("sha256").update(image).digest("hex"), "438356768ae1c63003b9fae3ca083c8d7fe0bc223558d8a13aada450420b8652");
-  for (const detail of ["chat history and memory", "publisher content", "AI-curated sources", "Generative UI", "augments"]) assert.ok(brief.includes(detail));
+  assert.ok(!/<h[1-6]\b|<p\b|figcaption/.test(brief));
   assert.ok(!brief.includes('class="section-number"'));
   assert.ok(!brief.includes("figcaption"));
   assert.ok(!brief.includes("data-parallax"));
