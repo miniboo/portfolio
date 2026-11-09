@@ -1,3 +1,5 @@
+import { mountDiscoverPhones } from "./discover-phones.js";
+
 const hero = document.querySelector(".hero");
 const portrait = document.querySelector(".portrait");
 portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
@@ -44,6 +46,8 @@ if (document.documentElement.dataset.identity === "warm") {
   const motionControl = document.querySelector("#warm-motion-control");
   motionControl.replaceWith(motionControl.content);
 }
+
+mountDiscoverPhones();
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector("#motion-toggle");

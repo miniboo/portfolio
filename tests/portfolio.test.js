@@ -263,6 +263,27 @@ test("the opening has the exact two-line credibility labels and genuine linked l
   assert.ok(script.includes('document.querySelector(".recognition-press").remove()'));
 });
 
+test("the first two Discover phones progressively enhance into independent source-based interactions", async () => {
+  const script = await readFile(new URL("src/discover-phones.js", root), "utf8");
+  const main = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(main.indexOf("mountDiscoverPhones();") > main.indexOf('document.querySelector(".discover-cover").closest("#work").remove()'));
+  for (const text of ["Bay Area Family events", "Boo at the Zoo returns this Saturday", "Spooky Science takes over Chabot", "Market Watch", "Local family events", "Make it your own", "Back to categories", "Add and view"]) assert.ok(script.includes(text));
+  assert.ok(script.includes('feedMarkup("daily-news-feed")'));
+  assert.ok(script.includes('feedMarkup("welcome-agent-feed")'));
+  assert.ok(script.includes('viewport.scrollTo({ top: target'));
+  assert.ok(!script.includes("scrollIntoView"));
+  assert.ok(!script.includes("fetch("));
+  assert.ok(!script.includes("localStorage"));
+  assert.ok(!script.includes("setInterval"));
+  assert.ok(script.includes('matchMedia("(prefers-reduced-motion: reduce)")'));
+  assert.ok(script.includes("no agent has been created"));
+  assert.ok(script.includes("status.textContent"));
+  assert.ok(!script.includes("screens[2]."));
+  const names = new Set([...script.matchAll(/["']((?:feed-|welcome-|phone-)[\w-]+\.(?:png|jpg))["']/g)].map(match => match[1]));
+  assert.ok(names.size >= 20);
+  for (const name of names) await access(new URL(`public/media/${name}`, root));
+});
+
 test("custom motion controls are absent and decorative video is finite with a still fallback", async () => {
   const script = await readFile(new URL("src/main.js", root), "utf8");
   const styles = await readFile(new URL("src/style.css", root), "utf8");
