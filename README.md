@@ -4,7 +4,7 @@ A screenshot-first editorial portfolio built with semantic HTML, CSS and a small
 
 ## Versions
 
-The selected original editorial identity remains at `/`. Its opening pairs the authorized current-role sentence with a short founder/product-leadership excerpt and the existing portrait, followed by a **Selected work** link. The large ring and square have been removed. The full About biography remains unchanged.
+The selected original editorial identity remains at `/`. Its opening pairs the authorized current-role sentence with the user-supplied entrepreneur history and the existing portrait, followed by a **Selected work** link. Both opening paragraphs share one responsive type size. A single, compact recognition block places the four AIGA50 DC awards and Follies' MoMA catalogue feature beneath the name. The large ring and square have been removed.
 
 The second identity, tab **2**, remains at `/2/`: a warm, serif-led editorial composition informed by the supplied Microsoft AI Style Guide. It retains its previous introduction and appearance. Both routes share the full biography, projects and assets; each moves the existing portrait into its hero without duplicating the image.
 
@@ -29,7 +29,7 @@ npm run preview
 
 The four projects retain their agreed order. Copilot Content and AI-Native Tools / Royal Academy deliberately contain labeled placeholders. Election and Copilot Discover imagery are supplied design screenshots, not live product demos. Interactive Discover builds, detailed project stories and video presentation are deferred for the design-and-flow first pass.
 
-The About biography is preserved apart from the requested current-role sentence. MSN audience/revenue figures describe ecosystem scale, not attributable project results.
+The About biography is preserved apart from the requested current-role sentence and the authorized entrepreneur/fundraising history, which matches the opening excerpt. The alternative retains its previous biography. MSN audience/revenue figures describe ecosystem scale, not attributable project results.
 
 Project numbers use one shared left rail; headings and media align on the neighboring content rail. The hero introduction aligns with the name. Captions identify the supplied screenshots, while missing content is labeled once per placeholder.
 

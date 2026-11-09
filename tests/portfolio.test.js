@@ -12,12 +12,12 @@ test("the agreed four projects retain their titles and order", () => {
   assert.deepEqual(links, titles);
 });
 
-test("the original biography is preserved except the current-role sentence", () => {
+test("the biography preserves its wording apart from authorized role and entrepreneur updates", () => {
   assert.ok(html.includes("Chloe Varelidi is a design and technology startup veteran with over 12+ years of experience building consumer products. She is a recognized expert in using the power of play to drive impact and innovation."));
   assert.ok(html.includes("She currently leads the Content Intelligence team at Microsoft, focusing on generative user interfaces across Microsoft’s billion-user ecosystem in verticals such as news, finance, sports, and games."));
   const paragraphs = [...html.matchAll(/<div class="bio">\s*<p>(.*?)<\/p>\s*<p>(.*?)<\/p>\s*<p>(.*?)<\/p>/gs)][0];
   assert.ok(paragraphs);
-  assert.equal(paragraphs[2].replaceAll("&amp;", "&"), "Previously, as the Founder and Managing Director at humans who play, Chloe worked with organizations like The LEGO Foundation, General Motors, and The New York Public Schools to bring learning & technology products and services to more than 500,000 caregivers, children, and teachers around the world. As the inventor of Follies, she introduced art into the toy industry, earning a prestigious TOTY nomination. She has held product leadership positions at Mozilla, the startup littleBits (acq. by Sphero) and Quest to Learn, where she was also a founding staff.");
+  assert.equal(paragraphs[2].replaceAll("&amp;", "&").replace(/<\/?span[^>]*>/g, ""), "Previously, as the Founder and Managing Director at humans who play, Chloe worked with organizations like The LEGO Foundation, General Motors, and The New York Public Schools to bring learning & technology products and services to more than 500,000 caregivers, children, and teachers around the world. As the inventor of Follies, she introduced art into the toy industry, earning a prestigious TOTY nomination. As an entrepreneur, she has raised more than $4 million to bring STEM to more than 90,000 students in rural Kenya and previously held leadership positions at Mozilla, littleBits (acquired by Sphero), and the Quest to Learn school.");
   assert.equal(paragraphs[3], "In addition to her industry roles, Chloe is an Adjunct Professor at GW's Corcoran School of Art and Design, where she mentors the next generation of interaction designers. She holds an MFA from Parson’s Design and Technology program. Most recently she was named one of AIGA50 in Washington, DC, for her contributions to design and innovation.");
   assert.ok(!html.includes("Principal Product Designer on"));
   assert.ok(!html.includes("permanent collection"));
@@ -75,12 +75,18 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
 });
 
-test("the original opening foregrounds leadership without altering the full biography", () => {
+test("the original opening foregrounds leadership and the authorized entrepreneur history", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   const bio = html.match(/<div class="bio">\s*<p>(.*?)<\/p>/s)[1];
   const currentRole = bio.slice(bio.indexOf("She currently leads"));
   assert.ok(hero.includes(`<p class="hero-intro">${currentRole}</p>`));
-  assert.ok(hero.includes("Previously, Founder and Managing Director at humans who play; product leadership at Mozilla, littleBits and Quest to Learn."));
+  const entrepreneur = html.match(/<span class="career-history">(.*?)<\/span>/)[1];
+  assert.ok(hero.includes(`<p class="hero-experience">${entrepreneur}</p>`));
+  assert.ok(hero.includes('class="recognition"'));
+  assert.equal([...html.matchAll(/class="recognition"/g)].length, 1);
+  assert.ok(hero.includes("AIGA50 DC"));
+  assert.ok(hero.includes("MoMA"));
+  assert.ok(hero.includes("in the catalogue"));
   assert.ok(hero.includes('<span class="work-link-label">Selected work</span>'));
   assert.ok(!hero.includes("orbit-ring"));
   assert.ok(!hero.includes("orbit-square"));

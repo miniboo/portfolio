@@ -8,6 +8,8 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelector(".hero-intro").innerHTML = document.querySelector("#warm-introduction").innerHTML;
   document.querySelector(".hero-experience").remove();
   document.querySelector(".work-link-label").textContent = "View work";
+  document.querySelector(".career-history").textContent = document.querySelector("#warm-career-history").content.textContent;
+  document.querySelector(".bio").append(document.querySelector(".recognition"));
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
