@@ -62,7 +62,7 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(html.includes('=== "/2"'));
   assert.ok(html.includes('document.title = "2"'));
-  assert.ok(script.startsWith('if (document.documentElement.dataset.identity === "warm")'));
+  assert.ok(script.includes('if (document.documentElement.dataset.identity === "warm")'));
   assert.ok(warm.includes('html[data-identity="warm"] .hero .portrait'));
   assert.ok(warm.includes('--serif: Georgia, "Times New Roman", serif;'));
   assert.ok(!script.includes("cloneNode"));
@@ -73,4 +73,18 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   }
   assert.equal([...html.matchAll(/class="bio"/g)].length, 1);
   assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
+});
+
+test("the original opening foregrounds leadership without altering the full biography", () => {
+  const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
+  const bio = html.match(/<div class="bio">\s*<p>(.*?)<\/p>/s)[1];
+  const currentRole = bio.slice(bio.indexOf("She currently leads"));
+  assert.ok(hero.includes(`<p class="hero-intro">${currentRole}</p>`));
+  assert.ok(hero.includes("Previously, Founder and Managing Director at humans who play; product leadership at Mozilla, littleBits and Quest to Learn."));
+  assert.ok(hero.includes('<span class="work-link-label">Selected work</span>'));
+  assert.ok(!hero.includes("orbit-ring"));
+  assert.ok(!hero.includes("orbit-square"));
+  assert.ok(!hero.includes("Head of Design"));
+  assert.ok(!hero.includes("300"));
+  assert.ok(!hero.includes("$1.4"));
 });

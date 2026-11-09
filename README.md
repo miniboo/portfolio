@@ -4,7 +4,9 @@ A screenshot-first editorial portfolio built with semantic HTML, CSS and a small
 
 ## Versions
 
-The original editorial identity remains at `/`. The second identity, tab **2**, is at `/2/`: a warm, serif-led editorial composition informed by the supplied Microsoft AI Style Guide. It replaces the earlier dot-grid mosaic with cream and earthy tonal fields, fine rules, small monospaced labels and an original CSS light-and-shadow backdrop. Both routes share the same content and project assets; the alternative moves the existing portrait into its hero without duplicating any text or images.
+The selected original editorial identity remains at `/`. Its opening pairs the authorized current-role sentence with a short founder/product-leadership excerpt and the existing portrait, followed by a **Selected work** link. The large ring and square have been removed. The full About biography remains unchanged.
+
+The second identity, tab **2**, remains at `/2/`: a warm, serif-led editorial composition informed by the supplied Microsoft AI Style Guide. It retains its previous introduction and appearance. Both routes share the full biography, projects and assets; each moves the existing portrait into its hero without duplicating the image.
 
 The alternative stylesheet is scoped to its route. Without JavaScript, `/2/` falls back to the original complete content and layout.
 
@@ -31,7 +33,7 @@ The About biography is preserved apart from the requested current-role sentence.
 
 Project numbers use one shared left rail; headings and media align on the neighboring content rail. The hero introduction aligns with the name. Captions identify the supplied screenshots, while missing content is labeled once per placeholder.
 
-Parallax moves the hero accent and a few media frames, not the readable content. It respects `prefers-reduced-motion`; a motion toggle is available in the footer. Without JavaScript, all content and anchor navigation remain available.
+Parallax moves the portrait and a few media frames, not the readable content; the alternative also retains its layered light backdrop. It respects `prefers-reduced-motion`; a motion toggle is available in the footer. Without JavaScript, all content and anchor navigation remain available, with the single portrait in About.
 
 ## Media
 

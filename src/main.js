@@ -1,9 +1,13 @@
+const hero = document.querySelector(".hero");
+const portrait = document.querySelector(".portrait");
+portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
+portrait.querySelector("img").loading = "eager";
+hero.append(portrait);
+
 if (document.documentElement.dataset.identity === "warm") {
-  const hero = document.querySelector(".hero");
-  const portrait = document.querySelector(".portrait");
-  portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
-  portrait.querySelector("img").loading = "eager";
-  hero.append(portrait);
+  document.querySelector(".hero-intro").innerHTML = document.querySelector("#warm-introduction").innerHTML;
+  document.querySelector(".hero-experience").remove();
+  document.querySelector(".work-link-label").textContent = "View work";
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
