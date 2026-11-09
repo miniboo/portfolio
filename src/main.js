@@ -6,6 +6,8 @@ if (document.documentElement.dataset.identity === "warm") {
   const header = document.querySelector("#warm-header");
   header.replaceWith(header.content);
   document.querySelector(".hero-illustration").remove();
+  const heading = document.querySelector(".hero-heading");
+  heading.replaceWith(heading.querySelector("h1"));
   const image = portrait.querySelector("img");
   image.loading = "eager";
   image.src = "/media/chloe-portrait.webp";

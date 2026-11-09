@@ -127,6 +127,10 @@ test("the original opening foregrounds leadership and the authorized entrepreneu
   const entrepreneur = html.match(/<span class="career-history">(.*?)<\/span>/)[1];
   assert.ok(hero.includes(`<p class="hero-experience">${entrepreneur}</p>`));
   assert.ok(hero.includes('class="recognition"'));
+  assert.ok(hero.indexOf('class="hero-intro"') < hero.indexOf('class="hero-experience"'));
+  assert.ok(hero.indexOf('class="hero-experience"') < hero.indexOf('class="recognition"'));
+  assert.ok(hero.indexOf('class="recognition"') < hero.indexOf('class="scroll-link'));
+  assert.match(hero, /src="\/media\/editorial-flowers\.svg"[^>]*data-parallax="-0\.1"/);
   assert.equal([...html.matchAll(/class="recognition"/g)].length, 1);
   assert.ok(hero.includes("AIGA50 DC"));
   assert.ok(hero.includes("MoMA"));

@@ -4,7 +4,7 @@ A screenshot-first editorial portfolio built with semantic HTML, CSS and a small
 
 ## Versions
 
-The selected original remains at `/`. Its first three page-like sections follow the user's confirmed link order: dark biography opening, warm-white/orange Microsoft AI introduction, then a flower-backed Selected work index. The header-free opening pairs a Georgia editorial nameplate with the supplied botanical illustration. It retains the authorized current-role sentence and entrepreneur history, with equal paragraph sizes and compact AIGA50 DC/MoMA recognition. There is no opening portrait, ring, square or decorative dot grid. The latest Follies portrait appears once, in About.
+The selected original remains at `/`. Its first three page-like sections follow the user's confirmed link order: dark biography opening, warm-white/orange Microsoft AI introduction, then a flower-backed Selected work index. The compact, header-free opening pairs a Georgia editorial nameplate with the supplied botanical illustration directly beside it. The authorized leadership and entrepreneur paragraphs share one type size and a maximum 680px measure, followed by supporting AIGA50 DC/MoMA recognition and Selected work. Its height follows the content rather than adding a viewport-sized empty band. There is no opening portrait, ring, square or decorative dot grid. The latest Follies portrait appears once, in About.
 
 The second identity, tab **2**, remains at `/2/`: a warm, serif-led editorial composition informed by the supplied Microsoft AI Style Guide. It retains its previous introduction, original floral-dress portrait and appearance. Both routes share the projects and screenshot assets, with one portrait per route.
 
@@ -33,7 +33,7 @@ The About biography is preserved apart from the requested current-role sentence 
 
 Project numbers use one shared left rail; headings and media align on the neighboring content rail. The hero introduction aligns with the name. The second section pairs the existing MSN scale with its transformation statement in the reference's orange panel. The existing project index, not a second navigation list, occupies the third section. Captions identify the supplied screenshots, while missing content is labeled once per placeholder.
 
-Parallax moves the flower backdrop, About portrait and a few media frames, never readable content; the alternative retains its previous hero portrait and layered light backdrop. It respects `prefers-reduced-motion`; a motion toggle is available in the footer. Without JavaScript, all original content and anchor navigation remain available, with the single portrait in About.
+Parallax moves the opening illustration relative to its stationary typography, followed by the flower backdrop, About portrait and a few media frames; the alternative retains its previous hero portrait and layered light backdrop. Readable content does not move. The opening reserves space below the illustration for its bounded scroll movement. Motion respects `prefers-reduced-motion`; a motion toggle is available in the footer. Without JavaScript, all original content and anchor navigation remain available, with the single portrait in About.
 
 ## Media
 
