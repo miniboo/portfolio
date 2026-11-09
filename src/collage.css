@@ -1,0 +1,179 @@
+html[data-identity="collage"] {
+  --paper: #fcfbf8;
+  --line: #dedbd3;
+  background-color: var(--paper);
+}
+
+html[data-identity="collage"] body {
+  background-image: radial-gradient(#211e1d75 .9px, transparent 1px);
+  background-size: 96px 96px;
+  background-position: var(--gutter) 28px;
+}
+
+html[data-identity="collage"] .dark,
+html[data-identity="collage"] .project-tools {
+  background: transparent;
+  color: var(--ink);
+}
+
+html[data-identity="collage"] .site-header { border-bottom: 0; height: 76px; }
+html[data-identity="collage"] .wordmark { font-size: 26px; }
+html[data-identity="collage"] .header-note { text-transform: none; letter-spacing: 0; font-family: var(--serif); font-size: 16px; }
+
+html[data-identity="collage"] .hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 36px;
+  min-height: 760px;
+  overflow: visible;
+  align-items: start;
+  padding-top: 42px;
+  padding-bottom: 76px;
+}
+html[data-identity="collage"] .hero h1 {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  font-size: clamp(44px, 4.6vw, 72px);
+  letter-spacing: -.045em;
+  font-weight: 450;
+  line-height: 1.02;
+}
+html[data-identity="collage"] .hero h1 .surname { margin-top: 0; }
+html[data-identity="collage"] .hero-orbit { display: none; }
+html[data-identity="collage"] .hero-bottom {
+  grid-column: 1 / 6;
+  grid-row: 2;
+  gap: 28px;
+  margin-top: 0;
+}
+html[data-identity="collage"] .hero-intro {
+  max-width: 430px;
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.15vw, 32px);
+  letter-spacing: 0;
+  line-height: 1.22;
+  background: var(--paper);
+}
+html[data-identity="collage"] .play-phrase { text-decoration: none; }
+html[data-identity="collage"] .arrow-disc { width: 30px; height: 30px; font-size: 18px; }
+html[data-identity="collage"] .scroll-link { gap: 12px; font-size: 10px; }
+html[data-identity="collage"] .hero-collage { display: contents; }
+html[data-identity="collage"] .hero .portrait {
+  grid-column: 7 / 10;
+  grid-row: 1 / 4;
+  width: 100%;
+  max-width: none;
+  margin-top: 80px;
+}
+html[data-identity="collage"] .hero .portrait-frame { border-radius: 9px; }
+html[data-identity="collage"] .collage-discover {
+  grid-column: 10 / 13;
+  grid-row: 1;
+}
+html[data-identity="collage"] .collage-election {
+  grid-column: 1 / 6;
+  grid-row: 3;
+  margin-top: 16px;
+}
+html[data-identity="collage"] .collage-discover,
+html[data-identity="collage"] .collage-election { overflow: hidden; border-radius: 9px; }
+
+html[data-identity="collage"] .work-intro { padding-top: 32px; padding-bottom: 64px; }
+html[data-identity="collage"] .work-intro h2,
+html[data-identity="collage"] .about h2 {
+  font-size: clamp(32px, 3.4vw, 52px);
+  letter-spacing: -.035em;
+  line-height: 1.1;
+}
+html[data-identity="collage"] .work-intro h2 { margin-top: 24px; }
+html[data-identity="collage"] .work-context { margin-top: 24px; max-width: 580px; }
+html[data-identity="collage"] .work-context p { font-family: var(--serif); font-size: 29px; letter-spacing: 0; background: var(--paper); }
+html[data-identity="collage"] .scale { max-width: 580px; margin: 36px 0 52px; }
+html[data-identity="collage"] .scale dt { font-size: 52px; }
+html[data-identity="collage"] .scale dd { color: #645e57; font-size: 10px; }
+html[data-identity="collage"] .project-index { max-width: 680px; }
+html[data-identity="collage"] .project-index a { grid-template-columns: 30px 1fr 18px; gap: 20px; border-color: var(--line); font-size: 14px; padding: 17px 0; }
+html[data-identity="collage"] .index-number { font-size: 21px; }
+
+html[data-identity="collage"] .project { padding-top: 64px; padding-bottom: 64px; }
+html[data-identity="collage"] .project-heading { grid-template-columns: 42px minmax(0, 1fr); gap: 20px; }
+html[data-identity="collage"] .section-number { font-size: 35px; line-height: 1.2; }
+html[data-identity="collage"] .project h2 { font-size: clamp(28px, 3.15vw, 46px); letter-spacing: -.035em; line-height: 1.12; padding-top: 0; max-width: 680px; }
+html[data-identity="collage"] .project h2 .serif-word { display: inline; font-family: var(--sans); }
+html[data-identity="collage"] .project-body { margin-left: 0; margin-top: 40px; }
+html[data-identity="collage"] .project-copilot .project-body,
+html[data-identity="collage"] .project-tools .project-body { max-width: 760px; }
+html[data-identity="collage"] .project-placeholder { min-height: 230px; background-color: #f2f0e9; border: 1px solid var(--line); }
+html[data-identity="collage"] .project-placeholder p { background: #f2f0e9; }
+html[data-identity="collage"] .dot-grid { background-image: none; }
+html[data-identity="collage"] .election-composition { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 44px 32px; }
+html[data-identity="collage"] .election-map { grid-column: 1 / 8; }
+html[data-identity="collage"] .election-details { grid-column: 6 / 13; }
+html[data-identity="collage"] .media-frame { border-radius: 9px; }
+html[data-identity="collage"] figcaption { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 15px; background: var(--paper); width: fit-content; }
+html[data-identity="collage"] .project-discover .project-body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 40px 32px; }
+html[data-identity="collage"] .discover-desktop { grid-column: 1 / 9; }
+html[data-identity="collage"] .discover-mobile-composition {
+  grid-column: 7 / 13;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 32px;
+  margin-top: 0;
+}
+html[data-identity="collage"] .discover-mobile-composition h3 { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 16px; background: var(--paper); width: fit-content; }
+html[data-identity="collage"] .phone:nth-of-type(2) { padding-top: 76px; }
+html[data-identity="collage"] .phone img { border-radius: 25px; box-shadow: none; }
+
+html[data-identity="collage"] .about { padding-top: 64px; padding-bottom: 76px; }
+html[data-identity="collage"] .about-grid { grid-template-columns: 1fr; margin-top: 32px; }
+html[data-identity="collage"] .bio { max-width: 760px; background: var(--paper); }
+html[data-identity="collage"] .bio p { font-size: 18px; }
+html[data-identity="collage"] .recognition { max-width: 580px; }
+html[data-identity="collage"] .recognition-number { font-size: 52px; }
+html[data-identity="collage"] .recognition-moma { font-size: 32px; line-height: 52px; }
+html[data-identity="collage"] .site-footer { border-top: 1px solid var(--line); padding-top: 48px; }
+html[data-identity="collage"] .connect-link { font-size: clamp(38px, 4.6vw, 68px); letter-spacing: -.035em; }
+html[data-identity="collage"] .footer-baseline { margin-top: 40px; border-color: var(--line); color: #645e57; }
+
+@media (max-width: 1000px) {
+  html[data-identity="collage"] .hero { gap: 28px; min-height: 650px; }
+  html[data-identity="collage"] .hero .portrait { grid-column: 7 / 10; margin-top: 90px; }
+  html[data-identity="collage"] .collage-discover { grid-column: 10 / 13; }
+  html[data-identity="collage"] .election-map { grid-column: 1 / 10; }
+  html[data-identity="collage"] .election-details { grid-column: 4 / 13; }
+  html[data-identity="collage"] .discover-desktop { grid-column: 1 / 11; }
+  html[data-identity="collage"] .discover-mobile-composition { grid-column: 5 / 13; }
+}
+
+@media (max-width: 640px) {
+  html[data-identity="collage"] body { background-size: 64px 64px; }
+  html[data-identity="collage"] .site-header { height: 72px; }
+  html[data-identity="collage"] .hero { display: flex; flex-direction: column; gap: 32px; min-height: auto; padding-top: 24px; padding-bottom: 56px; }
+  html[data-identity="collage"] .hero h1 { font-size: 44px; order: 0; }
+  html[data-identity="collage"] .hero-collage { order: 1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px 20px; width: 100%; }
+  html[data-identity="collage"] .hero .portrait { grid-column: 4 / 7; grid-row: 1 / 4; margin-top: 36px; }
+  html[data-identity="collage"] .collage-discover { grid-column: 1 / 4; grid-row: 1; }
+  html[data-identity="collage"] .collage-election { grid-column: 1 / 4; grid-row: 2; margin-top: 0; }
+  html[data-identity="collage"] .hero-bottom { order: 2; gap: 24px; }
+  html[data-identity="collage"] .hero-intro { font-size: 25px; max-width: 420px; }
+  html[data-identity="collage"] .section-pad:not(.hero) { padding-top: 44px; padding-bottom: 44px; }
+  html[data-identity="collage"] .work-context p { font-size: 25px; }
+  html[data-identity="collage"] .scale { gap: 24px; margin: 32px 0; }
+  html[data-identity="collage"] .scale dt { font-size: 42px; }
+  html[data-identity="collage"] .scale dd { font-size: 9px; }
+  html[data-identity="collage"] .project-heading { grid-template-columns: 32px minmax(0, 1fr); gap: 16px; }
+  html[data-identity="collage"] .section-number { font-size: 28px; }
+  html[data-identity="collage"] .project h2 { font-size: 27px; }
+  html[data-identity="collage"] .project-body { margin-top: 28px; }
+  html[data-identity="collage"] .project-placeholder { min-height: 180px; }
+  html[data-identity="collage"] .election-composition,
+  html[data-identity="collage"] .project-discover .project-body { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px 16px; }
+  html[data-identity="collage"] .election-map,
+  html[data-identity="collage"] .discover-desktop { grid-column: 1 / 7; }
+  html[data-identity="collage"] .election-details { grid-column: 2 / 7; }
+  html[data-identity="collage"] .discover-mobile-composition { grid-column: 1 / 7; gap: 20px; }
+  html[data-identity="collage"] .phone:nth-of-type(2) { padding-top: 44px; }
+  html[data-identity="collage"] .phone img { border-radius: 18px; }
+  html[data-identity="collage"] figcaption { font-size: 13px; }
+  html[data-identity="collage"] .bio p { font-size: 16px; }
+  html[data-identity="collage"] .connect-link { font-size: 40px; }
+}

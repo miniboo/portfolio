@@ -6,8 +6,15 @@
     <meta name="theme-color" content="#f7f5ef" />
     <meta name="description" content="Chloe Varelidi is a designer and technologist harnessing the power of play to build the future of learning." />
     <title>Chloe Varelidi — Design &amp; Technology</title>
+    <script>
+      if (window.location.pathname.replace(/\/+$/, "") === "/2") {
+        document.documentElement.dataset.identity = "collage";
+        document.title = "2";
+      }
+    </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/collage.css" />
     <script type="module" src="/src/main.js"></script>
   </head>
   <body id="top">

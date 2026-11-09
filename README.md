@@ -2,6 +2,12 @@
 
 A screenshot-first editorial portfolio built with semantic HTML, CSS and a small JavaScript parallax controller. Vite serves and builds the site.
 
+## Versions
+
+The original editorial identity remains at `/`. The second identity, tab **2**, is at `/2/`: a light dot-grid and photographic mosaic inspired by the supplied Hybrid Moments reference. Both routes share the same content and project assets; the alternative moves the existing portrait into its hero rather than duplicating the biography or photograph. Decorative hero thumbnails reuse the supplied project screenshots.
+
+The alternative stylesheet is scoped to its route. Without JavaScript, `/2/` falls back to the original complete content and layout.
+
 ## Run
 
 Requires Node.js 20.19+.

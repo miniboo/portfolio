@@ -56,3 +56,14 @@ test("project headings and media use one shared layout without repeated filler",
     assert.ok(!html.includes(removed), `Redundant copy remains: ${removed}`);
   }
 });
+
+test("the second identity uses a distinct route and a scoped stylesheet", async () => {
+  const collage = await readFile(new URL("src/collage.css", root), "utf8");
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(html.includes('=== "/2"'));
+  assert.ok(html.includes('document.title = "2"'));
+  assert.ok(script.startsWith('if (document.documentElement.dataset.identity === "collage")'));
+  assert.ok(collage.includes('html[data-identity="collage"] .hero-collage'));
+  assert.equal([...html.matchAll(/class="bio"/g)].length, 1);
+  assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
+});
