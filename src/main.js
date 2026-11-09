@@ -15,10 +15,6 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelector(".work-link-label").textContent = "View work";
   document.querySelector(".career-history").textContent = document.querySelector("#warm-career-history").content.textContent;
   document.querySelector(".bio").append(document.querySelector(".recognition"));
-  // Keep the alternative's previous screenshot-only composition intact.
-  document.querySelectorAll(".project-video").forEach(element => element.remove());
-  document.querySelectorAll(".project-images").forEach(element => element.replaceWith(...element.childNodes));
-  document.querySelector(".project-copilot .project-placeholder p").textContent = "Images, video & project details to follow.";
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
