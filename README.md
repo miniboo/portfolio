@@ -4,7 +4,7 @@ A screenshot-first editorial portfolio built with semantic HTML, CSS and a small
 
 ## Versions
 
-The original editorial identity remains at `/`. The second identity, tab **2**, is at `/2/`: a light dot-grid and photographic mosaic inspired by the supplied Hybrid Moments reference. Both routes share the same content and project assets; the alternative moves the existing portrait into its hero rather than duplicating the biography or photograph. Decorative hero thumbnails reuse the supplied project screenshots.
+The original editorial identity remains at `/`. The second identity, tab **2**, is at `/2/`: a warm, serif-led editorial composition informed by the supplied Microsoft AI Style Guide. It replaces the earlier dot-grid mosaic with cream and earthy tonal fields, fine rules, small monospaced labels and an original CSS light-and-shadow backdrop. Both routes share the same content and project assets; the alternative moves the existing portrait into its hero without duplicating any text or images.
 
 The alternative stylesheet is scoped to its route. Without JavaScript, `/2/` falls back to the original complete content and layout.
 
@@ -35,6 +35,6 @@ Parallax moves the hero accent and a few media frames, not the readable content.
 
 ## Media
 
-Local images are in `public/media/`. Chloe's actual portrait comes from her existing website; project screenshots come from the supplied Figma nodes. No AIX brandbook logos, proprietary fonts, text or stock photographs are used. The portfolio uses the open-source DM Sans and Instrument Serif fonts with system fallbacks.
+Local images are in `public/media/`. Chloe's actual portrait comes from her existing website; project screenshots come from the supplied Figma nodes. No logos, proprietary font files, text, photography or graphic assets from either identity guide are used. The original uses the open-source DM Sans and Instrument Serif fonts with system fallbacks. Tab 2 uses system Georgia and Arial, the new guide's documented fallback typefaces, with system monospace for small labels. Its light backdrop is authored in CSS rather than exported from the restricted guide.
 
 The supplied election MP4 has been retained locally for a later media pass, but is not embedded in this screenshot-first version. It is a regular video file, not a base64 payload.

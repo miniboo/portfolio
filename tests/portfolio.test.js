@@ -58,12 +58,19 @@ test("project headings and media use one shared layout without repeated filler",
 });
 
 test("the second identity uses a distinct route and a scoped stylesheet", async () => {
-  const collage = await readFile(new URL("src/collage.css", root), "utf8");
+  const warm = await readFile(new URL("src/warm.css", root), "utf8");
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(html.includes('=== "/2"'));
   assert.ok(html.includes('document.title = "2"'));
-  assert.ok(script.startsWith('if (document.documentElement.dataset.identity === "collage")'));
-  assert.ok(collage.includes('html[data-identity="collage"] .hero-collage'));
+  assert.ok(script.startsWith('if (document.documentElement.dataset.identity === "warm")'));
+  assert.ok(warm.includes('html[data-identity="warm"] .hero .portrait'));
+  assert.ok(warm.includes('--serif: Georgia, "Times New Roman", serif;'));
+  assert.ok(!script.includes("cloneNode"));
+  assert.ok(!warm.includes('data-identity="collage"'));
+  assert.ok(!warm.includes("background-image: radial-gradient"));
+  for (const [, selector] of warm.matchAll(/([^{}]+)\{/g)) {
+    assert.ok(selector.trim().startsWith('html[data-identity="warm"]') || selector.trim().startsWith("@media"), `Unscoped alternative rule: ${selector}`);
+  }
   assert.equal([...html.matchAll(/class="bio"/g)].length, 1);
   assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
 });

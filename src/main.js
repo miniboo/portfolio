@@ -1,27 +1,9 @@
-if (document.documentElement.dataset.identity === "collage") {
+if (document.documentElement.dataset.identity === "warm") {
   const hero = document.querySelector(".hero");
-  const collage = document.createElement("div");
-  collage.className = "hero-collage";
   const portrait = document.querySelector(".portrait");
   portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
-  collage.append(portrait);
-
-  // Reuse project images as decorative previews, without duplicating their captions.
-  for (const [selector, className, speed] of [
-    [".discover-desktop img", "collage-discover", "0.02"],
-    [".election-map img", "collage-election", "-0.02"],
-  ]) {
-    const tile = document.createElement("div");
-    tile.className = className;
-    tile.setAttribute("aria-hidden", "true");
-    tile.dataset.parallax = speed;
-    const image = document.querySelector(selector).cloneNode();
-    image.alt = "";
-    image.loading = "eager";
-    tile.append(image);
-    collage.append(tile);
-  }
-  hero.append(collage);
+  portrait.querySelector("img").loading = "eager";
+  hero.append(portrait);
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
