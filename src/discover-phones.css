@@ -31,20 +31,23 @@
 .interactive-phone .phone-carousel { display: flex; gap: 4.07125cqw; padding: 0 5.08906cqw; scroll-padding-inline: 5.08906cqw; margin-top: 11.45038cqw; flex: none; height: 93.12977cqw; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; user-select: none; }
 .interactive-phone .phone-category { position: relative; flex: 0 0 88.54962cqw; scroll-snap-align: start; border-radius: 7.12468cqw; padding: 8.14249cqw 4.07125cqw 4.07125cqw; background: #eae8e3; text-align: center; }
 .interactive-phone .phone-category h3 { font-size: 5.59796cqw; line-height: 6.61578cqw; font-weight: 500; }
-.interactive-phone .phone-fan { position: relative; width: 80.40712cqw; height: 28.49873cqw; margin-top: 10.17812cqw; }
-.interactive-phone .phone-fan img { position: absolute; width: 21.37405cqw; height: 21.37405cqw; object-fit: cover; top: 4.58015cqw; left: 29.51654cqw; border-radius: 3.05344cqw; box-shadow: 0 1px 5px #0003; }
-.interactive-phone .phone-fan img:first-child { transform: translateX(-14.75827cqw) rotate(-12deg); }
-.interactive-phone .phone-fan img:nth-child(2) { z-index: 1; }
-.interactive-phone .phone-fan img:last-child { transform: translateX(14.75827cqw) rotate(12deg); }
+.interactive-phone .phone-fan { display: block; position: relative; width: 80.40712cqw; height: 28.49873cqw; margin-top: 10.17812cqw; padding: 0; background: none; perspective: 152.67176cqw; transform-style: preserve-3d; }
+.interactive-phone .phone-fan img { position: absolute; width: 21.37405cqw; height: 21.37405cqw; object-fit: cover; top: 4.58015cqw; left: 29.51654cqw; border-radius: 3.05344cqw; box-shadow: 0 1px 5px #0003; transform-origin: center; backface-visibility: hidden; pointer-events: none; }
 .interactive-phone .phone-preview { margin-top: 4.07125cqw; min-height: 16.79389cqw; }
 .interactive-phone .phone-preview small { font-size: 3.05344cqw; line-height: 4.07125cqw; color: #62625f; }
 .interactive-phone .phone-preview p { margin-top: 1.52672cqw; font-size: 4.3257cqw; line-height: 5.59796cqw; font-weight: 600; }
 .interactive-phone .phone-action { width: 100%; border-radius: 10cqw; height: 11.19593cqw; background: #242421; color: #fff; font-size: 4.3257cqw; line-height: 5.59796cqw; }
 .interactive-phone .phone-start { position: absolute; bottom: 4.07125cqw; left: 4.07125cqw; width: calc(100% - 8.14249cqw); }
 .interactive-phone .phone-pagination { display: flex; justify-content: center; margin-top: 3.05344cqw; }
-.interactive-phone .phone-pagination button { display: grid; place-items: center; width: 7.12468cqw; height: 8.14249cqw; min-width: 24px; min-height: 24px; background: none; padding: 0; }
-.interactive-phone .phone-pagination span { width: 2.03562cqw; height: 2.03562cqw; background: #aaa; border-radius: 50%; }
-.interactive-phone .phone-pagination [aria-pressed="true"] span { background: #242421; }
+.interactive-phone .phone-page-control { position: relative; display: block; width: 72px; height: 32px; border-radius: 16px; }
+.interactive-phone .phone-pagination-dots { position: absolute; display: flex; align-items: center; justify-content: center; gap: 6px; inset: 4px 0; background: #ffffff40; border-radius: 16px; pointer-events: none; }
+.interactive-phone .phone-pagination-dots span { width: 8px; height: 8px; background: #aaa; border-radius: 50%; }
+.interactive-phone .phone-pagination [data-active="true"] { background: #242421; }
+.interactive-phone .phone-page-control input { appearance: none; -webkit-appearance: none; position: absolute; inset: 0; width: 72px; height: 32px; margin: 0; padding: 0; border: 0; border-radius: 16px; background: transparent; cursor: pointer; }
+.interactive-phone .phone-page-control input::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 30px; height: 32px; background: transparent; border: 0; }
+.interactive-phone .phone-page-control input::-moz-range-thumb { width: 30px; height: 32px; background: transparent; border: 0; }
+.interactive-phone .phone-page-control input::-moz-range-track { background: transparent; border: 0; }
+.interactive-phone .phone-page-control input:focus-visible { outline: 2px solid #446145; outline-offset: 0; }
 .interactive-phone .phone-plan-chrome > div { height: 13.74046cqw; display: flex; align-items: start; justify-content: space-between; padding: 0 4.07125cqw; }
 .interactive-phone .phone-back, .interactive-phone .phone-plan-chrome span { display: grid; place-items: center; width: 11.19593cqw; height: 11.19593cqw; border-radius: 50%; border: 1px solid #d5d3cf; background: #f7f5f0; font-size: 8cqw; line-height: 1; }
 .interactive-phone .phone-feed-back { position: absolute; left: 4.07125cqw; bottom: 2.5cqw; }

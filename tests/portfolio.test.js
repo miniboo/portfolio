@@ -284,6 +284,18 @@ test("the first two Discover phones progressively enhance into independent sourc
   for (const name of names) await access(new URL(`public/media/${name}`, root));
 });
 
+test("the first phone uses a hover-driven depth orbit and compact native pagination", async () => {
+  const script = await readFile(new URL("src/discover-phones.js", root), "utf8");
+  const styles = await readFile(new URL("src/discover-phones.css", root), "utf8");
+  for (const text of ["translate3d(", "rotateY(", "Math.cos(angle)", "pointerenter", "pointerleave", "Math.round(phase)", "Google Research · 5h ago", "Microsoft · 8h ago"]) assert.ok(script.includes(text));
+  assert.ok(script.includes('type="range" min="0" max="3"'));
+  assert.ok(!script.includes("animateFan"));
+  assert.ok(!script.includes('{ translate: "0 12px"'));
+  assert.ok(styles.includes("perspective: 152.67176cqw"));
+  assert.ok(styles.includes("width: 72px; height: 32px"));
+  assert.ok(styles.includes("gap: 6px"));
+});
+
 test("custom motion controls are absent and decorative video is finite with a still fallback", async () => {
   const script = await readFile(new URL("src/main.js", root), "utf8");
   const styles = await readFile(new URL("src/style.css", root), "utf8");

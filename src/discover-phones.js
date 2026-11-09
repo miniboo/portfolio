@@ -13,11 +13,12 @@ const familyStories = [
   ["Spooky Science takes over Chabot", "Oct 31 · Oakland. Try gooey experiments and pumpkin engineering, then watch the 1:30pm pumpkin drop. Check Chabot’s admission options.", "feed-chabot-science.jpg"],
 ];
 const categories = [
-  { title: "AI Daily News", images: ["welcome-ai-1.jpg", "welcome-ai-2.jpg", "welcome-ai-3.jpg"], byline: "OpenAI · 1h ago", story: "GPT-6.1 Terra starts rolling out" },
-  { title: "Market Watch", images: ["welcome-market-1.jpg", "welcome-market-2.jpg", "welcome-market-3.jpg"], byline: "Reuters · After close", story: "Stocks extend their rebound" },
-  { title: "Local family events", images: ["welcome-family-zoo.jpg", "feed-goblin.jpg", "welcome-family-3.jpg"], byline: "SF Funcheap · Sat Oct 31", story: "Halloween at San Francisco Zoo" },
+  { title: "AI Daily News", images: ["welcome-ai-1.jpg", "welcome-ai-2.jpg", "welcome-ai-3.jpg"], stories: [["OpenAI · 1h ago", "GPT-6.1 Terra starts rolling out"], ["Google Research · 5h ago", "Google explores a “sleep” phase for AI"], ["Microsoft · 8h ago", "Microsoft tests AI diagnosis step by step"]] },
+  { title: "Market Watch", images: ["welcome-market-1.jpg", "welcome-market-2.jpg", "welcome-market-3.jpg"], stories: [["Reuters · After close", "Stocks extend their rebound"], ["CNBC · After close", "Chipmakers lead again"], ["WSJ · After close", "US oil slips below $100"]] },
+  { title: "Local family events", images: ["welcome-family-zoo.jpg", "feed-goblin.jpg", "welcome-family-3.jpg"], stories: [["SF Funcheap · Sat Oct 31", "Halloween at San Francisco Zoo"], ["Bay Area Kid Fun · Sat Oct 31", "A costume weekend at Oakland Zoo"], ["Marin IJ · Sun Nov 1", "A hands-on Halloween in Sausalito"]] },
   { title: "Make it your own", story: "Choose your topics and sources, and AI will keep you up to date." },
 ];
+const cardOrbits = new Set();
 const image = (name, width, height) => `<img src="/media/${name}" width="${width}" height="${height}" alt="" aria-hidden="true" loading="lazy" draggable="false" />`;
 const bottom = () => `<div class="phone-bottom">${image("phone-bottom-chrome.png", 393, 80)}</div>`;
 const familyIcon = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="5" r="2"/><circle cx="14" cy="7" r="1.5"/><path d="M2 16v-3a5 5 0 0 1 10 0v3m1-5a4 4 0 0 1 5 4v1"/></svg>`;
@@ -97,24 +98,28 @@ function planMarkup(category) {
 function mountWelcome(phone, initialCategory = 0) {
   const cards = categories.map((category, index) => `<div class="phone-category" role="group" aria-roledescription="slide" aria-label="${index + 1} of 4: ${category.title}">
     <h3>${category.title}</h3>
-    <div class="phone-fan" aria-hidden="true">${(category.images || categories[0].images).map(name => image(name, 84, 84)).join("")}</div>
-    <div class="phone-preview">${category.byline ? `<small>${category.byline}</small>` : ""}<p>${category.story}</p></div>
+    <button type="button" class="phone-fan" aria-label="Rotate featured images for ${category.title}">${(category.images || categories[0].images).map(name => image(name, 84, 84)).join("")}</button>
+    <div class="phone-preview">${category.stories ? `<small>${category.stories[0][0]}</small>` : ""}<p>${category.stories?.[0][1] || category.story}</p></div>
     <button type="button" class="phone-action phone-start" data-category="${index}">${index === 3 ? "Create your own" : "Get started"}</button>
   </div>`).join("");
   phone.innerHTML = `<div class="phone-welcome">
     <div class="phone-chrome">${image("phone-welcome-chrome.png", 393, 116)}</div>
     <h2>What would you like to<br />keep up with?</h2>
     <div class="phone-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Discover group categories" aria-description="Swipe or drag between categories, use the arrow keys, or choose a category below.">${cards}</div>
-    <div class="phone-pagination" role="group" aria-label="Choose a category">${categories.map((category, index) => `<button type="button" aria-label="${category.title}" aria-pressed="${index === 0}" data-page="${index}"><span></span></button>`).join("")}</div>
+    <div class="phone-pagination"><label class="phone-page-control"><span class="phone-pagination-dots" aria-hidden="true">${categories.map((_, index) => `<span data-page="${index}" data-active="${index === initialCategory}"></span>`).join("")}</span><input type="range" min="0" max="3" step="1" value="${initialCategory}" aria-label="Choose a Discover category" aria-valuetext="${categories[initialCategory].title}" /></label></div>
     ${bottom()}
   </div>`;
   const carousel = phone.querySelector(".phone-carousel");
   const slides = [...phone.querySelectorAll(".phone-category")];
-  const pagination = [...phone.querySelectorAll("[data-page]")];
+  const pagination = phone.querySelector(".phone-pagination input");
+  const dots = [...phone.querySelectorAll("[data-page]")];
+  const orbits = slides.map((slide, index) => mountCardOrbit(slide, categories[index]));
   let active = initialCategory;
   const step = () => slides[1].offsetLeft - slides[0].offsetLeft;
   const renderActive = () => {
-    pagination.forEach((button, index) => button.setAttribute("aria-pressed", String(index === active)));
+    pagination.value = active;
+    pagination.setAttribute("aria-valuetext", categories[active].title);
+    dots.forEach((dot, index) => dot.dataset.active = String(index === active));
     slides.forEach((slide, index) => slide.inert = index !== active);
   };
   const select = (index, behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth") => {
@@ -126,12 +131,16 @@ function mountWelcome(phone, initialCategory = 0) {
     const next = Math.max(0, Math.min(3, Math.round(carousel.scrollLeft / step())));
     if (active !== next) {
       active = next;
-      slides[active].querySelector(".phone-fan").getAnimations({ subtree: true }).forEach(animation => animation.cancel());
-      animateFan(slides[active]);
+      orbits.forEach((orbit, index) => { if (index !== active) orbit.stop(); });
     }
     renderActive();
   };
-  pagination.forEach(button => button.addEventListener("click", () => select(Number(button.dataset.page))));
+  pagination.addEventListener("input", () => select(Number(pagination.value)));
+  pagination.addEventListener("pointerup", event => {
+    const index = Math.max(0, Math.min(3, Math.round((event.clientX - pagination.getBoundingClientRect().left - 15) / 14)));
+    pagination.value = index;
+    select(index);
+  });
   carousel.addEventListener("scroll", sync, { passive: true });
   carousel.addEventListener("keydown", event => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -141,18 +150,25 @@ function mountWelcome(phone, initialCategory = 0) {
   });
   let drag;
   carousel.addEventListener("pointerdown", event => {
-    if (event.pointerType !== "mouse" || event.target.closest("button")) return;
-    drag = { x: event.clientX, left: carousel.scrollLeft };
-    carousel.style.scrollSnapType = "none";
-    carousel.setPointerCapture(event.pointerId);
+    if (event.pointerType !== "mouse" || event.target.closest("button:not(.phone-fan)")) return;
+    drag = { x: event.clientX, left: carousel.scrollLeft, moved: false };
   });
   carousel.addEventListener("pointermove", event => {
     if (!drag || !event.buttons) return;
+    if (!drag.moved && Math.abs(event.clientX - drag.x) < 6) return;
+    if (!drag.moved) {
+      drag.moved = true;
+      orbits.forEach(orbit => orbit.stop());
+      carousel.style.scrollSnapType = "none";
+      carousel.setPointerCapture(event.pointerId);
+    }
     carousel.scrollLeft = drag.left + drag.x - event.clientX;
   });
   const finishDrag = () => {
     if (!drag) return;
+    const moved = drag.moved;
     drag = undefined;
+    if (!moved) return;
     const index = Math.max(0, Math.min(3, Math.round(carousel.scrollLeft / step())));
     carousel.style.scrollSnapType = "";
     select(index);
@@ -162,6 +178,9 @@ function mountWelcome(phone, initialCategory = 0) {
   carousel.addEventListener("pointercancel", finishDrag);
   phone.querySelectorAll(".phone-start").forEach(button => button.addEventListener("click", () => {
     const category = Number(button.dataset.category);
+    orbits.forEach(orbit => orbit.destroy());
+    observer.disconnect();
+    layoutObserver.disconnect();
     phone.innerHTML = planMarkup(category);
     phone.querySelector(".phone-back").addEventListener("click", () => {
       mountWelcome(phone, category);
@@ -220,22 +239,92 @@ function mountWelcome(phone, initialCategory = 0) {
   });
   layoutObserver.observe(carousel);
   const observer = new IntersectionObserver(entries => {
-    if (!entries.some(entry => entry.isIntersecting)) return;
-    animateFan(slides[0]);
-    observer.disconnect();
-  }, { threshold: .6 });
+    if (entries.some(entry => !entry.isIntersecting)) orbits.forEach(orbit => orbit.stop());
+    if (!phone.isConnected) observer.disconnect();
+  });
   observer.observe(phone);
 }
 
-function animateFan(slide) {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  slide.querySelectorAll(".phone-fan img").forEach((image, index) => {
-    image.animate([
-      { translate: "0 12px", opacity: .4 },
-      { translate: `${index === 0 ? "-8px" : index === 2 ? "8px" : "0"} -8px`, opacity: 1, offset: .6 },
-      { translate: "0 0", opacity: 1 },
-    ], { duration: 1200, delay: index * 100, easing: "ease-out" });
+function mountCardOrbit(slide, category) {
+  const fan = slide.querySelector(".phone-fan");
+  const images = [...fan.querySelectorAll("img")];
+  const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let phase = 0;
+  let hovered = false;
+  let frame;
+  let timer;
+  const render = () => {
+    const turn = phase - Math.floor(phase);
+    const overlap = Math.sin(Math.PI * turn);
+    images.forEach((image, index) => {
+      const angle = (index - phase) * Math.PI * 2 / 3;
+      const depth = Math.cos(angle);
+      image.style.transform = `translate3d(${Math.sin(angle) * 74 * (1 - .55 * overlap) / 3.93}cqw,${-2 * (1 - depth) / 3.93}cqw,${32 * (depth - 1) / 3.93}cqw) rotateY(${-Math.sin(angle) * 10}deg) rotateZ(${Math.sin(angle) * 7}deg) scale(${.9 + .1 * (depth + 1) / 2})`;
+      image.style.opacity = 1 - .5 * overlap * (1 - (depth + 1) / 2);
+    });
+    const current = (Math.round(phase) % 3 + 3) % 3;
+    if (category.stories) {
+      const [byline, title] = category.stories[current];
+      slide.querySelector(".phone-preview small").textContent = byline;
+      slide.querySelector(".phone-preview p").textContent = title;
+      slide.querySelector(".phone-preview").style.opacity = Math.min(1, Math.abs(turn - .5) * 4);
+      fan.setAttribute("aria-label", `Rotate featured stories for ${category.title}. Showing ${title}`);
+    }
+  };
+  const move = (target, duration, done) => {
+    cancelAnimationFrame(frame);
+    clearTimeout(timer);
+    const from = phase;
+    const start = performance.now();
+    const tick = now => {
+      if (!fan.isConnected || document.hidden) return;
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - (1 - progress) ** 3;
+      phase = from + (target - from) * eased;
+      render();
+      if (progress < 1) frame = requestAnimationFrame(tick);
+      else done?.();
+    };
+    if (reducedMotion()) {
+      phase = target;
+      render();
+    } else frame = requestAnimationFrame(tick);
+  };
+  const advance = () => {
+    if (!fan.isConnected || document.hidden) return;
+    move(Math.floor(phase + 1.00001), 600, () => {
+      if (hovered) timer = setTimeout(advance, 1400);
+    });
+  };
+  const stop = (immediate = false) => {
+    hovered = false;
+    clearTimeout(timer);
+    cancelAnimationFrame(frame);
+    if (immediate || reducedMotion()) {
+      phase = Math.round(phase);
+      render();
+    } else if (Math.abs(phase - Math.round(phase)) > .001) move(Math.round(phase), 320);
+  };
+  const orbit = {
+    stop,
+    destroy() {
+      hovered = false;
+      clearTimeout(timer);
+      cancelAnimationFrame(frame);
+      cardOrbits.delete(orbit);
+    },
+  };
+  fan.addEventListener("pointerenter", event => {
+    if (event.pointerType !== "mouse" || reducedMotion()) return;
+    hovered = true;
+    advance();
   });
+  fan.addEventListener("pointerleave", () => stop());
+  fan.addEventListener("blur", () => stop());
+  fan.addEventListener("click", () => advance());
+  cardOrbits.add(orbit);
+  render();
+  return orbit;
 }
 
 export function mountDiscoverPhones() {
@@ -248,6 +337,9 @@ export function mountDiscoverPhones() {
   wireFeed(screens[1]);
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", event => {
     if (!event.matches) return;
-    document.querySelectorAll(".phone-fan img").forEach(image => image.getAnimations().forEach(animation => animation.cancel()));
+    cardOrbits.forEach(orbit => orbit.stop(true));
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cardOrbits.forEach(orbit => orbit.stop(true));
   });
 }
