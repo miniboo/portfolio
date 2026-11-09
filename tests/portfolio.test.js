@@ -191,19 +191,18 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
 });
 
-test("Discover principles are editable, human-centered and separate from the visuals-only slide", () => {
-  const principles = original.match(/<section class="discover-principles.*?<\/section>/s)[0];
-  assert.ok(principles.includes("Design principles"));
-  assert.ok(principles.includes("An agentic experience centered on human voices."));
-  assert.deepEqual([...principles.matchAll(/<dt>(.*?)<\/dt>/g)].map(([, text]) => text), ["adaptable", "human", "trusted"]);
-  assert.deepEqual([...principles.matchAll(/<dd>(.*?)<\/dd>/g)].map(([, text]) => text), [
-    "AI transforms any content into the format, length, and knowledge level you need right now",
-    "Every story is rooted in real voices, with clear provenance so you always know who’s behind it.",
-    "Your agent earns your trust with every story it delivers.",
-  ]);
-  assert.ok(principles.includes('class="principle-human"'));
-  assert.ok(!/<img|<video|<button|class="section-number"/.test(principles));
-  assert.match(original, /<section class="daily-brief.*?<\/section>\s*<section class="discover-principles/s);
+test("Discover principles are integrated into the existing narrative beside the design", async () => {
+  const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
+  const description = story.match(/<div class="discover-description">(.*?)<\/div>/s)[1];
+  assert.equal([...description.matchAll(/<p>/g)].length, 3);
+  for (const text of ["agentic experience centered on human voices", "Real voices and clear provenance", "format, length, and knowledge level", "guiding intent is to earn your trust"]) assert.ok(description.includes(text));
+  assert.ok(!original.includes("discover-principles"));
+  assert.ok(!original.includes("Design principles"));
+  assert.ok(!story.includes("<dl"));
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(!styles.includes("discover-principle"));
+  assert.ok(!styles.includes("#502d35"));
+  assert.match(original, /<section class="daily-brief.*?<\/section>\s*<\/div>\s*<section class="project project-edge/s);
 });
 
 test("Daily Brief groups all three actual Figma mocks in one visuals-only section", async () => {

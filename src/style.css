@@ -190,15 +190,6 @@ html:not([data-identity="warm"]) .daily-brief { background: #1e1b1b; color: #fef
 html:not([data-identity="warm"]) .daily-brief-screens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: clamp(24px, 4vw, 70px); max-width: 1319px; margin: 0 auto; }
 html:not([data-identity="warm"]) .daily-brief-screen { width: 100%; max-width: 393px; justify-self: center; margin: 0; scroll-snap-align: start; }
 
-html:not([data-identity="warm"]) .discover-principles { background: #502d35; color: #cca39e; }
-html:not([data-identity="warm"]) .discover-principles h3 { max-width: 900px; margin: 20px 0 56px; color: #fefdfa; font-family: var(--serif); font-size: clamp(30px, 3vw, 52px); font-weight: 400; letter-spacing: -.02em; line-height: 1.15; text-wrap: balance; }
-html:not([data-identity="warm"]) .discover-principle-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-html:not([data-identity="warm"]) .discover-principle-grid > div { min-height: 260px; padding: 0 clamp(24px, 3vw, 56px) 24px; border-left: 1px solid #9a6f72; }
-html:not([data-identity="warm"]) .discover-principle-grid > div:last-child { border-right: 1px solid #9a6f72; }
-html:not([data-identity="warm"]) .discover-principle-grid dt { font-family: var(--serif); font-size: clamp(36px, 4vw, 64px); font-weight: 400; font-style: italic; line-height: 1.15; text-align: center; }
-html:not([data-identity="warm"]) .discover-principle-grid dd { max-width: 340px; margin: 44px auto 0; font-size: clamp(18px, 1.45vw, 24px); line-height: 1.4; }
-html:not([data-identity="warm"]) .discover-principle-grid .principle-human { color: #ffd0bc; }
-
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
 html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
@@ -223,14 +214,6 @@ html[data-motion="off"] .press-logo { transition: none; }
   .hero-orbit { top: 65px; right: 9%; width: 18vw; }
   .project h2 { font-size: 6.8vw; }
   .phone img { border-radius: 25px; }
-}
-
-@media (max-width: 760px) {
-  html:not([data-identity="warm"]) .discover-principle-grid { grid-template-columns: 1fr; gap: 36px; }
-  html:not([data-identity="warm"]) .discover-principle-grid > div { min-height: 0; border-right: 0; }
-  html:not([data-identity="warm"]) .discover-principle-grid > div:last-child { border-right: 0; }
-  html:not([data-identity="warm"]) .discover-principle-grid dt { text-align: left; }
-  html:not([data-identity="warm"]) .discover-principle-grid dd { max-width: none; margin-top: 20px; }
 }
 
 @media (max-width: 640px) {
