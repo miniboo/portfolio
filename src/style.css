@@ -134,57 +134,75 @@ html:not([data-identity="warm"]) .hero-orbit { display: none; }
 html:not([data-identity="warm"]) .hero-bottom { gap: 20px; width: 100%; max-width: 680px; margin-top: 0; }
 html:not([data-identity="warm"]) .hero-intro,
 html:not([data-identity="warm"]) .hero-experience { max-width: 100%; font-size: clamp(20px, 1.4vw, 22px); line-height: 1.4; letter-spacing: -.025em; }
-html:not([data-identity="warm"]) .hero .recognition { display: flex; flex-wrap: wrap; gap: 16px 32px; border: 0; padding: 0; margin: 0; max-width: none; }
-html:not([data-identity="warm"]) .hero .recognition > div { flex-direction: row; align-items: center; gap: 10px; }
+html:not([data-identity="warm"]) .hero .recognition { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; width: 100%; border: 0; padding: 0; margin: 0; max-width: none; }
+html:not([data-identity="warm"]) .hero .recognition > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 10px; }
 html:not([data-identity="warm"]) .hero .recognition-number,
 html:not([data-identity="warm"]) .hero .recognition-number span,
-html:not([data-identity="warm"]) .hero .recognition-moma { font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: -.025em; line-height: 1.4; }
+html:not([data-identity="warm"]) .hero .recognition-moma { font-family: var(--sans); font-size: 20px; font-weight: 500; letter-spacing: -.025em; line-height: 1.4; }
 html:not([data-identity="warm"]) .hero .recognition-number span { margin-left: 2px; }
+html:not([data-identity="warm"]) .hero .recognition-number,
+html:not([data-identity="warm"]) .hero .recognition-moma { display: flex; justify-content: center; align-items: center; width: 64px; height: 40px; }
+html:not([data-identity="warm"]) .hero .recognition-label { font-size: 11px; letter-spacing: .045em; line-height: 1.5; white-space: nowrap; }
+html:not([data-identity="warm"]) #press-logos { position: relative; flex: 0 0 64px; width: 64px; height: 40px; }
+html:not([data-identity="warm"]) .press-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+html:not([data-identity="warm"]) .press-logo[data-active="true"] { opacity: 1; visibility: visible; }
+html:not([data-identity="warm"]) .press-logo img { width: 100%; height: 100%; object-fit: contain; }
 
 html[data-identity="warm"] .ecosystem-intro { display: none; }
 html[data-identity="warm"] .hero-illustration { display: none; }
 html:not([data-identity="warm"]) .ecosystem-intro { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; margin-top: calc(-1 * var(--scene-overlap)); padding-top: calc(88px + var(--scene-overlap)); display: flex; flex-direction: column; justify-content: center; align-items: start; gap: 40px; background: #1e1b1b; color: #fefdfa; }
 html:not([data-identity="warm"]) .ecosystem-intro h2 { font-size: clamp(30px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.03em; line-height: 1.3; }
-html:not([data-identity="warm"]) .scene-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; max-width: 850px; }
 html:not([data-identity="warm"]) .ecosystem-intro .green { color: inherit; }
 html:not([data-identity="warm"]) .ecosystem-intro .scale { width: 100%; max-width: 850px; margin: 0; }
 html:not([data-identity="warm"]) .ecosystem-intro .scale dt { font-size: clamp(48px, 4.7vw, 90px); }
 html:not([data-identity="warm"]) .ecosystem-intro .scale dd { color: inherit; }
 html:not([data-identity="warm"]) .ecosystem-statement { display: flex; flex-direction: column; align-items: start; gap: 20px; width: 100%; max-width: 850px; }
 html:not([data-identity="warm"]) .statement-label { font-family: var(--serif); font-size: clamp(18px, 1.25vw, 24px); line-height: 1.3; }
-html:not([data-identity="warm"]) .ecosystem-statement .work-context { max-width: none; margin: 0; }
-html:not([data-identity="warm"]) .ecosystem-statement .work-context p { font-size: clamp(40px, 5.2vw, 84px); font-weight: 400; letter-spacing: -.03em; line-height: 1.05; }
+html:not([data-identity="warm"]) .ecosystem-statement .work-context { max-width: 680px; margin: 0; }
+html:not([data-identity="warm"]) .ecosystem-statement .work-context p { font-size: clamp(20px, 1.6vw, 26px); font-weight: 400; letter-spacing: -.025em; line-height: 1.4; }
 html:not([data-identity="warm"]) .landscape-surface { position: absolute; z-index: -1; inset: 0; overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent, #000 var(--scene-overlap)); }
+html:not([data-identity="warm"]) .landscape-surface::after { content: ""; position: absolute; inset: 58% 0 0; background: linear-gradient(transparent, #1e1b1b); }
 html:not([data-identity="warm"]) .landscape-parallax { position: absolute; inset: -65px 0; overflow: hidden; }
 html:not([data-identity="warm"]) .landscape-parallax::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000c 0%, #000b 70%, #0006 100%); }
 html:not([data-identity="warm"]) .landscape-image { position: absolute; inset: -24px; background: url("/media/work-landscape.jpg") center / cover; }
 html:not([data-identity="warm"]) .landscape-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
 html:not([data-identity="warm"]) .landscape-video[data-ready="true"] { opacity: 1; }
-#scene-motion-toggle { padding: 8px 0; border: 0; border-bottom: 1px solid currentColor; background: none; font-size: 12px; cursor: pointer; }
-#scene-motion-toggle:disabled { cursor: default; }
 .video-status { max-width: 500px; font-size: 14px; line-height: 1.5; }
+html:not([data-identity="warm"]) #edge-discover-video { display: block; width: 100%; height: auto; border-radius: 8px; background: #1e1b1b; }
+html:not([data-identity="warm"]) .case-story { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 40px; }
+html:not([data-identity="warm"]) .case-story p { margin-top: 12px; font-size: 18px; line-height: 1.5; letter-spacing: -.015em; }
+html:not([data-identity="warm"]) #edge-video-status { margin-top: 24px; }
 
-html:not([data-identity="warm"]) .work-intro { min-height: 0; padding-top: 72px; background: var(--orange); color: #1e1b1b; }
-html:not([data-identity="warm"]) .work-kicker { display: none; }
-html:not([data-identity="warm"]) .work-intro h2 { margin-top: 0; font-family: var(--serif); font-size: clamp(40px, 6.2vw, 84px); font-weight: 400; letter-spacing: 0; line-height: 1; }
-html:not([data-identity="warm"]) .work-intro h2 > span { display: inline; }
-html:not([data-identity="warm"]) .project-index { max-width: 620px; margin-top: 32px; }
-html:not([data-identity="warm"]) .project-index a { grid-template-columns: 40px minmax(0, 1fr) 18px; gap: 16px; border-color: #1e1b1b80; font-size: clamp(18px, 1.4vw, 22px); }
-html:not([data-identity="warm"]) .project-index a:hover { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
-html:not([data-identity="warm"]) .project-index .index-number { font-family: var(--serif); font-size: 20px; }
-html:not([data-identity="warm"]) .project-index :focus-visible { outline-color: #1e1b1b; }
 html:not([data-identity="warm"]) .project-tools .project-placeholder { border-color: var(--ink); }
+
+html:not([data-identity="warm"]) .discover-cover { background: #1e1b1b; color: #fefdfa; }
+html:not([data-identity="warm"]) .discover-platforms { margin-bottom: 20px; }
+html:not([data-identity="warm"]) .discover-cover .project-body { margin-left: 0; max-width: 1400px; }
+html:not([data-identity="warm"]) .discover-cover .media-frame { background: transparent; border-radius: 8px; }
+html:not([data-identity="warm"]) .discover-statement { display: grid; grid-template-columns: minmax(0, 556fr) minmax(0, 1168fr); gap: clamp(32px, 2.9vw, 56px); background: #fefdfa; color: #1e1b1b; }
+html:not([data-identity="warm"]) .discover-copy { display: flex; flex-direction: column; gap: clamp(64px, 12vw, 230px); }
+html:not([data-identity="warm"]) .discover-copy h3 { font-size: clamp(28px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.025em; line-height: 1.3; }
+html:not([data-identity="warm"]) .discover-description { display: grid; gap: 24px; max-width: 556px; font-size: clamp(16px, 1.1vw, 21px); line-height: 1.4; }
+html:not([data-identity="warm"]) .discover-video-placeholder { min-height: clamp(560px, 49vw, 940px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(32px, 4vw, 76px); padding: clamp(24px, 4vw, 76px); border-radius: 8px; background: var(--orange); text-align: center; }
+html:not([data-identity="warm"]) .placeholder-statement { font-size: clamp(42px, 6.4vw, 124px); letter-spacing: -.03em; line-height: 1; }
+html:not([data-identity="warm"]) .discover-video-placeholder figcaption { margin-top: 0; }
 
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
 html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
 html[data-motion="off"] .landscape-video { transition: none; }
+html[data-motion="off"] .press-logo { transition: none; }
 
 @media (max-width: 1300px) {
   html:not([data-identity="warm"]) .landscape-parallax::after { background: #000b; }
 }
 
 @media (max-width: 1000px) {
+  html:not([data-identity="warm"]) .discover-statement { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
+  html:not([data-identity="warm"]) .discover-copy { gap: 56px; }
+  html:not([data-identity="warm"]) .discover-description { gap: 20px; }
+  html:not([data-identity="warm"]) .discover-video-placeholder { min-height: 500px; }
+  html:not([data-identity="warm"]) .case-story { grid-template-columns: 1fr; gap: 24px; }
   :root { --number-rail: 18vw; --rail-gap: 32px; }
   .site-header { gap: 28px; }
   .site-header nav { gap: 25px; }
@@ -196,6 +214,11 @@ html[data-motion="off"] .landscape-video { transition: none; }
 }
 
 @media (max-width: 640px) {
+  html:not([data-identity="warm"]) .discover-platforms { margin-bottom: 12px; }
+  html:not([data-identity="warm"]) .discover-statement { grid-template-columns: 1fr; gap: 36px; }
+  html:not([data-identity="warm"]) .discover-copy { gap: 28px; }
+  html:not([data-identity="warm"]) .discover-video-placeholder { min-height: 420px; }
+  html:not([data-identity="warm"]) .placeholder-statement { font-size: clamp(40px, 10.5vw, 64px); }
   :root { --gutter: 22px; --number-rail: 54px; --rail-gap: 22px; scroll-padding-top: 24px; }
   .section-pad { padding-top: 56px; padding-bottom: 56px; }
   .site-header { height: 72px; }
@@ -215,6 +238,9 @@ html[data-motion="off"] .landscape-video { transition: none; }
   html:not([data-identity="warm"]) .hero h1 { font-size: clamp(38px, 10.5vw, 58px); }
   html:not([data-identity="warm"]) .hero h1 .surname { margin-left: .5em; }
   html:not([data-identity="warm"]) .hero-bottom { gap: 20px; }
+  html:not([data-identity="warm"]) .hero .recognition { gap: 16px 12px; }
+  html:not([data-identity="warm"]) .hero .recognition > div { grid-template-columns: minmax(0, 1fr); justify-items: start; align-content: start; gap: 8px; }
+  html:not([data-identity="warm"]) .hero .recognition-label { font-size: 10px; letter-spacing: .025em; }
   html:not([data-identity="warm"]) .hero-intro,
   html:not([data-identity="warm"]) .hero-experience { font-size: 20px; line-height: 1.4; }
   .scroll-link { font-size: 10px; }
@@ -251,12 +277,7 @@ html[data-motion="off"] .landscape-video { transition: none; }
   html:not([data-identity="warm"]) .ecosystem-intro { gap: 36px; padding-top: calc(56px + var(--scene-overlap)); }
   html:not([data-identity="warm"]) .ecosystem-intro .scale { gap: 20px; }
   html:not([data-identity="warm"]) .ecosystem-intro .scale dt { font-size: clamp(38px, 8.5vw, 56px); }
-  html:not([data-identity="warm"]) .ecosystem-statement .work-context p { font-size: clamp(36px, 8.2vw, 48px); }
-  html:not([data-identity="warm"]) .work-intro { padding-top: 56px; padding-bottom: 56px; }
-  html:not([data-identity="warm"]) .work-intro h2 { font-size: clamp(40px, 10vw, 56px); }
-  html:not([data-identity="warm"]) .project-index { margin-top: 28px; }
-  html:not([data-identity="warm"]) .project-index a { grid-template-columns: 26px minmax(0, 1fr) 16px; gap: 12px; font-size: 16px; }
-  html:not([data-identity="warm"]) .project-index .index-number { font-size: 16px; }
+  html:not([data-identity="warm"]) .ecosystem-statement .work-context p { font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

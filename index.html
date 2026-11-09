@@ -46,8 +46,15 @@
           <p class="hero-intro">She currently leads the Content Intelligence team at Microsoft, focusing on generative user interfaces across Microsoft’s billion-user ecosystem in verticals such as news, finance, sports, and games.</p>
           <p class="hero-experience">As an entrepreneur, she has raised more than $4 million to bring STEM to more than 90,000 students in rural Kenya and previously held leadership positions at Mozilla, littleBits (acquired by Sphero), and the Quest to Learn school.</p>
           <div class="recognition">
-            <div><span class="recognition-number">4<span>×</span></span><span class="eyebrow">AIGA50 DC<br />Award winner</span></div>
-            <div><span class="recognition-moma">MoMA</span><span class="eyebrow">Follies featured<br />in the catalogue</span></div>
+            <div><span class="recognition-number">4<span>×</span></span><span class="eyebrow recognition-label">AIGA50 DC<br />Award winner</span></div>
+            <div><span class="recognition-moma">MoMA</span><span class="eyebrow recognition-label">Featured<br />Designer</span></div>
+            <div class="recognition-press">
+              <div id="press-logos">
+                <a class="press-logo" data-active="true" href="https://www.today.com/shop/last-minute-gifts-ideas-t204419" target="_blank" rel="noopener noreferrer" aria-label="TODAY feature linked from the original portfolio (opens in a new tab)"><img src="/media/press-today.png" width="320" height="241" alt="TODAY" /></a>
+                <a class="press-logo" data-active="false" href="https://www.fastcompany.com/90534417/these-pop-up-kits-turn-kids-into-architects-of-their-own-playgrounds" target="_blank" rel="noopener noreferrer" aria-label="Fast Company feature linked from the original portfolio (opens in a new tab)" aria-hidden="true" tabindex="-1" inert><img src="/media/press-fast-company.png" width="320" height="246" alt="Fast Company" /></a>
+              </div>
+              <span class="eyebrow recognition-label">Work published<br />in</span>
+            </div>
           </div>
           <template id="warm-work-link"><a class="scroll-link eyebrow" href="#work"><span class="arrow-disc" aria-hidden="true">↓</span> <span class="work-link-label">Selected work</span></a></template>
         </div>
@@ -59,19 +66,16 @@
         <div class="landscape-surface" aria-hidden="true">
           <div class="landscape-parallax" data-parallax="0.04">
             <div class="landscape-image"></div>
-            <video id="content-landscape-video" class="landscape-video" muted loop playsinline preload="none" poster="/media/work-landscape.jpg">
+            <video id="content-landscape-video" class="landscape-video" muted playsinline preload="none" poster="/media/work-landscape.jpg">
               <source src="/media/content-intelligence.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
-        <div class="scene-heading">
-          <h2 id="ecosystem-title">Microsoft<span class="green"> AI.</span></h2>
-          <button id="scene-motion-toggle" type="button" aria-controls="content-landscape-video" aria-pressed="true" hidden>Pause motion</button>
-        </div>
+        <h2 id="ecosystem-title">Microsoft<span class="green"> AI.</span></h2>
         <div class="ecosystem-statement">
           <p class="statement-label">Content Intelligence</p>
           <div class="work-context">
-            <p>Leading the generative UI transformation across Microsoft’s billion-user ecosystem.</p>
+            <p>She is leading the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces. Her Content Intelligence team works across news, finance, sports, and games within Microsoft’s billion-user ecosystem, bringing publisher content into these evolving experiences.</p>
           </div>
           <dl class="scale" aria-label="Content Intelligence scale">
             <div><dt>300<span>m</span></dt><dd>Daily desktop users</dd></div>
@@ -90,6 +94,40 @@
         </template>
       </section>
 
+      <div id="work">
+      <section class="project project-copilot discover-cover dark section-pad" id="copilot-content" aria-labelledby="copilot-title">
+        <div class="project-heading">
+          <span class="section-number" aria-hidden="true">01</span>
+          <div>
+            <p class="eyebrow discover-platforms">Desktop app &amp; One Copilot / Consumer</p>
+            <h2 id="copilot-title">Copilot Discover</h2>
+          </div>
+        </div>
+        <div class="project-body">
+          <figure class="discover-desktop">
+            <div class="media-frame" data-parallax="0.025"><img src="/media/discover-desktop.png" width="1920" height="1080" loading="lazy" alt="Supplied Copilot Discover desktop design showing a personalized daily feed on Windows." /></div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="discover-statement section-pad" aria-labelledby="discover-story-title">
+        <div class="discover-copy">
+          <h3 id="discover-story-title">Copilot Discover</h3>
+          <div class="discover-description">
+            <p>A consumer experience across the desktop app and One Copilot.</p>
+            <p>A personalized daily brief on topics related to your chat history and memory, bringing together content from current publishers and AI-curated sources.</p>
+            <p>A generative UI model presents the content and adds augments to stories.</p>
+          </div>
+        </div>
+        <figure class="discover-video-placeholder" aria-labelledby="discover-video-title" aria-describedby="discover-video-caption">
+          <p class="statement-label">Copilot Discover</p>
+          <p class="placeholder-statement" id="discover-video-title">A personalized<br />daily brief.</p>
+          <figcaption class="eyebrow" id="discover-video-caption">Browser prototype pending.</figcaption>
+        </figure>
+      </section>
+
+      </div>
+      <template id="warm-work-index">
       <section class="work-intro dark section-pad" id="work" aria-labelledby="work-title">
         <p class="eyebrow work-kicker">Selected work</p>
         <h2 id="work-title"><span>Selected</span> <span>work</span></h2>
@@ -100,7 +138,9 @@
           <a href="#ai-native"><span class="index-number">04</span><span>AI-Native Tools / Royal Academy</span><span aria-hidden="true">↗</span></a>
         </nav>
       </section>
+      </template>
 
+      <template id="warm-copilot-project">
       <section class="project project-copilot section-pad" id="copilot-content" aria-labelledby="copilot-title">
         <div class="project-heading">
           <span class="section-number" aria-hidden="true">01</span>
@@ -112,24 +152,58 @@
           </div>
         </div>
       </section>
+      </template>
+
+      <section class="project project-edge section-pad" id="edge-discover" aria-labelledby="edge-title">
+        <div class="project-heading">
+          <span class="section-number" aria-hidden="true">02</span>
+          <h2 id="edge-title">Discover on the Edge Browser</h2>
+        </div>
+        <div class="project-body">
+          <figure>
+            <video id="edge-discover-video" controls muted playsinline preload="none" poster="/media/discover-edge-poster.jpg" width="1920" height="1080" aria-label="Discover on the Edge Browser design video">
+              <source src="/media/discover-edge.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <div class="case-story">
+            <div><h3 class="eyebrow">Problem</h3><p>Close the revenue gap while changing the business model.</p></div>
+            <div><h3 class="eyebrow">Approach</h3><p>A linear feed with a personalized left section.</p></div>
+            <div><h3 class="eyebrow">Outcome</h3><p>An <strong>11%</strong> increase in engagement and a closed revenue gap.</p></div>
+          </div>
+          <p id="edge-video-status" class="video-status" role="status" hidden></p>
+        </div>
+      </section>
 
       <section class="project project-elections dark section-pad" id="midterm-elections" aria-labelledby="elections-title">
         <div class="project-heading">
-          <span class="section-number" aria-hidden="true">02</span>
+          <span class="section-number" aria-hidden="true">03</span>
           <h2 id="elections-title">Midterm Elections</h2>
         </div>
         <div class="project-body election-composition">
           <figure class="election-map">
             <div class="media-frame" data-parallax="0.025"><img src="/media/elections-results.png" width="2866" height="1612" loading="lazy" alt="Midterm election design showing a United States results map with red, blue and uncalled states." /></div>
-            <figcaption class="eyebrow">Results map / Design preview</figcaption>
+            <template class="warm-image-caption"><figcaption class="eyebrow">Results map / Design preview</figcaption></template>
           </figure>
           <figure class="election-details">
             <div class="media-frame" data-parallax="-0.02"><img src="/media/elections-overview.png" width="2866" height="1612" loading="lazy" alt="Midterm election design previews with race results, a voting guide, news coverage and balance-of-power graphics." /></div>
-            <figcaption class="eyebrow">Election coverage / Design preview</figcaption>
+            <template class="warm-image-caption"><figcaption class="eyebrow">Election coverage / Design preview</figcaption></template>
           </figure>
         </div>
       </section>
 
+      <section class="project project-discover section-pad" id="ai-content" aria-labelledby="discover-title">
+        <div class="project-heading">
+          <span class="section-number" aria-hidden="true">04</span>
+          <h2 id="discover-title">AI Generated Content <span class="serif-word">Consumption</span></h2>
+        </div>
+        <div class="project-body">
+          <div class="project-placeholder">
+            <p class="eyebrow">Project details &amp; imagery to follow.</p>
+          </div>
+        </div>
+      </section>
+
+      <template id="warm-discover-project">
       <section class="project project-discover section-pad" id="ai-content" aria-labelledby="discover-title">
         <div class="project-heading">
           <span class="section-number" aria-hidden="true">03</span>
@@ -147,10 +221,11 @@
           </div>
         </div>
       </section>
+      </template>
 
       <section class="project project-tools section-pad" id="ai-native" aria-labelledby="tools-title">
         <div class="project-heading">
-          <span class="section-number" aria-hidden="true">04</span>
+          <span class="section-number" aria-hidden="true">05</span>
           <h2 id="tools-title">AI-Native Tools <span class="serif-word">/ Royal Academy</span></h2>
         </div>
         <div class="project-body">
@@ -180,7 +255,7 @@
       <div class="footer-baseline">
         <a href="https://www.varelidi.com/" target="_blank" rel="noopener noreferrer">Original website <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
         <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
-        <button id="motion-toggle" type="button" aria-pressed="true" hidden>Motion on <span aria-hidden="true">◎</span></button>
+        <template id="warm-motion-control"><button id="motion-toggle" type="button" aria-pressed="true" hidden>Motion on <span aria-hidden="true">◎</span></button></template>
       </div>
     </footer>
   </body>

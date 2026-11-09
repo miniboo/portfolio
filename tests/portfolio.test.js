@@ -5,11 +5,13 @@ import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
 const html = await readFile(new URL("index.html", root), "utf8");
+const original = html.replace(/<template[^>]*>.*?<\/template>/gs, "");
 
-test("the agreed four projects retain their titles and order", () => {
-  const titles = ["Copilot Content", "Midterm Elections", "AI Generated Content Consumption", "AI-Native Tools / Royal Academy"];
-  const links = [...html.matchAll(/<a href="#(?:copilot-content|midterm-elections|ai-content|ai-native)">.*?<span>(.*?)<\/span>/g)].map((match) => match[1]);
-  assert.deepEqual(links, titles);
+test("Copilot Discover and Edge Discover lead the retained project sequence", () => {
+  const titles = [...original.matchAll(/class="project-heading".*?<h2[^>]*>(.*?)<\/h2>/gs)].map(([, title]) => title.replace(/<[^>]*>/g, ""));
+  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "AI Generated Content Consumption", "AI-Native Tools / Royal Academy"]);
+  const numbers = [...original.matchAll(/class="section-number"[^>]*>(\d+)</g)].map(([, number]) => number);
+  assert.deepEqual(numbers, ["01", "02", "03", "04", "05"]);
 });
 
 test("the biography preserves its wording apart from authorized role and entrepreneur updates", () => {
@@ -36,16 +38,15 @@ test("every image is local, present and has alternative text and dimensions", as
 });
 
 test("all in-page links target existing IDs", () => {
-  const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-  for (const match of html.matchAll(/href="#([^"]+)"/g)) {
+  const ids = new Set([...original.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
+  for (const match of original.matchAll(/href="#([^"]+)"/g)) {
     assert.ok(ids.has(match[1]), `Missing anchor target: ${match[1]}`);
   }
 });
 
 test("unprovided case studies remain explicit placeholders", () => {
-  assert.ok(html.includes("Images, video &amp; project details to follow."));
-  assert.ok(html.includes("Project details &amp; imagery to follow."));
-  assert.equal([...html.matchAll(/class="project-placeholder"/g)].length, 2);
+  assert.ok(original.includes("Project details &amp; imagery to follow."));
+  assert.equal([...original.matchAll(/class="project-placeholder"/g)].length, 2);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
 });
 
@@ -57,22 +58,22 @@ test("the later project design stays restored and the selected portrait remains 
   }
   assert.ok(html.includes('src="/media/chloe-follies.jpg" width="1500" height="1000"'));
   assert.ok(script.includes('image.src = "/media/chloe-portrait.webp"'));
-  assert.ok(!html.includes('class="project-video'));
   assert.ok(!html.includes('class="project-images'));
 });
 
-test("the first three original sections follow the confirmed order without an opening portrait", async () => {
-  const sections = [...html.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
-  assert.deepEqual(sections.slice(0, 3), ["hero section-pad", "ecosystem-intro section-pad", "work-intro dark section-pad"]);
+test("the opening is followed directly by the two Discover panels without an orange index", async () => {
+  const sections = [...original.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(sections.slice(0, 4), ["hero section-pad", "ecosystem-intro section-pad", "project project-copilot discover-cover dark section-pad", "discover-statement section-pad"]);
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   assert.ok(hero.includes('src="/media/editorial-flowers.svg"'));
   assert.ok(!hero.includes('class="portrait"'));
   assert.ok(!hero.includes("chloe-follies.jpg"));
   const about = html.match(/<section class="about section-pad".*?<\/section>/s)[0];
   assert.ok(about.includes('src="/media/chloe-follies.jpg"'));
-  assert.equal([...html.matchAll(/Leading the largest transformation/g)].length, 1);
-  assert.equal([...html.matchAll(/class="project-index"/g)].length, 1);
-  assert.ok(html.includes('id="work-title"><span>Selected</span> <span>work</span></h2>'));
+  assert.equal([...original.matchAll(/largest transformation of MSN/g)].length, 1);
+  assert.ok(!original.includes('class="project-index"'));
+  assert.ok(!original.includes("Selected work"));
+  assert.ok(original.includes('<div id="work">'));
   assert.ok(!html.includes("Lorem ipsum"));
   assert.ok(!html.includes("We build for Mondays"));
   await access(new URL("public/media/work-landscape.jpg", root));
@@ -88,15 +89,14 @@ test("the original has a Georgia editorial title and no rendered header or dot g
   assert.ok(script.includes('document.querySelector(".hero-illustration").remove()'));
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.hero h1 \{[^}]*font-family: var\(--serif\);[^}]*font-weight: 400;[^}]*line-height: \.9;/);
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \{ --serif: Georgia, "Times New Roman", serif;[^}]*scroll-padding-top: 0;/);
-  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-index \.index-number \{ font-family: var\(--serif\);/);
   assert.ok(!html.includes("dot-grid"));
   assert.ok(!styles.includes("radial-gradient"));
   assert.ok(html.includes('class="skip-link" href="#main"'));
 });
 
 test("project headings and media use one shared layout without repeated filler", () => {
-  assert.equal([...html.matchAll(/class="project-heading"/g)].length, 4);
-  assert.equal([...html.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 4);
+  assert.equal([...original.matchAll(/class="project-heading"/g)].length, 5);
+  assert.equal([...original.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 5);
   for (const removed of ["Chloe Varelidi / Portfolio", "Microsoft AI / Selected work", "Space for the story", "Results.<br />Coverage.", "A more<br />", "Next chapter", "what comes"]) {
     assert.ok(!html.includes(removed), `Redundant copy remains: ${removed}`);
   }
@@ -137,7 +137,7 @@ test("the original opening foregrounds leadership and the authorized entrepreneu
   assert.equal([...html.matchAll(/class="recognition"/g)].length, 1);
   assert.ok(hero.includes("AIGA50 DC"));
   assert.ok(hero.includes("MoMA"));
-  assert.ok(hero.includes("in the catalogue"));
+  assert.ok(hero.includes("Featured<br />Designer"));
   assert.ok(!hero.includes("orbit-ring"));
   assert.ok(!hero.includes("orbit-square"));
   assert.ok(!hero.includes("Head of Design"));
@@ -145,41 +145,84 @@ test("the original opening foregrounds leadership and the authorized entrepreneu
   assert.ok(!hero.includes("$1.4"));
 });
 
-test("the landscape is the second parallax scene, with no duplicate photo behind the index", async () => {
+test("the landscape remains the second scene without a duplicated backdrop", async () => {
   const ecosystem = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0];
   const work = html.match(/<section class="work-intro dark section-pad".*?<\/section>/s)[0];
   assert.ok(ecosystem.includes('class="landscape-parallax" data-parallax="0.04"'));
-  assert.ok(ecosystem.includes("Leading the generative UI transformation"));
+  assert.ok(ecosystem.includes("She is leading the largest transformation of MSN in its 20-year history"));
   assert.ok(ecosystem.includes('class="scale"'));
   assert.ok(!work.includes("landscape"));
   assert.equal([...html.matchAll(/class="landscape-image"/g)].length, 1);
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.ok(!styles.includes("botanical-breeze"));
-  assert.ok(ecosystem.includes('class="landscape-video" muted loop playsinline preload="none"'));
+  assert.ok(ecosystem.includes('class="landscape-video" muted playsinline preload="none"'));
+  assert.ok(!ecosystem.includes(" loop"));
   assert.ok(ecosystem.includes('src="/media/content-intelligence.mp4" type="video/mp4"'));
   await access(new URL("public/media/content-intelligence.mp4", root));
 });
 
-test("the original Content Intelligence scene has four authorized metrics without visible MSN wording", () => {
+test("the Content Intelligence scene retains all metrics and the confirmed MSN history", () => {
   const scene = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0].replace(/<template[^>]*>.*?<\/template>/gs, "");
   const metrics = [...scene.matchAll(/<dt>(.*?)<\/dt><dd>(.*?)<\/dd>/g)].map(([, value, label]) => [value.replace(/<\/?span>/g, ""), label]);
   assert.deepEqual(metrics, [["300m", "Daily desktop users"], ["50m", "Mobile users"], ["$1.4bn", "Annual revenue"], ["4,000", "Publishers"]]);
-  assert.ok(!scene.includes("MSN"));
+  assert.ok(scene.includes("She is leading the largest transformation of MSN in its 20-year history"));
+  const narrative = scene.match(/class="work-context">(.*?)<\/div>/s)[1];
+  assert.equal([...narrative.matchAll(/<p>/g)].length, 1);
+  for (const detail of ["generative user interfaces", "news, finance, sports, and games", "Microsoft’s billion-user ecosystem"]) assert.ok(narrative.includes(detail));
   assert.ok(scene.includes('class="statement-label">Content Intelligence</p>'));
   assert.ok(html.includes('id="warm-ecosystem"'));
 });
 
-test("video and scroll blend share accessible motion controls and a still fallback", async () => {
+test("Discover has the approved consumer story and an honest pending-prototype panel", () => {
+  const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
+  for (const copy of ["desktop app and One Copilot", "chat history and memory", "current publishers and AI-curated sources", "generative UI model", "adds augments to stories", "Browser prototype pending."]) assert.ok(story.includes(copy));
+  assert.ok(!story.includes("<video"));
+  assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
+  assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
+});
+
+test("the opening has the exact two-line credibility labels and genuine linked logos", async () => {
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(original.includes("Featured<br />Designer"));
+  assert.ok(original.includes("Work published<br />in"));
+  assert.ok(original.includes("AIGA50 DC"));
+  assert.ok(original.includes('alt="TODAY"'));
+  assert.ok(original.includes('alt="Fast Company"'));
+  assert.ok(!original.includes('id="press-motion-toggle"'));
+  assert.ok(!script.includes("setInterval"));
+  assert.ok(script.includes("pressFinished = true"));
+  assert.ok(script.includes("pressArea.contains(document.activeElement)"));
+  assert.ok(script.includes("document.hidden"));
+  assert.ok(script.includes('document.querySelector(".recognition-press").remove()'));
+});
+
+test("custom motion controls are absent and decorative video is finite with a still fallback", async () => {
   const script = await readFile(new URL("src/main.js", root), "utf8");
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.ok(html.includes('poster="/media/work-landscape.jpg"'));
-  assert.ok(html.includes('aria-controls="content-landscape-video"'));
+  for (const id of ["motion-toggle", "scene-motion-toggle", "press-motion-toggle"]) assert.ok(!original.includes(`id="${id}"`));
   assert.ok(html.includes('id="video-status" class="video-status" role="status" hidden'));
   assert.ok(script.includes('error.name === "NotAllowedError"'));
   assert.ok(script.includes('video.pause()'));
+  assert.ok(script.includes("}, 4000)"));
   assert.ok(script.includes('landscapeSurface.style.opacity'));
   assert.ok(styles.includes('html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }'));
   assert.ok(styles.includes('.hero .name-period { color: var(--orange); }'));
+});
+
+test("Edge has a native controlled video and the authorized problem, intervention and outcome", async () => {
+  const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
+  assert.ok(edge.includes('controls muted playsinline preload="none"'));
+  assert.ok(!edge.includes("autoplay"));
+  assert.ok(edge.includes("Close the revenue gap while changing the business model."));
+  assert.ok(edge.includes("A linear feed with a personalized left section."));
+  assert.ok(edge.includes("<strong>11%</strong> increase in engagement and a closed revenue gap."));
+  for (const file of ["discover-edge.mp4", "discover-edge-poster.jpg"]) await access(new URL(`public/media/${file}`, root));
+});
+
+test("redundant image metadata captions are removed but missing-media status remains honest", () => {
+  const captions = [...original.matchAll(/<figcaption[^>]*>(.*?)<\/figcaption>/gs)].map(([, caption]) => caption);
+  assert.deepEqual(captions, ["Browser prototype pending."]);
 });
 
 test("original accent colors come from the artwork and retain accessible contrast", async () => {
