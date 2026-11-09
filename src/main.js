@@ -5,11 +5,20 @@ portrait.querySelector("img").loading = "eager";
 hero.append(portrait);
 
 if (document.documentElement.dataset.identity === "warm") {
+  const image = portrait.querySelector("img");
+  image.src = "/media/chloe-portrait.webp";
+  image.width = 1767;
+  image.height = 2650;
+  image.alt = "Chloe Varelidi smiling, seated in a floral dress surrounded by colorful Follies play shapes.";
   document.querySelector(".hero-intro").innerHTML = document.querySelector("#warm-introduction").innerHTML;
   document.querySelector(".hero-experience").remove();
   document.querySelector(".work-link-label").textContent = "View work";
   document.querySelector(".career-history").textContent = document.querySelector("#warm-career-history").content.textContent;
   document.querySelector(".bio").append(document.querySelector(".recognition"));
+  // Keep the alternative's previous screenshot-only composition intact.
+  document.querySelectorAll(".project-video").forEach(element => element.remove());
+  document.querySelectorAll(".project-images").forEach(element => element.replaceWith(...element.childNodes));
+  document.querySelector(".project-copilot .project-placeholder p").textContent = "Images, video & project details to follow.";
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, access } from "node:fs/promises";
+import { readFile, access, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
@@ -43,10 +43,40 @@ test("all in-page links target existing IDs", () => {
 });
 
 test("unprovided case studies remain explicit placeholders", () => {
-  assert.ok(html.includes("Images, video &amp; project details to follow."));
+  assert.ok(html.includes("Images &amp; project details to follow."));
   assert.ok(html.includes("Project details &amp; imagery to follow."));
   assert.equal([...html.matchAll(/class="project-placeholder dot-grid"/g)].length, 2);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
+});
+
+test("each project has a video-first stage followed by an image composition", async () => {
+  const sections = [...html.matchAll(/<section class="project [^"]*".*?<\/section>/gs)].map(match => match[0]);
+  assert.equal(sections.length, 4);
+  for (const section of sections) {
+    const heading = section.indexOf('class="project-heading"');
+    const video = section.indexOf('class="project-video');
+    const images = section.indexOf('class="project-images dot-grid"');
+    assert.ok(heading < video && video < images, "Project order must be heading, video, images");
+  }
+  assert.equal([...html.matchAll(/class="project-video video-placeholder"/g)].length, 3);
+  assert.equal([...html.matchAll(/<video /g)].length, 1);
+  const video = html.match(/<video (.*?)<\/video>/s)[1];
+  assert.match(video, /controls playsinline preload="metadata"/);
+  assert.match(video, /src="\/media\/midterm-elections-results.mp4" type="video\/mp4"/);
+  assert.ok(!video.includes("autoplay"));
+  const media = await stat(new URL("public/media/midterm-elections-results.mp4", root));
+  assert.ok(media.isFile() && media.size > 1_000_000);
+});
+
+test("the original uses the audited AIX canvas colors with honest system font substitutes", async () => {
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  for (const value of ["--paper: #fefdfa;", "--ink: #1e1b1b;", "--green: #0bb44f;", "--sans: Verdana, Geneva, sans-serif;", '--serif: Georgia, "Times New Roman", serif;']) {
+    assert.ok(styles.includes(value));
+  }
+  assert.ok(!styles.includes("fonts.googleapis.com"));
+  assert.ok(styles.includes('html:not([data-identity="warm"]) .work-intro { background: var(--green)'));
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.site-footer \{\s*background-image: radial-gradient/);
+  assert.ok(html.includes('src="/media/chloe-follies.jpg" width="1500" height="1000"'));
 });
 
 test("project headings and media use one shared layout without repeated filler", () => {
@@ -63,6 +93,9 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   assert.ok(html.includes('=== "/2"'));
   assert.ok(html.includes('document.title = "2"'));
   assert.ok(script.includes('if (document.documentElement.dataset.identity === "warm")'));
+  assert.ok(script.includes('image.src = "/media/chloe-portrait.webp"'));
+  assert.ok(script.includes('document.querySelectorAll(".project-video").forEach(element => element.remove())'));
+  assert.ok(script.includes('element.replaceWith(...element.childNodes)'));
   assert.ok(warm.includes('html[data-identity="warm"] .hero .portrait'));
   assert.ok(warm.includes('--serif: Georgia, "Times New Roman", serif;'));
   assert.ok(!script.includes("cloneNode"));
