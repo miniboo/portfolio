@@ -87,7 +87,7 @@ test("the original has a Georgia editorial title and no rendered header or dot g
   assert.ok(script.includes("header.replaceWith(header.content)"));
   assert.ok(script.includes('document.querySelector(".hero-illustration").remove()'));
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.hero h1 \{[^}]*font-family: var\(--serif\);[^}]*font-weight: 400;[^}]*line-height: \.9;/);
-  assert.ok(styles.includes('html:not([data-identity="warm"]) { --serif: Georgia, "Times New Roman", serif; scroll-padding-top: 0; }'));
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \{ --serif: Georgia, "Times New Roman", serif;[^}]*scroll-padding-top: 0;/);
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-index \.index-number \{ font-family: var\(--serif\);/);
   assert.ok(!html.includes("dot-grid"));
   assert.ok(!styles.includes("radial-gradient"));
@@ -130,16 +130,51 @@ test("the original opening foregrounds leadership and the authorized entrepreneu
   assert.ok(hero.includes('class="recognition"'));
   assert.ok(hero.indexOf('class="hero-intro"') < hero.indexOf('class="hero-experience"'));
   assert.ok(hero.indexOf('class="hero-experience"') < hero.indexOf('class="recognition"'));
-  assert.ok(hero.indexOf('class="recognition"') < hero.indexOf('class="scroll-link'));
+  const warmLink = hero.match(/<template id="warm-work-link">.*?<\/template>/s)?.[0];
+  assert.ok(warmLink?.includes('class="scroll-link'));
+  assert.ok(!hero.replace(warmLink, "").includes('class="scroll-link'));
   assert.match(hero, /src="\/media\/editorial-flowers\.svg"[^>]*data-parallax="-0\.1"/);
   assert.equal([...html.matchAll(/class="recognition"/g)].length, 1);
   assert.ok(hero.includes("AIGA50 DC"));
   assert.ok(hero.includes("MoMA"));
   assert.ok(hero.includes("in the catalogue"));
-  assert.ok(hero.includes('<span class="work-link-label">Selected work</span>'));
   assert.ok(!hero.includes("orbit-ring"));
   assert.ok(!hero.includes("orbit-square"));
   assert.ok(!hero.includes("Head of Design"));
   assert.ok(!hero.includes("300"));
   assert.ok(!hero.includes("$1.4"));
+});
+
+test("the landscape is the second parallax scene, with no duplicate photo behind the index", async () => {
+  const ecosystem = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0];
+  const work = html.match(/<section class="work-intro dark section-pad".*?<\/section>/s)[0];
+  assert.ok(ecosystem.includes('class="landscape-parallax" data-parallax="0.04"'));
+  assert.ok(ecosystem.includes("Leading the largest transformation"));
+  assert.ok(ecosystem.includes('class="scale"'));
+  assert.ok(!work.includes("landscape"));
+  assert.equal([...html.matchAll(/class="landscape-image"/g)].length, 1);
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(styles.includes('animation: botanical-breeze 10s ease-in-out infinite paused'));
+  assert.ok(styles.includes('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'));
+  assert.ok(styles.includes(':not([data-motion="off"]) .ecosystem-intro:hover'));
+});
+
+test("original accent colors come from the artwork and retain accessible contrast", async () => {
+  const svg = await readFile(new URL("public/media/editorial-flowers.svg", root), "utf8");
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  const palette = { green: "#aebd80", orange: "#ff5c39", pink: "#ffa38b", rust: "#b94a2b" };
+  for (const [name, color] of Object.entries(palette)) {
+    assert.ok(svg.toLowerCase().includes(`fill="${color}"`));
+    assert.ok(styles.includes(`--${name}: ${color};`));
+  }
+  const luminance = hex => hex.slice(1).match(/../g).map(value => parseInt(value, 16) / 255).map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+  const contrast = (first, second) => {
+    const values = [luminance(first), luminance(second)].sort((a, b) => b - a);
+    return (values[0] + .05) / (values[1] + .05);
+  };
+  assert.ok(contrast("#211e1d", palette.green) >= 4.5);
+  assert.ok(contrast("#1e1b1b", palette.orange) >= 4.5);
+  assert.ok(contrast(palette.rust, "#f7f5ef") >= 3);
+  assert.ok(contrast(palette.rust, "#1e1b1b") >= 3);
+  assert.ok(contrast("#fefdfa", "#444444") >= 4.5);
 });

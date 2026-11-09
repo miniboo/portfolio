@@ -8,6 +8,8 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelector(".hero-illustration").remove();
   const heading = document.querySelector(".hero-heading");
   heading.replaceWith(heading.querySelector("h1"));
+  const workLink = document.querySelector("#warm-work-link");
+  workLink.replaceWith(workLink.content);
   const image = portrait.querySelector("img");
   image.loading = "eager";
   image.src = "/media/chloe-portrait.webp";
@@ -27,7 +29,6 @@ if (document.documentElement.dataset.identity === "warm") {
   work.insertBefore(ecosystem.querySelector(".work-context"), index);
   work.insertBefore(ecosystem.querySelector(".scale"), index);
   ecosystem.remove();
-  work.querySelector(".work-landscape").remove();
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
