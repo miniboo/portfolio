@@ -86,8 +86,9 @@ test("the original has a Georgia editorial title and no rendered header or dot g
   assert.ok(!html.replace(header, "").includes('<header class="site-header">'));
   assert.ok(script.includes("header.replaceWith(header.content)"));
   assert.ok(script.includes('document.querySelector(".hero-illustration").remove()'));
-  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.hero h1 \{[^}]*font-family: Georgia, "Times New Roman", serif;[^}]*font-weight: 400;[^}]*line-height: \.9;/);
-  assert.ok(styles.includes('html:not([data-identity="warm"]) { scroll-padding-top: 0; }'));
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.hero h1 \{[^}]*font-family: var\(--serif\);[^}]*font-weight: 400;[^}]*line-height: \.9;/);
+  assert.ok(styles.includes('html:not([data-identity="warm"]) { --serif: Georgia, "Times New Roman", serif; scroll-padding-top: 0; }'));
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-index \.index-number \{ font-family: var\(--serif\);/);
   assert.ok(!html.includes("dot-grid"));
   assert.ok(!styles.includes("radial-gradient"));
   assert.ok(html.includes('class="skip-link" href="#main"'));
