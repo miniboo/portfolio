@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, access } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
@@ -181,13 +182,17 @@ test("Discover has the approved consumer story and an honest pending-prototype p
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
 });
 
-test("Daily Brief follows the orange slide within Discover and uses responsive supplied screens", () => {
+test("Daily Brief follows the orange slide and uses the exact corrected Figma screen at every width", async () => {
   const work = original.match(/<div id="work">(.*?)<\/div>\s*<section class="project project-edge/s)[1];
   assert.match(work, /class="discover-statement.*?<\/section>\s*<section class="daily-brief/s);
   const brief = work.match(/<section class="daily-brief.*?<\/section>/s)[0];
   assert.ok(brief.includes('aria-labelledby="daily-brief-title"'));
-  assert.ok(brief.includes('src="/media/discover-feed.png" width="1436" height="3751" loading="lazy"'));
-  assert.ok(brief.includes('media="(max-width: 1000px)" srcset="/media/discover-mobile-feed.png" width="393" height="852"'));
+  assert.ok(brief.includes('src="/media/discover-daily-brief.png" width="393" height="852" loading="lazy"'));
+  assert.ok(!brief.includes("<source"));
+  assert.ok(!brief.includes("discover-feed.png"));
+  assert.ok(!brief.includes("discover-mobile-feed.png"));
+  const image = await readFile(new URL("public/media/discover-daily-brief.png", root));
+  assert.equal(createHash("sha256").update(image).digest("hex"), "438356768ae1c63003b9fae3ca083c8d7fe0bc223558d8a13aada450420b8652");
   for (const detail of ["chat history and memory", "publisher content", "AI-curated sources", "Generative UI", "augments"]) assert.ok(brief.includes(detail));
   assert.ok(!brief.includes('class="section-number"'));
   assert.ok(!brief.includes("figcaption"));
