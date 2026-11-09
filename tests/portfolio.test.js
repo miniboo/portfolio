@@ -43,8 +43,16 @@ test("all in-page links target existing IDs", () => {
 });
 
 test("unprovided case studies remain explicit placeholders", () => {
-  assert.ok(html.includes("Project images coming soon"));
+  assert.ok(html.includes("Images, video &amp; project details to follow."));
   assert.ok(html.includes("Project details &amp; imagery to follow."));
-  assert.ok(html.includes("Interactive builds to follow."));
+  assert.equal([...html.matchAll(/class="project-placeholder dot-grid"/g)].length, 2);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
+});
+
+test("project headings and media use one shared layout without repeated filler", () => {
+  assert.equal([...html.matchAll(/class="project-heading"/g)].length, 4);
+  assert.equal([...html.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 4);
+  for (const removed of ["Chloe Varelidi / Portfolio", "Microsoft AI / Selected work", "Space for the story", "Results.<br />Coverage.", "A more<br />", "Next chapter", "what comes"]) {
+    assert.ok(!html.includes(removed), `Redundant copy remains: ${removed}`);
+  }
 });

@@ -23,7 +23,9 @@ The four projects retain their agreed order. Copilot Content and AI-Native Tools
 
 The About biography is preserved apart from the requested current-role sentence. MSN audience/revenue figures describe ecosystem scale, not attributable project results.
 
-Parallax moves decorative layers and a few media frames, not the readable content. It respects `prefers-reduced-motion`; the hero also has a motion toggle. Without JavaScript, all content and anchor navigation remain available.
+Project numbers use one shared left rail; headings and media align on the neighboring content rail. The hero introduction aligns with the name. Captions identify the supplied screenshots, while missing content is labeled once per placeholder.
+
+Parallax moves the hero accent and a few media frames, not the readable content. It respects `prefers-reduced-motion`; a motion toggle is available in the footer. Without JavaScript, all content and anchor navigation remain available.
 
 ## Media
 
