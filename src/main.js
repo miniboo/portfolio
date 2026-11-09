@@ -1,20 +1,28 @@
 const hero = document.querySelector(".hero");
 const portrait = document.querySelector(".portrait");
 portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
-portrait.querySelector("img").loading = "eager";
-hero.append(portrait);
 
 if (document.documentElement.dataset.identity === "warm") {
   const image = portrait.querySelector("img");
+  image.loading = "eager";
   image.src = "/media/chloe-portrait.webp";
   image.width = 1767;
   image.height = 2650;
   image.alt = "Chloe Varelidi smiling, seated in a floral dress surrounded by colorful Follies play shapes.";
+  hero.append(portrait);
   document.querySelector(".hero-intro").innerHTML = document.querySelector("#warm-introduction").innerHTML;
   document.querySelector(".hero-experience").remove();
   document.querySelector(".work-link-label").textContent = "View work";
   document.querySelector(".career-history").textContent = document.querySelector("#warm-career-history").content.textContent;
   document.querySelector(".bio").append(document.querySelector(".recognition"));
+  const ecosystem = document.querySelector(".ecosystem-intro");
+  const work = document.querySelector(".work-intro");
+  const index = work.querySelector(".project-index");
+  work.querySelector("#work-title").innerHTML = ecosystem.querySelector("h2").innerHTML;
+  work.insertBefore(ecosystem.querySelector(".work-context"), index);
+  work.insertBefore(ecosystem.querySelector(".scale"), index);
+  ecosystem.remove();
+  work.querySelector(".work-landscape").remove();
 }
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");

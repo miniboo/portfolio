@@ -49,7 +49,7 @@ test("unprovided case studies remain explicit placeholders", () => {
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
 });
 
-test("the restored original keeps its previous design and latest selected photo", async () => {
+test("the later project design stays restored and the selected portrait remains available", async () => {
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   const script = await readFile(new URL("src/main.js", root), "utf8");
   for (const value of ["--paper: #f7f5ef;", "--ink: #211e1d;", "--green: #04b455;", '--sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;', '--serif: "Instrument Serif", Georgia, serif;']) {
@@ -59,6 +59,21 @@ test("the restored original keeps its previous design and latest selected photo"
   assert.ok(script.includes('image.src = "/media/chloe-portrait.webp"'));
   assert.ok(!html.includes('class="project-video'));
   assert.ok(!html.includes('class="project-images'));
+});
+
+test("the first three original sections follow the confirmed order without an opening portrait", async () => {
+  const sections = [...html.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(sections.slice(0, 3), ["hero section-pad", "ecosystem-intro section-pad", "work-intro dark section-pad"]);
+  const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
+  assert.ok(!hero.includes("<img"));
+  const about = html.match(/<section class="about section-pad".*?<\/section>/s)[0];
+  assert.ok(about.includes('src="/media/chloe-follies.jpg"'));
+  assert.equal([...html.matchAll(/Leading the largest transformation/g)].length, 1);
+  assert.equal([...html.matchAll(/class="project-index"/g)].length, 1);
+  assert.ok(html.includes('id="work-title"><span>Selected</span> <span>work</span></h2>'));
+  assert.ok(!html.includes("Lorem ipsum"));
+  assert.ok(!html.includes("We build for Mondays"));
+  await access(new URL("public/media/work-landscape.jpg", root));
 });
 
 test("project headings and media use one shared layout without repeated filler", () => {
