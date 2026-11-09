@@ -61,9 +61,9 @@ test("the later project design stays restored and the selected portrait remains 
   assert.ok(!html.includes('class="project-images'));
 });
 
-test("the opening is followed directly by the two Discover panels without an orange index", async () => {
+test("the opening is followed directly by the Discover panels without an orange index", async () => {
   const sections = [...original.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
-  assert.deepEqual(sections.slice(0, 4), ["hero section-pad", "ecosystem-intro section-pad", "project project-copilot discover-cover dark section-pad", "discover-statement section-pad"]);
+  assert.deepEqual(sections.slice(0, 5), ["hero section-pad", "ecosystem-intro section-pad", "project project-copilot discover-cover dark section-pad", "discover-statement section-pad", "daily-brief section-pad"]);
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   assert.ok(hero.includes('src="/media/editorial-flowers.svg"'));
   assert.ok(!hero.includes('class="portrait"'));
@@ -179,6 +179,19 @@ test("Discover has the approved consumer story and an honest pending-prototype p
   assert.ok(!story.includes("<video"));
   assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
+});
+
+test("Daily Brief follows the orange slide within Discover and uses responsive supplied screens", () => {
+  const work = original.match(/<div id="work">(.*?)<\/div>\s*<section class="project project-edge/s)[1];
+  assert.match(work, /class="discover-statement.*?<\/section>\s*<section class="daily-brief/s);
+  const brief = work.match(/<section class="daily-brief.*?<\/section>/s)[0];
+  assert.ok(brief.includes('aria-labelledby="daily-brief-title"'));
+  assert.ok(brief.includes('src="/media/discover-feed.png" width="1436" height="3751" loading="lazy"'));
+  assert.ok(brief.includes('media="(max-width: 1000px)" srcset="/media/discover-mobile-feed.png" width="393" height="852"'));
+  for (const detail of ["chat history and memory", "publisher content", "AI-curated sources", "Generative UI", "augments"]) assert.ok(brief.includes(detail));
+  assert.ok(!brief.includes('class="section-number"'));
+  assert.ok(!brief.includes("figcaption"));
+  assert.ok(!brief.includes("data-parallax"));
 });
 
 test("the opening has the exact two-line credibility labels and genuine linked logos", async () => {

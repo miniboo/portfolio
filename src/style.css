@@ -187,6 +187,14 @@ html:not([data-identity="warm"]) .discover-video-placeholder { min-height: clamp
 html:not([data-identity="warm"]) .placeholder-statement { font-size: clamp(42px, 6.4vw, 124px); letter-spacing: -.03em; line-height: 1; }
 html:not([data-identity="warm"]) .discover-video-placeholder figcaption { margin-top: 0; }
 
+html:not([data-identity="warm"]) .daily-brief { background: #1e1b1b; color: #fefdfa; }
+html:not([data-identity="warm"]) .daily-brief-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1400px; margin: 0 auto 48px; }
+html:not([data-identity="warm"]) .daily-brief h3 { font-size: clamp(32px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.025em; line-height: 1.3; }
+html:not([data-identity="warm"]) .daily-brief-heading p { max-width: 640px; font-size: 18px; line-height: 1.5; }
+html:not([data-identity="warm"]) .daily-brief-screen { max-width: 1400px; margin: 0 auto; }
+html:not([data-identity="warm"]) .daily-brief-screen picture { display: block; }
+html:not([data-identity="warm"]) .daily-brief-screen img { aspect-ratio: 1436 / 1300; object-fit: cover; object-position: center top; border-radius: 8px; }
+
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
 html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
@@ -198,6 +206,9 @@ html[data-motion="off"] .press-logo { transition: none; }
 }
 
 @media (max-width: 1000px) {
+  html:not([data-identity="warm"]) .daily-brief-heading { grid-template-columns: 1fr; gap: 20px; margin-bottom: 36px; }
+  html:not([data-identity="warm"]) .daily-brief-screen { max-width: 393px; }
+  html:not([data-identity="warm"]) .daily-brief-screen img { aspect-ratio: 393 / 852; object-fit: contain; border-radius: 32px; }
   html:not([data-identity="warm"]) .discover-statement { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
   html:not([data-identity="warm"]) .discover-copy { gap: 56px; }
   html:not([data-identity="warm"]) .discover-description { gap: 20px; }
