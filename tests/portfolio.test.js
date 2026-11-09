@@ -45,7 +45,7 @@ test("all in-page links target existing IDs", () => {
 test("unprovided case studies remain explicit placeholders", () => {
   assert.ok(html.includes("Images, video &amp; project details to follow."));
   assert.ok(html.includes("Project details &amp; imagery to follow."));
-  assert.equal([...html.matchAll(/class="project-placeholder dot-grid"/g)].length, 2);
+  assert.equal([...html.matchAll(/class="project-placeholder"/g)].length, 2);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
 });
 
@@ -65,7 +65,9 @@ test("the first three original sections follow the confirmed order without an op
   const sections = [...html.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(sections.slice(0, 3), ["hero section-pad", "ecosystem-intro section-pad", "work-intro dark section-pad"]);
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
-  assert.ok(!hero.includes("<img"));
+  assert.ok(hero.includes('src="/media/editorial-flowers.svg"'));
+  assert.ok(!hero.includes('class="portrait"'));
+  assert.ok(!hero.includes("chloe-follies.jpg"));
   const about = html.match(/<section class="about section-pad".*?<\/section>/s)[0];
   assert.ok(about.includes('src="/media/chloe-follies.jpg"'));
   assert.equal([...html.matchAll(/Leading the largest transformation/g)].length, 1);
@@ -74,6 +76,21 @@ test("the first three original sections follow the confirmed order without an op
   assert.ok(!html.includes("Lorem ipsum"));
   assert.ok(!html.includes("We build for Mondays"));
   await access(new URL("public/media/work-landscape.jpg", root));
+});
+
+test("the original has a Georgia editorial title and no rendered header or dot grids", async () => {
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  const header = html.match(/<template id="warm-header">.*?<\/template>/s)?.[0];
+  assert.ok(header?.includes('<header class="site-header">'));
+  assert.ok(!html.replace(header, "").includes('<header class="site-header">'));
+  assert.ok(script.includes("header.replaceWith(header.content)"));
+  assert.ok(script.includes('document.querySelector(".hero-illustration").remove()'));
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.hero h1 \{[^}]*font-family: Georgia, "Times New Roman", serif;[^}]*font-weight: 400;[^}]*line-height: \.9;/);
+  assert.ok(styles.includes('html:not([data-identity="warm"]) { scroll-padding-top: 0; }'));
+  assert.ok(!html.includes("dot-grid"));
+  assert.ok(!styles.includes("radial-gradient"));
+  assert.ok(html.includes('class="skip-link" href="#main"'));
 });
 
 test("project headings and media use one shared layout without repeated filler", () => {

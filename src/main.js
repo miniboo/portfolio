@@ -3,6 +3,9 @@ const portrait = document.querySelector(".portrait");
 portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
 
 if (document.documentElement.dataset.identity === "warm") {
+  const header = document.querySelector("#warm-header");
+  header.replaceWith(header.content);
+  document.querySelector(".hero-illustration").remove();
   const image = portrait.querySelector("img");
   image.loading = "eager";
   image.src = "/media/chloe-portrait.webp";
