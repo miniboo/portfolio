@@ -54,6 +54,7 @@ const landscapeScene = document.querySelector(".ecosystem-intro");
 const landscapeSurface = document.querySelector(".landscape-surface");
 const botanical = document.querySelector(".hero-illustration img");
 const edgeVideo = document.querySelector("#edge-discover-video");
+const discoverVideo = document.querySelector("#copilot-discover-video");
 const press = document.querySelector(".recognition-press");
 const pressLogos = [...document.querySelectorAll(".press-logo")];
 const pressArea = document.querySelector("#press-logos");
@@ -212,26 +213,31 @@ if (video) {
     syncVideo();
   }, { threshold: [0, .5] }).observe(landscapeScene);
 }
-if (edgeVideo) {
-  let edgeFailed = false;
-  const reportEdgeFailure = () => {
-    if (edgeFailed) return;
-    edgeFailed = true;
-    const status = document.querySelector("#edge-video-status");
-    status.textContent = "The Edge Discover video could not load. Its poster and case-study description remain available.";
+for (const [player, statusId, name] of [
+  [edgeVideo, "edge-video-status", "Edge Discover"],
+  [discoverVideo, "copilot-video-status", "Copilot Discover"],
+]) {
+  if (!player) continue;
+  let failed = false;
+  const reportFailure = () => {
+    if (failed) return;
+    failed = true;
+    const status = document.getElementById(statusId);
+    status.textContent = `The ${name} video could not load. Its poster and case-study description remain available.`;
     status.hidden = false;
-    console.error("Edge Discover video playback failed", edgeVideo.error);
+    console.error(`${name} video playback failed`, player.error);
   };
-  edgeVideo.addEventListener("error", reportEdgeFailure);
-  edgeVideo.querySelector("source").addEventListener("error", reportEdgeFailure);
+  player.addEventListener("error", reportFailure);
+  player.querySelector("source").addEventListener("error", reportFailure);
   new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) edgeVideo.pause();
-  }).observe(edgeVideo);
+    if (!entry.isIntersecting) player.pause();
+  }).observe(player);
 }
 document.addEventListener("visibilitychange", () => {
   syncVideo();
   syncPress();
   if (document.hidden && edgeVideo) edgeVideo.pause();
+  if (document.hidden && discoverVideo) discoverVideo.pause();
 });
 motionPreference.addEventListener("change", () => {
   motionEnabled = !motionPreference.matches;

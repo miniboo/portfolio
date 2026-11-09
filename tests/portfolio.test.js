@@ -31,7 +31,8 @@ test("every image is local, present and has alternative text and dimensions", as
     const attributes = match[1];
     const source = attributes.match(/src="([^"]+)"/)[1];
     assert.ok(source.startsWith("/media/"));
-    assert.match(attributes, /alt="[^"]+"/);
+    if (attributes.includes('aria-hidden="true"')) assert.match(attributes, /alt=""/);
+    else assert.match(attributes, /alt="[^"]+"/);
     assert.match(attributes, /width="\d+"/);
     assert.match(attributes, /height="\d+"/);
     await access(fileURLToPath(new URL(`public${source}`, root)));
@@ -189,8 +190,21 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.discover-statement \{[^}]*background: #f6f5f3;/);
   assert.ok(!story.includes("<video"));
-  assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
+  assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 0);
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
+});
+
+test("Discover walkthrough uses the real backdrop and one browser toolbar without cropping the recording", async () => {
+  const cover = original.match(/<section class="project project-copilot.*?<\/section>/s)[0];
+  assert.ok(cover.includes('src="/media/discover-wallpaper.png" width="1920" height="1080"'));
+  assert.ok(cover.includes('src="/media/discover-browser-toolbar.png" width="1440" height="92"'));
+  assert.ok(cover.includes('id="copilot-discover-video" controls muted playsinline preload="none"'));
+  assert.ok(cover.includes('width="2386" height="1440"'));
+  assert.ok(cover.includes('src="/media/discover-desktop.mp4" type="video/mp4"'));
+  assert.ok(cover.includes('poster="/media/discover-desktop-poster.jpg"'));
+  assert.ok(!cover.includes("autoplay"));
+  assert.ok(!cover.includes("data-parallax"));
+  for (const name of ["discover-desktop.mp4", "discover-wallpaper.png", "discover-browser-toolbar.png", "discover-desktop-poster.jpg"]) await access(new URL(`public/media/${name}`, root));
 });
 
 test("Discover principles are integrated into the existing narrative beside the design", async () => {

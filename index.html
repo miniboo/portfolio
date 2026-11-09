@@ -105,7 +105,18 @@
         </div>
         <div class="project-body">
           <figure class="discover-desktop">
-            <div class="media-frame" data-parallax="0.025"><img src="/media/discover-desktop.png" width="1920" height="1080" loading="lazy" alt="Supplied Copilot Discover desktop design showing a personalized daily feed on Windows." /></div>
+            <div class="discover-desktop-composition">
+              <img class="discover-wallpaper" src="/media/discover-wallpaper.png" width="1920" height="1080" loading="lazy" alt="" aria-hidden="true" />
+              <div class="discover-desktop-window">
+                <img src="/media/discover-browser-toolbar.png" width="1440" height="92" loading="lazy" alt="" aria-hidden="true" />
+                <video id="copilot-discover-video" controls muted playsinline preload="none" poster="/media/discover-desktop-poster.jpg" width="2386" height="1440" aria-label="Copilot Discover personalized daily brief walkthrough" aria-describedby="copilot-video-description">
+                  <source src="/media/discover-desktop.mp4" type="video/mp4" />
+                  Your browser does not support this video. <a href="/media/discover-desktop.mp4">Open the Discover walkthrough.</a>
+                </video>
+              </div>
+            </div>
+            <p class="sr-only" id="copilot-video-description">A recorded walkthrough of personalized stories, publisher sources and content augments. Use the native fullscreen control for a larger view.</p>
+            <p id="copilot-video-status" class="video-status" role="status" hidden></p>
           </figure>
         </div>
       </section>
