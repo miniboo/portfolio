@@ -56,20 +56,38 @@
       </section>
 
       <section class="ecosystem-intro section-pad" aria-labelledby="ecosystem-title">
-        <div class="landscape-parallax" data-parallax="0.04" aria-hidden="true">
-          <div class="landscape-image"></div>
-        </div>
-        <h2 id="ecosystem-title">Microsoft<span class="green"> AI.</span></h2>
-        <div class="ecosystem-statement">
-          <p class="statement-label">MSN ecosystem</p>
-          <div class="work-context">
-            <p>Leading the largest transformation of the MSN ecosystem in its 20-year history.</p>
+        <div class="landscape-surface" aria-hidden="true">
+          <div class="landscape-parallax" data-parallax="0.04">
+            <div class="landscape-image"></div>
+            <video id="content-landscape-video" class="landscape-video" muted loop playsinline preload="none" poster="/media/work-landscape.jpg">
+              <source src="/media/content-intelligence.mp4" type="video/mp4" />
+            </video>
           </div>
+        </div>
+        <div class="scene-heading">
+          <h2 id="ecosystem-title">Microsoft<span class="green"> AI.</span></h2>
+          <button id="scene-motion-toggle" type="button" aria-controls="content-landscape-video" aria-pressed="true" hidden>Pause motion</button>
+        </div>
+        <div class="ecosystem-statement">
+          <p class="statement-label">Content Intelligence</p>
+          <div class="work-context">
+            <p>Leading the generative UI transformation across Microsoft’s billion-user ecosystem.</p>
+          </div>
+          <dl class="scale" aria-label="Content Intelligence scale">
+            <div><dt>300<span>m</span></dt><dd>Daily desktop users</dd></div>
+            <div><dt>50<span>m</span></dt><dd>Mobile users</dd></div>
+            <div><dt>$1.4<span>bn</span></dt><dd>Annual revenue</dd></div>
+            <div><dt>4,000</dt><dd>Publishers</dd></div>
+          </dl>
+          <p id="video-status" class="video-status" role="status" hidden></p>
+        </div>
+        <template id="warm-ecosystem">
+          <div class="work-context"><p>Leading the largest transformation of the MSN ecosystem in its 20-year history.</p></div>
           <dl class="scale" aria-label="MSN ecosystem scale">
             <div><dt>300<span>m</span></dt><dd>Daily MSN users</dd></div>
             <div><dt>$1.4<span>bn</span></dt><dd>Annual MSN revenue</dd></div>
           </dl>
-        </div>
+        </template>
       </section>
 
       <section class="work-intro dark section-pad" id="work" aria-labelledby="work-title">

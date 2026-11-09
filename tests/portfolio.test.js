@@ -149,14 +149,37 @@ test("the landscape is the second parallax scene, with no duplicate photo behind
   const ecosystem = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0];
   const work = html.match(/<section class="work-intro dark section-pad".*?<\/section>/s)[0];
   assert.ok(ecosystem.includes('class="landscape-parallax" data-parallax="0.04"'));
-  assert.ok(ecosystem.includes("Leading the largest transformation"));
+  assert.ok(ecosystem.includes("Leading the generative UI transformation"));
   assert.ok(ecosystem.includes('class="scale"'));
   assert.ok(!work.includes("landscape"));
   assert.equal([...html.matchAll(/class="landscape-image"/g)].length, 1);
   const styles = await readFile(new URL("src/style.css", root), "utf8");
-  assert.ok(styles.includes('animation: botanical-breeze 10s ease-in-out infinite paused'));
-  assert.ok(styles.includes('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'));
-  assert.ok(styles.includes(':not([data-motion="off"]) .ecosystem-intro:hover'));
+  assert.ok(!styles.includes("botanical-breeze"));
+  assert.ok(ecosystem.includes('class="landscape-video" muted loop playsinline preload="none"'));
+  assert.ok(ecosystem.includes('src="/media/content-intelligence.mp4" type="video/mp4"'));
+  await access(new URL("public/media/content-intelligence.mp4", root));
+});
+
+test("the original Content Intelligence scene has four authorized metrics without visible MSN wording", () => {
+  const scene = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0].replace(/<template[^>]*>.*?<\/template>/gs, "");
+  const metrics = [...scene.matchAll(/<dt>(.*?)<\/dt><dd>(.*?)<\/dd>/g)].map(([, value, label]) => [value.replace(/<\/?span>/g, ""), label]);
+  assert.deepEqual(metrics, [["300m", "Daily desktop users"], ["50m", "Mobile users"], ["$1.4bn", "Annual revenue"], ["4,000", "Publishers"]]);
+  assert.ok(!scene.includes("MSN"));
+  assert.ok(scene.includes('class="statement-label">Content Intelligence</p>'));
+  assert.ok(html.includes('id="warm-ecosystem"'));
+});
+
+test("video and scroll blend share accessible motion controls and a still fallback", async () => {
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(html.includes('poster="/media/work-landscape.jpg"'));
+  assert.ok(html.includes('aria-controls="content-landscape-video"'));
+  assert.ok(html.includes('id="video-status" class="video-status" role="status" hidden'));
+  assert.ok(script.includes('error.name === "NotAllowedError"'));
+  assert.ok(script.includes('video.pause()'));
+  assert.ok(script.includes('landscapeSurface.style.opacity'));
+  assert.ok(styles.includes('html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }'));
+  assert.ok(styles.includes('.hero .name-period { color: var(--orange); }'));
 });
 
 test("original accent colors come from the artwork and retain accessible contrast", async () => {
