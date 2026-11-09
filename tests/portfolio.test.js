@@ -185,7 +185,9 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   assert.ok(!original.includes("Browser prototype pending."));
   assert.ok(!story.includes("discover-video-placeholder"));
   const image = await readFile(new URL("public/media/discover-personalized-brief.png", root));
-  assert.equal(createHash("sha256").update(image).digest("hex"), "e023ff3720d73422bcfa66ed4380c20beef7e14ad988e84ffde47ab74a73ac79");
+  assert.equal(createHash("sha256").update(image).digest("hex"), "abfcae9e0ad43c6a4b68800e6010d91b78ee353b45b12ecc480647c8a0345bd5");
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.discover-statement \{[^}]*background: #f6f5f3;/);
   assert.ok(!story.includes("<video"));
   assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
