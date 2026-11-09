@@ -174,9 +174,16 @@ test("the Content Intelligence scene retains all metrics and the confirmed MSN h
   assert.ok(html.includes('id="warm-ecosystem"'));
 });
 
-test("Discover has the approved consumer story and an honest pending-prototype panel", () => {
+test("Discover has the exact personalized-brief title and supplied replacement design", async () => {
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
-  for (const copy of ["desktop app and One Copilot", "chat history and memory", "current publishers and AI-curated sources", "generative UI model", "adds augments to stories", "Browser prototype pending."]) assert.ok(story.includes(copy));
+  for (const copy of ["Copilot Discover", "desktop app and One Copilot", "chat history and memory", "current publishers and AI-curated sources", "generative UI model", "adds augments to stories"]) assert.ok(story.includes(copy));
+  assert.ok(story.includes('<h3 id="discover-story-title">A daily brief made just for you.</h3>'));
+  assert.ok(story.includes('src="/media/discover-personalized-brief.png" width="1138" height="1615" loading="lazy"'));
+  assert.ok(story.includes('href="/media/discover-personalized-brief.png" target="_blank" rel="noopener"'));
+  assert.ok(!original.includes("Browser prototype pending."));
+  assert.ok(!story.includes("discover-video-placeholder"));
+  const image = await readFile(new URL("public/media/discover-personalized-brief.png", root));
+  assert.equal(createHash("sha256").update(image).digest("hex"), "e858b8a8b3653e1f1441c89f73800c458e7717c7c27cac792ad959dc75ffc680");
   assert.ok(!story.includes("<video"));
   assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
@@ -250,7 +257,7 @@ test("Edge has a native controlled video and the authorized problem, interventio
 
 test("redundant image metadata captions are removed but missing-media status remains honest", () => {
   const captions = [...original.matchAll(/<figcaption[^>]*>(.*?)<\/figcaption>/gs)].map(([, caption]) => caption);
-  assert.deepEqual(captions, ["Browser prototype pending."]);
+  assert.deepEqual(captions, []);
 });
 
 test("original accent colors come from the artwork and retain accessible contrast", async () => {
