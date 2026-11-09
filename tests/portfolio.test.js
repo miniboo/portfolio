@@ -178,15 +178,32 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
   for (const copy of ["Copilot Discover", "desktop app and One Copilot", "chat history and memory", "current publishers and AI-curated sources", "generative UI model", "adds augments to stories"]) assert.ok(story.includes(copy));
   assert.ok(story.includes('<h3 id="discover-story-title">A daily brief made just for you.</h3>'));
-  assert.ok(story.includes('src="/media/discover-personalized-brief.png" width="1138" height="1615" loading="lazy"'));
+  assert.ok(story.includes('src="/media/discover-personalized-brief.png" width="1128" height="1605" loading="lazy"'));
+  assert.ok(story.includes("Zahra Bello's profile, publisher attribution"));
+  assert.ok(!story.includes("Thursday"));
   assert.ok(story.includes('href="/media/discover-personalized-brief.png" target="_blank" rel="noopener"'));
   assert.ok(!original.includes("Browser prototype pending."));
   assert.ok(!story.includes("discover-video-placeholder"));
   const image = await readFile(new URL("public/media/discover-personalized-brief.png", root));
-  assert.equal(createHash("sha256").update(image).digest("hex"), "e858b8a8b3653e1f1441c89f73800c458e7717c7c27cac792ad959dc75ffc680");
+  assert.equal(createHash("sha256").update(image).digest("hex"), "e023ff3720d73422bcfa66ed4380c20beef7e14ad988e84ffde47ab74a73ac79");
   assert.ok(!story.includes("<video"));
   assert.equal([...original.matchAll(/src="\/media\/discover-desktop.png"/g)].length, 1);
   assert.ok(!original.match(/id="ai-content".*?<\/section>/s)[0].includes("Copilot Discover"));
+});
+
+test("Discover principles are editable, human-centered and separate from the visuals-only slide", () => {
+  const principles = original.match(/<section class="discover-principles.*?<\/section>/s)[0];
+  assert.ok(principles.includes("Design principles"));
+  assert.ok(principles.includes("An agentic experience centered on human voices."));
+  assert.deepEqual([...principles.matchAll(/<dt>(.*?)<\/dt>/g)].map(([, text]) => text), ["adaptable", "human", "trusted"]);
+  assert.deepEqual([...principles.matchAll(/<dd>(.*?)<\/dd>/g)].map(([, text]) => text), [
+    "AI transforms any content into the format, length, and knowledge level you need right now",
+    "Every story is rooted in real voices, with clear provenance so you always know who’s behind it.",
+    "Your agent earns your trust with every story it delivers.",
+  ]);
+  assert.ok(principles.includes('class="principle-human"'));
+  assert.ok(!/<img|<video|<button|class="section-number"/.test(principles));
+  assert.match(original, /<section class="daily-brief.*?<\/section>\s*<section class="discover-principles/s);
 });
 
 test("Daily Brief groups all three actual Figma mocks in one visuals-only section", async () => {
