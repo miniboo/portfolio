@@ -224,10 +224,14 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
 test("the original opening foregrounds leadership and the authorized entrepreneur history", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   const bio = html.match(/<div class="bio">\s*<p>(.*?)<\/p>/s)[1];
-  const currentRole = bio.slice(bio.indexOf("She currently leads"));
+  const currentRole = bio.slice(bio.indexOf("She currently leads")).replace(/^She /, "Chloe ");
   assert.ok(hero.includes(`<p class="hero-intro">${currentRole}</p>`));
-  const entrepreneur = html.match(/<span class="career-history">(.*?)<\/span>/)[1];
-  assert.ok(hero.includes(`<p class="hero-experience">${entrepreneur}</p>`));
+  const experience = hero.match(/<p class="hero-experience">(.*?)<\/p>/)[1];
+  assert.ok(experience.includes("raised more than $4 million to bring STEM to more than 90,000 students in rural Kenya"));
+  assert.ok(experience.includes("leadership positions at Mozilla and littleBits (acquired by Sphero)"));
+  assert.ok(experience.includes("At littleBits, she led product lines with Lucasfilm and Marvel."));
+  assert.ok(experience.includes("She started her career in tech—and learned most of what she knows—by helping start the public school Quest to Learn."));
+  assert.equal([...experience.matchAll(/Quest to Learn/g)].length, 1);
   assert.ok(hero.includes('class="recognition"'));
   assert.ok(hero.indexOf('class="hero-intro"') < hero.indexOf('class="hero-experience"'));
   assert.ok(hero.indexOf('class="hero-experience"') < hero.indexOf('class="recognition"'));
