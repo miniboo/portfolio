@@ -267,7 +267,7 @@ test("the first two Discover phones progressively enhance into independent sourc
   const script = await readFile(new URL("src/discover-phones.js", root), "utf8");
   const main = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(main.indexOf("mountDiscoverPhones();") > main.indexOf('document.querySelector(".discover-cover").closest("#work").remove()'));
-  for (const text of ["Bay Area Family events", "Boo at the Zoo returns this Saturday", "Spooky Science takes over Chabot", "Market Watch", "Local family events", "Make it your own", "Back to categories", "Add and view"]) assert.ok(script.includes(text));
+  for (const text of ["Bay Area Family events", "Boo at the Zoo returns this Saturday", "Spooky Science takes over Chabot", "Market Watch", "Local family events", "Back to categories", "Add and view"]) assert.ok(script.includes(text));
   assert.ok(script.includes('feedMarkup("daily-news-feed")'));
   assert.ok(script.includes('feedMarkup("welcome-agent-feed")'));
   assert.ok(script.includes('viewport.scrollTo({ top: target'));
@@ -276,8 +276,10 @@ test("the first two Discover phones progressively enhance into independent sourc
   assert.ok(!script.includes("localStorage"));
   assert.ok(!script.includes("setInterval"));
   assert.ok(script.includes('matchMedia("(prefers-reduced-motion: reduce)")'));
-  assert.ok(script.includes("no agent has been created"));
-  assert.ok(script.includes("status.textContent"));
+  assert.ok(!script.includes("Make it your own"));
+  assert.ok(!script.includes("phone-custom"));
+  assert.ok(!script.includes("Math.min(3,"));
+  assert.ok(script.includes("categories.length - 1"));
   assert.ok(!script.includes("screens[2]."));
   const names = new Set([...script.matchAll(/["']((?:feed-|welcome-|phone-)[\w-]+\.(?:png|jpg))["']/g)].map(match => match[1]));
   assert.ok(names.size >= 20);
@@ -288,12 +290,32 @@ test("the first phone uses a hover-driven depth orbit and compact native paginat
   const script = await readFile(new URL("src/discover-phones.js", root), "utf8");
   const styles = await readFile(new URL("src/discover-phones.css", root), "utf8");
   for (const text of ["translate3d(", "rotateY(", "Math.cos(angle)", "pointerenter", "pointerleave", "Math.round(phase)", "Google Research · 5h ago", "Microsoft · 8h ago"]) assert.ok(script.includes(text));
-  assert.ok(script.includes('type="range" min="0" max="3"'));
+  assert.ok(script.includes('type="range" min="0" max="${categories.length - 1}"'));
   assert.ok(!script.includes("animateFan"));
   assert.ok(!script.includes('{ translate: "0 12px"'));
   assert.ok(styles.includes("perspective: 152.67176cqw"));
-  assert.ok(styles.includes("width: 72px; height: 32px"));
+  assert.ok(styles.includes("width: 58px; height: 32px"));
   assert.ok(styles.includes("gap: 6px"));
+  assert.ok(script.includes("progress ** 3 * (progress * (progress * 6 - 15) + 10)"));
+  assert.ok(script.includes("if (moving) return"));
+  assert.ok(script.includes("if (current !== currentStory)"));
+  assert.ok(script.includes("image.decode()"));
+  assert.ok(!script.includes("setTimeout"));
+  assert.ok(script.includes('event.target !== fan'));
+  assert.ok(script.includes('(now - start) / 700'));
+  assert.ok(script.includes('* 60 * (1 - .7 * overlap)'));
+});
+
+test("the first phone reveals its accessible greeting once on visibility using the Copilot cadence", async () => {
+  const script = await readFile(new URL("src/discover-phones.js", root), "utf8");
+  const styles = await readFile(new URL("src/discover-phones.css", root), "utf8");
+  assert.ok(script.includes('aria-label="What would you like to keep up with?"'));
+  assert.ok(script.includes('phone.dataset.greetingPresented = "true"'));
+  assert.ok(script.includes('entry.target === heading && entry.isIntersecting'));
+  assert.ok(script.includes('observer.unobserve(heading)'));
+  assert.ok(styles.includes("500ms cubic-bezier(0, 0, 0, 1) both"));
+  assert.ok(styles.includes("150ms + var(--letter-index) * 10ms"));
+  assert.ok(styles.includes('.interactive-phone h2[data-reveal] .phone-letter { opacity: 1; animation: none; }'));
 });
 
 test("custom motion controls are absent and decorative video is finite with a still fallback", async () => {

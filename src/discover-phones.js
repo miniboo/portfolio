@@ -16,7 +16,6 @@ const categories = [
   { title: "AI Daily News", images: ["welcome-ai-1.jpg", "welcome-ai-2.jpg", "welcome-ai-3.jpg"], stories: [["OpenAI · 1h ago", "GPT-6.1 Terra starts rolling out"], ["Google Research · 5h ago", "Google explores a “sleep” phase for AI"], ["Microsoft · 8h ago", "Microsoft tests AI diagnosis step by step"]] },
   { title: "Market Watch", images: ["welcome-market-1.jpg", "welcome-market-2.jpg", "welcome-market-3.jpg"], stories: [["Reuters · After close", "Stocks extend their rebound"], ["CNBC · After close", "Chipmakers lead again"], ["WSJ · After close", "US oil slips below $100"]] },
   { title: "Local family events", images: ["welcome-family-zoo.jpg", "feed-goblin.jpg", "welcome-family-3.jpg"], stories: [["SF Funcheap · Sat Oct 31", "Halloween at San Francisco Zoo"], ["Bay Area Kid Fun · Sat Oct 31", "A costume weekend at Oakland Zoo"], ["Marin IJ · Sun Nov 1", "A hands-on Halloween in Sausalito"]] },
-  { title: "Make it your own", story: "Choose your topics and sources, and AI will keep you up to date." },
 ];
 const cardOrbits = new Set();
 const image = (name, width, height) => `<img src="/media/${name}" width="${width}" height="${height}" alt="" aria-hidden="true" loading="lazy" draggable="false" />`;
@@ -88,25 +87,27 @@ function planMarkup(category) {
   return `<div class="phone-plan">
     <div class="phone-chrome phone-plan-chrome">${image("phone-status-chrome.png", 393, 62)}<div><button type="button" class="phone-back" aria-label="Back to categories">‹</button><span aria-hidden="true">···</span></div></div>
     <div class="phone-plan-scroll" tabindex="0" role="region" aria-label="${categories[category].title} agent setup">
-      ${category === 3 ? `<form class="phone-custom-form"><label>Topics<input name="topics" required maxlength="120" placeholder="What would you like to keep up with?" /></label><label>Sources<input name="sources" required maxlength="160" placeholder="Choose your sources" /></label><label>Schedule<select name="schedule"><option>Every morning</option><option>Every Friday</option></select></label><button class="phone-action" type="submit">Preview your brief</button><p class="phone-custom-status" role="status" hidden></p></form>` : `${plan}<div class="phone-agent-card"><h4>${categories[category].title}</h4><small>${category === 0 ? "First briefing ready · Daily at 9 AM" : adapted.schedule}</small><button type="button" class="phone-action phone-add">Add and view</button></div>`}
+      ${plan}<div class="phone-agent-card"><h4>${categories[category].title}</h4><small>${category === 0 ? "First briefing ready · Daily at 9 AM" : adapted.schedule}</small><button type="button" class="phone-action phone-add">Add and view</button></div>
     </div>
-    ${category === 3 ? "" : `<form class="phone-refine"><input aria-label="Refine the plan in this local preview" placeholder="Refine the plan" required maxlength="200" /><button type="submit" aria-label="Add refinement to this local preview">↑</button></form>`}
+    <form class="phone-refine"><input aria-label="Refine the plan in this local preview" placeholder="Refine the plan" required maxlength="200" /><button type="submit" aria-label="Add refinement to this local preview">↑</button></form>
     ${bottom()}
   </div>`;
 }
 
 function mountWelcome(phone, initialCategory = 0) {
-  const cards = categories.map((category, index) => `<div class="phone-category" role="group" aria-roledescription="slide" aria-label="${index + 1} of 4: ${category.title}">
+  let letterIndex = 0;
+  const greeting = ["What would you like to", "keep up with?"].map(line => line.split(" ").map(word => `<span>${Array.from(word).map(letter => `<span class="phone-letter" style="--letter-index:${letterIndex++}">${letter}</span>`).join("")}</span>`).join(" ")).join("<br />");
+  const cards = categories.map((category, index) => `<div class="phone-category" role="group" aria-roledescription="slide" aria-label="${index + 1} of ${categories.length}: ${category.title}">
     <h3>${category.title}</h3>
-    <button type="button" class="phone-fan" aria-label="Rotate featured images for ${category.title}">${(category.images || categories[0].images).map(name => image(name, 84, 84)).join("")}</button>
-    <div class="phone-preview">${category.stories ? `<small>${category.stories[0][0]}</small>` : ""}<p>${category.stories?.[0][1] || category.story}</p></div>
-    <button type="button" class="phone-action phone-start" data-category="${index}">${index === 3 ? "Create your own" : "Get started"}</button>
+    <button type="button" class="phone-fan" aria-label="Rotate featured images for ${category.title}">${category.images.map(name => image(name, 84, 84)).join("")}</button>
+    <div class="phone-preview"><small>${category.stories[0][0]}</small><p>${category.stories[0][1]}</p></div>
+    <button type="button" class="phone-action phone-start" data-category="${index}">Get started</button>
   </div>`).join("");
   phone.innerHTML = `<div class="phone-welcome">
     <div class="phone-chrome">${image("phone-welcome-chrome.png", 393, 116)}</div>
-    <h2>What would you like to<br />keep up with?</h2>
+    <h2 aria-label="What would you like to keep up with?" data-reveal="${phone.dataset.greetingPresented ? "done" : "pending"}"><span aria-hidden="true">${greeting}</span></h2>
     <div class="phone-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Discover group categories" aria-description="Swipe or drag between categories, use the arrow keys, or choose a category below.">${cards}</div>
-    <div class="phone-pagination"><label class="phone-page-control"><span class="phone-pagination-dots" aria-hidden="true">${categories.map((_, index) => `<span data-page="${index}" data-active="${index === initialCategory}"></span>`).join("")}</span><input type="range" min="0" max="3" step="1" value="${initialCategory}" aria-label="Choose a Discover category" aria-valuetext="${categories[initialCategory].title}" /></label></div>
+    <div class="phone-pagination"><label class="phone-page-control"><span class="phone-pagination-dots" aria-hidden="true">${categories.map((_, index) => `<span data-page="${index}" data-active="${index === initialCategory}"></span>`).join("")}</span><input type="range" min="0" max="${categories.length - 1}" step="1" value="${initialCategory}" aria-label="Choose a Discover category" aria-valuetext="${categories[initialCategory].title}" /></label></div>
     ${bottom()}
   </div>`;
   const carousel = phone.querySelector(".phone-carousel");
@@ -128,16 +129,16 @@ function mountWelcome(phone, initialCategory = 0) {
   };
   const sync = () => {
     if (step() <= 0) return;
-    const next = Math.max(0, Math.min(3, Math.round(carousel.scrollLeft / step())));
+    const next = Math.max(0, Math.min(categories.length - 1, Math.round(carousel.scrollLeft / step())));
     if (active !== next) {
       active = next;
-      orbits.forEach((orbit, index) => { if (index !== active) orbit.stop(); });
+      orbits.forEach((orbit, index) => { if (index !== active) orbit.stop(true); });
     }
     renderActive();
   };
   pagination.addEventListener("input", () => select(Number(pagination.value)));
   pagination.addEventListener("pointerup", event => {
-    const index = Math.max(0, Math.min(3, Math.round((event.clientX - pagination.getBoundingClientRect().left - 15) / 14)));
+    const index = Math.max(0, Math.min(categories.length - 1, Math.round((event.clientX - pagination.getBoundingClientRect().left - 15) / 14)));
     pagination.value = index;
     select(index);
   });
@@ -145,7 +146,7 @@ function mountWelcome(phone, initialCategory = 0) {
   carousel.addEventListener("keydown", event => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
-    const index = event.key === "Home" ? 0 : event.key === "End" ? 3 : Math.max(0, Math.min(3, active + (event.key === "ArrowRight" ? 1 : -1)));
+    const index = event.key === "Home" ? 0 : event.key === "End" ? categories.length - 1 : Math.max(0, Math.min(categories.length - 1, active + (event.key === "ArrowRight" ? 1 : -1)));
     select(index);
   });
   let drag;
@@ -169,7 +170,7 @@ function mountWelcome(phone, initialCategory = 0) {
     const moved = drag.moved;
     drag = undefined;
     if (!moved) return;
-    const index = Math.max(0, Math.min(3, Math.round(carousel.scrollLeft / step())));
+    const index = Math.max(0, Math.min(categories.length - 1, Math.round(carousel.scrollLeft / step())));
     carousel.style.scrollSnapType = "";
     select(index);
   };
@@ -185,14 +186,6 @@ function mountWelcome(phone, initialCategory = 0) {
     phone.querySelector(".phone-back").addEventListener("click", () => {
       mountWelcome(phone, category);
       phone.querySelectorAll(".phone-start")[category].focus({ preventScroll: true });
-    });
-    phone.querySelector(".phone-custom-form")?.addEventListener("submit", event => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const data = new FormData(form);
-      const status = form.querySelector(".phone-custom-status");
-      status.textContent = `${data.get("topics")} · ${data.get("schedule")} · ${data.get("sources")}. Preview only; no agent has been created.`;
-      status.hidden = false;
     });
     phone.querySelector(".phone-refine")?.addEventListener("submit", event => {
       event.preventDefault();
@@ -238,92 +231,136 @@ function mountWelcome(phone, initialCategory = 0) {
     sync();
   });
   layoutObserver.observe(carousel);
+  const heading = phone.querySelector("h2");
+  const letters = heading.querySelectorAll(".phone-letter");
+  heading.addEventListener("animationend", event => {
+    if (event.target === letters[letters.length - 1]) heading.dataset.reveal = "done";
+  });
   const observer = new IntersectionObserver(entries => {
-    if (entries.some(entry => !entry.isIntersecting)) orbits.forEach(orbit => orbit.stop());
+    for (const entry of entries) {
+      if (entry.target === phone && !entry.isIntersecting) orbits.forEach(orbit => orbit.stop());
+      if (entry.target === heading && entry.isIntersecting && heading.dataset.reveal === "pending") {
+        phone.dataset.greetingPresented = "true";
+        heading.dataset.reveal = matchMedia("(prefers-reduced-motion: reduce)").matches ? "done" : "playing";
+        observer.unobserve(heading);
+      }
+    }
     if (!phone.isConnected) observer.disconnect();
   });
   observer.observe(phone);
+  if (heading.dataset.reveal === "pending") observer.observe(heading);
 }
 
 function mountCardOrbit(slide, category) {
   const fan = slide.querySelector(".phone-fan");
   const images = [...fan.querySelectorAll("img")];
+  const preview = slide.querySelector(".phone-preview");
+  const byline = preview.querySelector("small");
+  const title = preview.querySelector("p");
   const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   let phase = 0;
   let hovered = false;
   let frame;
-  let timer;
+  let moving = false;
+  let ready = false;
+  let requested = false;
+  let currentStory = -1;
+  let pointerType;
   const render = () => {
     const turn = phase - Math.floor(phase);
-    const overlap = Math.sin(Math.PI * turn);
+    const overlap = Math.sin(Math.PI * turn) ** 2;
     images.forEach((image, index) => {
       const angle = (index - phase) * Math.PI * 2 / 3;
       const depth = Math.cos(angle);
-      image.style.transform = `translate3d(${Math.sin(angle) * 74 * (1 - .55 * overlap) / 3.93}cqw,${-2 * (1 - depth) / 3.93}cqw,${32 * (depth - 1) / 3.93}cqw) rotateY(${-Math.sin(angle) * 10}deg) rotateZ(${Math.sin(angle) * 7}deg) scale(${.9 + .1 * (depth + 1) / 2})`;
-      image.style.opacity = 1 - .5 * overlap * (1 - (depth + 1) / 2);
+      image.style.transform = `translate3d(${Math.sin(angle) * 60 * (1 - .7 * overlap) / 3.93}cqw,${-2 * (1 - depth) / 3.93}cqw,${24 * (depth - 1) / 3.93}cqw) rotateY(${-Math.sin(angle) * 10}deg) rotateZ(${Math.sin(angle) * 7}deg) scale(${.9 + .1 * (depth + 1) / 2})`;
+      image.style.opacity = 1 - .65 * overlap * (1 - (depth + 1) / 2);
     });
     const current = (Math.round(phase) % 3 + 3) % 3;
-    if (category.stories) {
-      const [byline, title] = category.stories[current];
-      slide.querySelector(".phone-preview small").textContent = byline;
-      slide.querySelector(".phone-preview p").textContent = title;
-      slide.querySelector(".phone-preview").style.opacity = Math.min(1, Math.abs(turn - .5) * 4);
-      fan.setAttribute("aria-label", `Rotate featured stories for ${category.title}. Showing ${title}`);
+    if (current !== currentStory) {
+      currentStory = current;
+      byline.textContent = category.stories[current][0];
+      title.textContent = category.stories[current][1];
+      fan.setAttribute("aria-label", `Rotate featured stories for ${category.title}. Showing ${category.stories[current][1]}`);
     }
+    preview.style.opacity = Math.cos(Math.PI * turn) ** 2;
   };
-  const move = (target, duration, done) => {
-    cancelAnimationFrame(frame);
-    clearTimeout(timer);
+  const move = target => {
+    moving = true;
+    fan.dataset.rotating = "true";
     const from = phase;
     const start = performance.now();
     const tick = now => {
       if (!fan.isConnected || document.hidden) return;
-      const progress = Math.min(1, (now - start) / duration);
-      const eased = 1 - (1 - progress) ** 3;
+      const progress = Math.min(1, (now - start) / 700);
+      const eased = progress ** 3 * (progress * (progress * 6 - 15) + 10);
       phase = from + (target - from) * eased;
       render();
       if (progress < 1) frame = requestAnimationFrame(tick);
-      else done?.();
+      else {
+        moving = false;
+        delete fan.dataset.rotating;
+      }
     };
     if (reducedMotion()) {
       phase = target;
+      moving = false;
+      delete fan.dataset.rotating;
       render();
     } else frame = requestAnimationFrame(tick);
   };
   const advance = () => {
     if (!fan.isConnected || document.hidden) return;
-    move(Math.floor(phase + 1.00001), 600, () => {
-      if (hovered) timer = setTimeout(advance, 1400);
-    });
+    if (!ready) {
+      requested = true;
+      return;
+    }
+    if (moving) return;
+    requested = false;
+    move(Math.floor(phase + 1.00001));
   };
   const stop = (immediate = false) => {
     hovered = false;
-    clearTimeout(timer);
-    cancelAnimationFrame(frame);
+    requested = false;
     if (immediate || reducedMotion()) {
+      cancelAnimationFrame(frame);
+      moving = false;
+      delete fan.dataset.rotating;
       phase = Math.round(phase);
       render();
-    } else if (Math.abs(phase - Math.round(phase)) > .001) move(Math.round(phase), 320);
+    } else if (!moving) delete fan.dataset.rotating;
   };
   const orbit = {
     stop,
     destroy() {
       hovered = false;
-      clearTimeout(timer);
       cancelAnimationFrame(frame);
       cardOrbits.delete(orbit);
     },
   };
   fan.addEventListener("pointerenter", event => {
-    if (event.pointerType !== "mouse" || reducedMotion()) return;
+    if (event.target !== fan || event.pointerType !== "mouse" || hovered || reducedMotion()) return;
     hovered = true;
     advance();
   });
   fan.addEventListener("pointerleave", () => stop());
   fan.addEventListener("blur", () => stop());
-  fan.addEventListener("click", () => advance());
+  fan.addEventListener("pointerdown", event => pointerType = event.pointerType);
+  fan.addEventListener("click", event => {
+    if (event.detail === 0 || pointerType !== "mouse") advance();
+  });
   cardOrbits.add(orbit);
   render();
+  Promise.all(images.map(image => {
+    image.loading = "eager";
+    image.decoding = "async";
+    return image.decode();
+  })).then(() => {
+    ready = true;
+    if (hovered || requested) advance();
+  }, error => {
+    console.error("Unable to decode Discover featured images.", error);
+    fan.setAttribute("aria-label", "Featured story images unavailable");
+  });
   return orbit;
 }
 
@@ -338,6 +375,7 @@ export function mountDiscoverPhones() {
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", event => {
     if (!event.matches) return;
     cardOrbits.forEach(orbit => orbit.stop(true));
+    screens[0].querySelector('h2[data-reveal="playing"]')?.setAttribute("data-reveal", "done");
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) cardOrbits.forEach(orbit => orbit.stop(true));
