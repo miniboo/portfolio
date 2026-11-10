@@ -35,6 +35,7 @@ if (document.documentElement.dataset.identity === "warm") {
   work.after(document.querySelector("#warm-copilot-project").content);
   document.querySelector("#ai-content").replaceWith(document.querySelector("#warm-discover-project").content);
   document.querySelector("#edge-discover").remove();
+  document.querySelector("#midterm-elections").replaceWith(document.querySelector("#warm-elections-project").content);
   document.querySelector(".project-elections .section-number").textContent = "02";
   document.querySelector(".project-tools .section-number").textContent = "04";
   document.querySelectorAll(".warm-image-caption").forEach(template => template.replaceWith(template.content));
@@ -49,6 +50,17 @@ if (document.documentElement.dataset.identity === "warm") {
 
 mountDiscoverPhones();
 
+document.querySelectorAll(".curated-card").forEach(card => {
+  const buttons = [...card.querySelectorAll("[data-curated-reaction]")];
+  buttons.forEach(button => {
+    button.disabled = false;
+    button.addEventListener("click", () => {
+      const selected = button.getAttribute("aria-pressed") !== "true";
+      buttons.forEach(reaction => reaction.setAttribute("aria-pressed", String(reaction === button && selected)));
+    });
+  });
+});
+
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector("#motion-toggle");
 const progress = document.querySelector(".reading-progress");
@@ -59,6 +71,7 @@ const landscapeSurface = document.querySelector(".landscape-surface");
 const botanical = document.querySelector(".hero-illustration img");
 const edgeVideo = document.querySelector("#edge-discover-video");
 const discoverVideo = document.querySelector("#copilot-discover-video");
+const electionsVideo = document.querySelector("#elections-video");
 const press = document.querySelector(".recognition-press");
 const pressLogos = [...document.querySelectorAll(".press-logo")];
 const pressArea = document.querySelector("#press-logos");
@@ -220,6 +233,7 @@ if (video) {
 for (const [player, statusId, name] of [
   [edgeVideo, "edge-video-status", "Edge Discover"],
   [discoverVideo, "copilot-video-status", "Copilot Discover"],
+  [electionsVideo, "elections-video-status", "Midterm Elections"],
 ]) {
   if (!player) continue;
   let failed = false;
@@ -242,6 +256,7 @@ document.addEventListener("visibilitychange", () => {
   syncPress();
   if (document.hidden && edgeVideo) edgeVideo.pause();
   if (document.hidden && discoverVideo) discoverVideo.pause();
+  if (document.hidden && electionsVideo) electionsVideo.pause();
 });
 motionPreference.addEventListener("change", () => {
   motionEnabled = !motionPreference.matches;

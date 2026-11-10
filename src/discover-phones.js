@@ -116,6 +116,7 @@ function mountWelcome(phone, initialCategory = 0) {
   const dots = [...phone.querySelectorAll("[data-page]")];
   const orbits = slides.map((slide, index) => mountCardOrbit(slide, categories[index]));
   let active = initialCategory;
+  let requestedCategory;
   const step = () => slides[1].offsetLeft - slides[0].offsetLeft;
   const renderActive = () => {
     pagination.value = active;
@@ -125,11 +126,14 @@ function mountWelcome(phone, initialCategory = 0) {
   };
   const select = (index, behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth") => {
     if (step() <= 0) return;
+    requestedCategory = index;
     carousel.scrollTo({ left: index * step(), behavior });
+    if (behavior === "instant") sync();
   };
   const sync = () => {
     if (step() <= 0) return;
     const next = Math.max(0, Math.min(categories.length - 1, Math.round(carousel.scrollLeft / step())));
+    if (requestedCategory !== undefined && Math.abs(carousel.scrollLeft - requestedCategory * step()) < 1) requestedCategory = undefined;
     if (active !== next) {
       active = next;
       orbits.forEach((orbit, index) => { if (index !== active) orbit.stop(true); });
@@ -146,11 +150,13 @@ function mountWelcome(phone, initialCategory = 0) {
   carousel.addEventListener("keydown", event => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
-    const index = event.key === "Home" ? 0 : event.key === "End" ? categories.length - 1 : Math.max(0, Math.min(categories.length - 1, active + (event.key === "ArrowRight" ? 1 : -1)));
+    const index = event.key === "Home" ? 0 : event.key === "End" ? categories.length - 1 : Math.max(0, Math.min(categories.length - 1, (requestedCategory ?? active) + (event.key === "ArrowRight" ? 1 : -1)));
     select(index);
   });
   let drag;
+  carousel.addEventListener("wheel", () => requestedCategory = undefined, { passive: true });
   carousel.addEventListener("pointerdown", event => {
+    requestedCategory = undefined;
     if (event.pointerType !== "mouse" || event.target.closest("button:not(.phone-fan)")) return;
     drag = { x: event.clientX, left: carousel.scrollLeft, moved: false };
   });

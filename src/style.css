@@ -193,6 +193,46 @@ html:not([data-identity="warm"]) .daily-brief { background: #1e1b1b; color: #fef
 html:not([data-identity="warm"]) .daily-brief-screens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: clamp(24px, 4vw, 70px); max-width: 1319px; margin: 0 auto; }
 html:not([data-identity="warm"]) .daily-brief-screen { width: 100%; max-width: 393px; justify-self: center; margin: 0; scroll-snap-align: start; }
 
+html:not([data-identity="warm"]) .project .project-heading,
+html:not([data-identity="warm"]) .project .project-body { width: 100%; max-width: 1400px; margin-inline: auto; }
+html:not([data-identity="warm"]) .project .project-heading { display: flex; flex-direction: column; gap: 20px; }
+html:not([data-identity="warm"]) .project .section-number { font-size: clamp(32px, 3vw, 48px); line-height: 1; letter-spacing: -.04em; }
+html:not([data-identity="warm"]) .project .project-heading h2 { max-width: 1100px; padding: 0; font-size: clamp(38px, 5vw, 88px); line-height: 1.08; }
+html:not([data-identity="warm"]) .project-heading > div { display: flex; flex-direction: column; gap: 20px; }
+html:not([data-identity="warm"]) .project-heading .eyebrow { order: 1; margin: 0; }
+html:not([data-identity="warm"]) .project .project-body { margin-top: clamp(40px, 5vw, 72px); }
+html:not([data-identity="warm"]) #elections-video { display: block; width: 100%; height: auto; border-radius: 8px; background: #1e1b1b; }
+html:not([data-identity="warm"]) #elections-video-status { margin-top: 24px; }
+html:not([data-identity="warm"]) .edge-news { margin-top: clamp(88px, 10vw, 160px); }
+html:not([data-identity="warm"]) .edge-news > h3 { font-family: var(--serif); font-size: clamp(30px, 3vw, 48px); font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
+html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 328px)); justify-content: center; align-items: start; gap: 32px; margin-top: 40px; }
+.curated-symbols { position: absolute; overflow: hidden; }
+.curated-card { position: relative; min-width: 0; width: 100%; border: 1px solid #e6e6e6; border-radius: 24px; background: #fff; color: #191919; font-family: "Segoe Sans", "Segoe UI", Arial, sans-serif; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.curated-standard { padding: 20px 24px; }
+.curated-topic { font-weight: 500; }
+.curated-weather .curated-topic { color: #a62147; }
+.curated-standard h4 { margin: 16px 0 12px; font-family: "Segoe Serif", Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 420; line-height: 28px; letter-spacing: 0; }
+.curated-summary { display: grid; grid-template-columns: minmax(0, 1fr) 80px; gap: 12px; align-items: start; color: #595959; }
+.curated-thumbnail { position: relative; display: block; width: 80px; height: 80px; overflow: hidden; border-radius: 8px; }
+.curated-thumbnail img { position: absolute; left: -29px; top: -9px; width: 138px; height: 92px; object-fit: cover; }
+.curated-weather .curated-thumbnail img { left: -11px; top: -13px; width: 150px; height: 96px; }
+.curated-emphasis { text-decoration: underline dotted; text-underline-offset: 2px; }
+.curated-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 16px; }
+.curated-attribution { display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 12px; font-weight: 500; line-height: 20px; }
+.curated-sources { display: inline-flex; flex: none; }
+.curated-sources img { width: 16px; height: 16px; border-radius: 4px; }
+.curated-sources img + img { margin-left: -2px; }
+.curated-reactions { display: flex; align-items: center; flex: none; gap: 4px; }
+.curated-reactions svg { width: 16px; height: 16px; fill: currentColor; }
+.curated-reactions button { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; min-height: 28px; padding: 6px; border: 0; border-radius: 6px; background: transparent; color: inherit; font-size: 12px; line-height: 16px; cursor: pointer; }
+.curated-reactions button:hover:not(:disabled), .curated-reactions button[aria-pressed="true"] { background: #8883; }
+.curated-reactions button:disabled { cursor: default; opacity: 1; }
+html:not([data-identity="warm"]) .election-details-page a { display: block; cursor: zoom-in; }
+html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; background: #f7f7f7; }
+html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); margin-top: clamp(32px, 5vw, 72px); }
+html:not([data-identity="warm"]) .election-pieces > div { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+html:not([data-identity="warm"]) .election-pieces a { width: 100%; max-width: 393px; }
+
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
 html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
@@ -204,6 +244,7 @@ html[data-motion="off"] .press-logo { transition: none; }
 }
 
 @media (max-width: 1000px) {
+  html:not([data-identity="warm"]) .election-pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html:not([data-identity="warm"]) .daily-brief-screens { grid-template-columns: repeat(3, min(393px, 100%)); overflow-x: auto; scroll-snap-type: x proximity; }
   html:not([data-identity="warm"]) .discover-statement { grid-template-columns: 1fr; gap: 36px; }
   html:not([data-identity="warm"]) .discover-copy { gap: 28px; }
@@ -220,6 +261,9 @@ html[data-motion="off"] .press-logo { transition: none; }
 }
 
 @media (max-width: 640px) {
+  html:not([data-identity="warm"]) .edge-news-gallery { grid-template-columns: minmax(0, 328px); }
+  html:not([data-identity="warm"]) .election-pieces { grid-template-columns: 1fr; }
+  html:not([data-identity="warm"]) .edge-news-gallery { gap: 24px; }
   html:not([data-identity="warm"]) .discover-platforms { margin-bottom: 12px; }
   :root { --gutter: 22px; --number-rail: 54px; --rail-gap: 22px; scroll-padding-top: 24px; }
   .section-pad { padding-top: 56px; padding-bottom: 56px; }

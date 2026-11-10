@@ -104,6 +104,45 @@ test("project headings and media use one shared layout without repeated filler",
   }
 });
 
+test("original module introductions use a stacked rail and centered, uncropped media", async () => {
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(styles.includes('.project .project-body { width: 100%; max-width: 1400px; margin-inline: auto; }'));
+  assert.ok(styles.includes('.project .project-heading { display: flex; flex-direction: column; gap: 20px; }'));
+  assert.ok(original.includes("Edge / New tab page"));
+  assert.ok(original.includes("MSN / Election coverage"));
+});
+
+test("Edge has only the two requested curated cards with live text and photo-only assets", () => {
+  const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
+  assert.ok(news.includes('<h3 id="edge-news-title">AI-curated news for you</h3>'));
+  assert.equal([...news.matchAll(/<article /g)].length, 2);
+  assert.equal([...news.matchAll(/<h4 /g)].length, 2);
+  assert.equal([...news.matchAll(/Curated by Copilot/g)].length, 2);
+  assert.equal([...news.matchAll(/data-curated-reaction=/g)].length, 4);
+  assert.equal([...news.matchAll(/aria-pressed="false" disabled/g)].length, 4);
+  for (const copy of ["A frosty start to your morning", "Schiaparelli gives your London trip a cultural anchor"]) assert.ok(news.includes(copy));
+  for (const removed of ["The Universe Is Coming Into Focus", "Congress Returns to Washington", "curated-universe", "curated-congress", "curated-capitol"]) assert.ok(!original.includes(removed));
+  for (const asset of ["curated-weather.jpg", "curated-travel.jpg"]) assert.ok(news.includes(`/media/${asset}`));
+  for (const removed of ["edge-news-finance", "edge-news-football", "edge-news-spiderman", "edge-news-sponsored", "edge-news-weather.png", "edge-news-travel.png", "edge-news-congress.png", "edge-news-universe.png"]) assert.ok(!news.includes(removed));
+  assert.ok(!news.includes("section-number"));
+  assert.ok(!news.includes("<a "));
+  assert.ok(!news.includes("<video"));
+});
+
+test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {
+  const elections = original.match(/<section class="project project-elections.*?<\/section>/s)[0];
+  assert.ok(elections.indexOf('id="elections-video"') < elections.indexOf('class="election-details-page"'));
+  assert.ok(elections.includes('src="/media/midterm-elections-results.mp4"'));
+  assert.ok(elections.includes('controls muted playsinline preload="none"'));
+  assert.ok(!elections.includes("elections-overview.png"));
+  assert.equal([...elections.matchAll(/<img /g)].length, 6);
+  assert.ok(html.includes('id="warm-elections-project"'));
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(script.includes('document.querySelector("#warm-elections-project").content'));
+  assert.ok(script.includes('[electionsVideo, "elections-video-status", "Midterm Elections"]'));
+  await access(new URL("public/media/midterm-elections-results.mp4", root));
+});
+
 test("the second identity uses a distinct route and a scoped stylesheet", async () => {
   const warm = await readFile(new URL("src/warm.css", root), "utf8");
   const script = await readFile(new URL("src/main.js", root), "utf8");
