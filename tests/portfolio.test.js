@@ -354,7 +354,7 @@ test("Daily Brief groups all three actual Figma mocks in one visuals-only sectio
 test("the opening has the exact two-line credibility labels and genuine linked logos", async () => {
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(original.includes("Featured<br />Designer"));
-  assert.ok(original.includes("Work published<br />in"));
+  assert.ok(original.includes("Work<br />published in"));
   assert.ok(original.includes("AIGA50 DC"));
   assert.ok(original.includes('alt="TODAY"'));
   assert.ok(original.includes('alt="Fast Company"'));
