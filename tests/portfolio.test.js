@@ -225,7 +225,7 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   assert.ok(!original.includes("Browser prototype pending."));
   assert.ok(!story.includes("discover-video-placeholder"));
   const image = await readFile(new URL("public/media/discover-personalized-brief.png", root));
-  assert.equal(createHash("sha256").update(image).digest("hex"), "abfcae9e0ad43c6a4b68800e6010d91b78ee353b45b12ecc480647c8a0345bd5");
+  assert.equal(createHash("sha256").update(image).digest("hex"), "a4ef8876673bcb69cf31b2322466818bc7aef2d855d71eaa5d903172caf4f5d9");
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.discover-statement \{[^}]*background: #f6f5f3;/);
   assert.ok(!story.includes("<video"));
