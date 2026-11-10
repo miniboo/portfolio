@@ -46,6 +46,20 @@ test("all in-page links target existing IDs", () => {
   }
 });
 
+test("the original ends at project04 without About, portrait or contact footer", async () => {
+  assert.ok(!original.includes('id="about"'));
+  assert.ok(!original.includes('class="portrait"'));
+  assert.ok(!original.includes('class="site-footer'));
+  assert.ok(!original.includes("Let’s connect"));
+  assert.ok(!original.includes('href="#about"'));
+  assert.ok(html.includes('<template id="warm-about">'));
+  assert.ok(html.includes('<template id="warm-footer">'));
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(script.includes("about.replaceWith(about.content)"));
+  assert.ok(script.includes("footer.replaceWith(footer.content)"));
+  assert.ok(script.indexOf('const portrait = document.querySelector(".portrait")') > script.indexOf('dataset.identity === "warm"'));
+});
+
 test("original placeholder projects are replaced by the reference-based AI-native design practice", async () => {
   assert.ok(!original.includes("AI Generated Content"));
   assert.ok(!original.includes("Royal Academy"));

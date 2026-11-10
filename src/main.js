@@ -1,10 +1,13 @@
 import { mountDiscoverPhones } from "./discover-phones.js";
 
 const hero = document.querySelector(".hero");
-const portrait = document.querySelector(".portrait");
-portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
-
 if (document.documentElement.dataset.identity === "warm") {
+  const about = document.querySelector("#warm-about");
+  about.replaceWith(about.content);
+  const footer = document.querySelector("#warm-footer");
+  footer.replaceWith(footer.content);
+  const portrait = document.querySelector(".portrait");
+  portrait.querySelector(".portrait-frame").dataset.parallax = "0.025";
   const header = document.querySelector("#warm-header");
   header.replaceWith(header.content);
   document.querySelector(".hero-illustration").remove();
@@ -45,8 +48,6 @@ if (document.documentElement.dataset.identity === "warm") {
   work.insertBefore(previous.querySelector(".work-context"), index);
   work.insertBefore(previous.querySelector(".scale"), index);
   ecosystem.remove();
-  const motionControl = document.querySelector("#warm-motion-control");
-  motionControl.replaceWith(motionControl.content);
 }
 
 mountDiscoverPhones();
