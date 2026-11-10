@@ -167,6 +167,9 @@ html:not([data-identity="warm"]) .landscape-parallax::after { content: ""; posit
 html:not([data-identity="warm"]) .landscape-image { position: absolute; inset: -24px; background: url("/media/work-landscape.jpg") center / cover; }
 html:not([data-identity="warm"]) .landscape-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
 html:not([data-identity="warm"]) .landscape-video[data-ready="true"] { opacity: 1; }
+.landscape-play { position: absolute; right: 24px; bottom: 24px; min-height: 36px; padding: 8px 12px; border: 1px solid #fff9; border-radius: 8px; background: #1e1b1bcc; color: #fefdfa; font: 12px/18px var(--sans); opacity: 0; pointer-events: none; cursor: pointer; }
+.landscape-play:focus-visible, .landscape-play[data-blocked="true"] { opacity: 1; pointer-events: auto; }
+@media (hover: none), (pointer: coarse) { .landscape-play { opacity: 1; pointer-events: auto; } }
 .video-status { max-width: 500px; font-size: 14px; line-height: 1.5; }
 html:not([data-identity="warm"]) #edge-discover-video { display: block; width: 100%; height: auto; border-radius: 8px; background: #1e1b1b; }
 html:not([data-identity="warm"]) .case-story { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 40px; }
@@ -240,9 +243,12 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-shell { min-width: 0; perspective: 1200px; }
 .curated-turn { position: relative; transform-style: preserve-3d; transition: transform 550ms cubic-bezier(.4, 0, .2, 1); }
 .curated-turn[data-side="editor"] { transform: rotateY(-180deg); }
-.curated-turn > :is(.curated-card, .curated-editor) { backface-visibility: hidden; }
-.curated-turn > article { transform: rotateY(0deg); }
-.curated-editor { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 12px; border-color: #e5e5e5; overflow-y: auto; scrollbar-width: thin; transform: rotateY(180deg); }
+/* WebKit can paint scrollable backs through the front; swap opacity at the edge-on point. */
+.curated-turn > :is(.curated-card, .curated-editor) { -webkit-backface-visibility: hidden; backface-visibility: hidden; transition: opacity 0s 275ms; }
+.curated-turn > article { transform: rotateY(0deg); opacity: 1; }
+.curated-turn[data-side="editor"] > article { opacity: 0; }
+.curated-editor { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 12px; border-color: #e5e5e5; overflow-y: auto; scrollbar-width: thin; transform: rotateY(180deg); opacity: 0; }
+.curated-turn[data-side="editor"] > .curated-editor { opacity: 1; }
 .curated-editor-intro { flex: none; padding: 8px 12px 12px; }
 .curated-editor h5 { margin: 0; font-family: "Segoe Serif", Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 420; line-height: 34px; letter-spacing: 0; color: #000000e6; }
 .curated-editor-intro p { margin-top: 8px; color: #4c4642; font-size: 14px; line-height: 20px; }
@@ -255,8 +261,8 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-editor-actions button:hover { box-shadow: inset 0 0 0 1px #0003; }
 .curated-editor-toggle { position: absolute; top: 8px; right: 8px; padding: 6px 10px; border: 1px solid #e6e6e6; border-radius: 12px; background: #fff; color: #191919; font: 12px/18px "Segoe UI", Arial, sans-serif; opacity: 0; pointer-events: none; cursor: pointer; }
 .curated-editor-toggle:focus-visible { opacity: 1; pointer-events: auto; }
-html[data-motion="off"] .curated-turn { transition: none; }
-@media (prefers-reduced-motion: reduce) { .curated-turn { transition: none; } }
+html[data-motion="off"] .curated-turn, html[data-motion="off"] .curated-turn > :is(.curated-card, .curated-editor) { transition: none; }
+@media (prefers-reduced-motion: reduce) { .curated-turn, .curated-turn > :is(.curated-card, .curated-editor) { transition: none; } }
 html:not([data-identity="warm"]) .election-details-page a { display: block; cursor: zoom-in; }
 html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; }
 html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }

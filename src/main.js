@@ -65,6 +65,7 @@ const botanical = document.querySelector(".hero-illustration img");
 const edgeVideo = document.querySelector("#edge-discover-video");
 const discoverVideo = document.querySelector("#copilot-discover-video");
 const electionsVideo = document.querySelector("#elections-video");
+const landscapePlay = video ? document.createElement("button") : null;
 const press = document.querySelector(".recognition-press");
 const pressLogos = [...document.querySelectorAll(".press-logo")];
 const pressArea = document.querySelector("#press-logos");
@@ -80,20 +81,24 @@ let sceneVisible = false;
 let introAttempted = false;
 let introFinished = false;
 let introTimer;
+let videoRequest = 0;
+let manualPlayback = false;
 let videoUnavailable = false;
 let pressVisible = false;
 let pressHovered = false;
 let pressFinished = false;
 let pressTimer;
+let pressReady = false;
 
 function syncPress() {
   if (!press) return;
   clearTimeout(pressTimer);
-  if (!motionEnabled || pressFinished || !pressVisible || document.hidden || pressHovered || pressArea.contains(document.activeElement)) return;
+  if (!motionEnabled || !pressReady || pressFinished || !pressVisible || document.hidden || pressHovered || pressArea.contains(document.activeElement)) return;
   pressTimer = setTimeout(() => {
     pressFinished = true;
+    const next = (pressLogos.findIndex(logo => logo.dataset.active === "true") + 1) % pressLogos.length;
     pressLogos.forEach((logo, index) => {
-      const active = index === 1;
+      const active = index === next;
       logo.dataset.active = String(active);
       logo.setAttribute("aria-hidden", String(!active));
       logo.tabIndex = active ? 0 : -1;
@@ -102,11 +107,29 @@ function syncPress() {
   }, 2500);
 }
 
+function pauseLandscape() {
+  clearTimeout(introTimer);
+  videoRequest += 1;
+  video.pause();
+  manualPlayback = false;
+  if (introAttempted) introFinished = true;
+}
+
+function restartLandscape(explicit = false) {
+  if (videoUnavailable || (!motionEnabled && !explicit)) return;
+  pauseLandscape();
+  introAttempted = false;
+  introFinished = false;
+  manualPlayback = explicit;
+  if (video.readyState >= 1) video.currentTime = 0;
+  syncVideo();
+}
+
 function reportVideoFailure(error) {
   if (videoUnavailable) return;
   videoUnavailable = true;
-  clearTimeout(introTimer);
-  video.pause();
+  pauseLandscape();
+  landscapePlay.disabled = true;
   video.dataset.ready = "false";
   videoStatus.textContent = "The video is unavailable. The landscape image is shown instead.";
   videoStatus.hidden = false;
@@ -115,32 +138,34 @@ function reportVideoFailure(error) {
 
 function syncVideo() {
   if (!video) return;
-  if (!motionEnabled || !sceneVisible || document.hidden || videoUnavailable) {
-    clearTimeout(introTimer);
-    video.pause();
-    if (introAttempted) introFinished = true;
+  const bounds = landscapeScene.getBoundingClientRect();
+  const visibleHeight = Math.min(bounds.bottom, innerHeight) - Math.max(bounds.top, 0);
+  sceneVisible = visibleHeight >= Math.min(bounds.height * .4, innerHeight * .4);
+  if ((!motionEnabled && !manualPlayback) || !sceneVisible || document.hidden || videoUnavailable) {
+    pauseLandscape();
     if (!motionEnabled) video.dataset.ready = "false";
     return;
   }
   if (introAttempted || introFinished) return;
   introAttempted = true;
+  const request = ++videoRequest;
   video.muted = true;
+  videoStatus.hidden = true;
   video.play().then(() => {
-    if (introFinished || !motionEnabled || !sceneVisible || document.hidden) {
-      video.pause();
-      return;
-    }
+    if (request !== videoRequest) return;
     video.dataset.ready = "true";
+    delete landscapePlay.dataset.blocked;
     introTimer = setTimeout(() => {
-      introFinished = true;
-      video.pause();
+      pauseLandscape();
     }, 4000);
   }).catch(error => {
-    if (error.name === "AbortError" && (!motionEnabled || !sceneVisible || document.hidden)) return;
+    if (request !== videoRequest) return;
     introFinished = true;
     if (error.name === "NotAllowedError") {
-      videoStatus.textContent = "Your browser is showing the still landscape instead of background video.";
+      landscapePlay.dataset.blocked = "true";
+      videoStatus.textContent = "Select Play background video to start the muted film. The still landscape remains available.";
       videoStatus.hidden = false;
+      console.warn("Background video requires explicit playback in this browser.", error);
     } else {
       reportVideoFailure(error);
     }
@@ -206,22 +231,37 @@ if (motionToggle) {
   });
 }
 if (press) {
+  Promise.all(pressLogos.map(logo => logo.querySelector("img").decode())).then(() => {
+    pressReady = true;
+    syncPress();
+  }, error => console.warn("Press-logo rotation is unavailable because a source logo could not decode.", error));
   pressArea.addEventListener("pointerenter", () => { pressHovered = true; syncPress(); });
   pressArea.addEventListener("pointerleave", () => { pressHovered = false; syncPress(); });
   pressArea.addEventListener("focusin", syncPress);
   pressArea.addEventListener("focusout", () => queueMicrotask(syncPress));
   new IntersectionObserver(([entry]) => {
-    pressVisible = entry.isIntersecting;
+    const visible = entry.isIntersecting && entry.intersectionRatio >= .8;
+    if (visible && !pressVisible) pressFinished = false;
+    pressVisible = visible;
     syncPress();
-  }).observe(press);
+  }, { threshold: [0, .8] }).observe(press);
 }
 if (video) {
+  landscapePlay.type = "button";
+  landscapePlay.className = "landscape-play";
+  landscapePlay.textContent = "Play background video";
+  landscapePlay.addEventListener("click", () => restartLandscape(true));
+  landscapeScene.append(landscapePlay);
+  landscapeScene.addEventListener("pointerenter", event => {
+    if (event.pointerType === "mouse") restartLandscape();
+  });
+  landscapeScene.addEventListener("pointerleave", event => {
+    if (event.pointerType === "mouse") pauseLandscape();
+  });
+  video.addEventListener("ended", pauseLandscape);
   video.addEventListener("error", () => reportVideoFailure(video.error));
   video.querySelector("source").addEventListener("error", () => reportVideoFailure(new Error("The supplied video source could not load")));
-  new IntersectionObserver(([entry]) => {
-    sceneVisible = entry.isIntersecting && entry.intersectionRatio >= .5;
-    syncVideo();
-  }, { threshold: [0, .5] }).observe(landscapeScene);
+  new IntersectionObserver(syncVideo, { threshold: Array.from({ length: 11 }, (_, index) => index / 10) }).observe(landscapeScene);
 }
 for (const [player, statusId, name] of [
   [edgeVideo, "edge-video-status", "Edge Discover"],
@@ -252,6 +292,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden && electionsVideo) electionsVideo.pause();
 });
 motionPreference.addEventListener("change", () => {
+  manualPlayback = false;
   motionEnabled = !motionPreference.matches;
   updateMotion();
 });

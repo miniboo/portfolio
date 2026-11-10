@@ -180,7 +180,8 @@ test("news cards replace the fan with source prompt editors and honest local act
   assert.ok(!script.includes("fetch("));
   assert.ok(!script.includes("localStorage"));
   assert.ok(styles.includes('.curated-turn[data-side="editor"] { transform: rotateY(-180deg); }'));
-  assert.ok(styles.includes('html[data-motion="off"] .curated-turn { transition: none; }'));
+  assert.ok(styles.includes('html[data-motion="off"] .curated-turn > :is(.curated-card, .curated-editor) { transition: none; }'));
+  assert.ok(styles.includes("transition: opacity 0s 275ms"));
 });
 
 test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {
@@ -425,6 +426,20 @@ test("custom motion controls are absent and decorative video is finite with a st
   assert.ok(script.includes('landscapeSurface.style.opacity'));
   assert.ok(styles.includes('html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }'));
   assert.ok(styles.includes('.hero .name-period { color: var(--orange); }'));
+});
+
+test("the second-screen film replays on hover and press logos rotate only after meaningful visibility", async () => {
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(script.includes("function restartLandscape(explicit = false)"));
+  assert.ok(script.includes('landscapeScene.addEventListener("pointerenter"'));
+  assert.ok(script.includes('landscapeScene.addEventListener("pointerleave"'));
+  assert.ok(script.includes("restartLandscape(true)"));
+  assert.ok(script.includes("request !== videoRequest"));
+  assert.ok(script.includes('video.addEventListener("ended", pauseLandscape)'));
+  assert.ok(script.includes("entry.intersectionRatio >= .8"));
+  assert.ok(script.includes("if (visible && !pressVisible) pressFinished = false"));
+  assert.ok(script.includes('logo.querySelector("img").decode()'));
+  assert.ok(script.includes("index === next"));
 });
 
 test("Edge has a native controlled video and the authorized problem, intervention and outcome", async () => {
