@@ -201,11 +201,12 @@ html:not([data-identity="warm"]) .project .project-heading h2 { max-width: 1100p
 html:not([data-identity="warm"]) .project-heading > div { display: flex; flex-direction: column; gap: 20px; }
 html:not([data-identity="warm"]) .project-heading .eyebrow { order: 1; margin: 0; }
 html:not([data-identity="warm"]) .project .project-body { margin-top: clamp(40px, 5vw, 72px); }
+html:not([data-identity="warm"]) :is(.project-edge, .project-elections, .election-details-page) { background: var(--paper); color: var(--ink); }
 html:not([data-identity="warm"]) #elections-video { display: block; width: 100%; height: auto; border-radius: 8px; background: #1e1b1b; }
 html:not([data-identity="warm"]) #elections-video-status { margin-top: 24px; }
 html:not([data-identity="warm"]) .edge-news { margin-top: clamp(88px, 10vw, 160px); }
 html:not([data-identity="warm"]) .edge-news > h3 { font-family: var(--serif); font-size: clamp(30px, 3vw, 48px); font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
-html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 328px)); justify-content: center; align-items: start; gap: 32px; margin-top: 40px; }
+html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-template-columns: repeat(4, 328px); justify-content: center; align-items: start; gap: 24px; margin-top: 40px; }
 .curated-symbols { position: absolute; overflow: hidden; }
 .curated-card { position: relative; min-width: 0; width: 100%; border: 1px solid #e6e6e6; border-radius: 24px; background: #fff; color: #191919; font-family: "Segoe Sans", "Segoe UI", Arial, sans-serif; font-size: 14px; line-height: 20px; letter-spacing: 0; }
 .curated-standard { padding: 20px 24px; }
@@ -216,6 +217,14 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-thumbnail { position: relative; display: block; width: 80px; height: 80px; overflow: hidden; border-radius: 8px; }
 .curated-thumbnail img { position: absolute; left: -29px; top: -9px; width: 138px; height: 92px; object-fit: cover; }
 .curated-weather .curated-thumbnail img { left: -11px; top: -13px; width: 150px; height: 96px; }
+.curated-football .curated-thumbnail img { inset: 0; width: 80px; height: 80px; }
+.curated-watchlist .curated-topic { max-width: 186px; }
+.curated-stock { position: relative; width: 80px; height: 80px; }
+.curated-stock-price { position: absolute; top: 5px; left: 9px; color: #000000e6; font-size: 16px; font-weight: 650; line-height: 22px; }
+.curated-stock-gain { position: absolute; top: 24px; left: 9px; display: flex; align-items: center; gap: 2px; color: #017048; font-weight: 650; line-height: 20px; }
+.curated-stock-gain svg { width: 12px; height: 12px; fill: currentColor; }
+.curated-stock-chart { position: absolute; top: 45px; left: 9px; width: 60px; height: 30px; overflow: hidden; fill: none; stroke: #017048; stroke-width: 1; }
+.curated-stock-chart .curated-stock-baseline { stroke: #0003; }
 .curated-emphasis { text-decoration: underline dotted; text-underline-offset: 2px; }
 .curated-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 16px; }
 .curated-attribution { display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 12px; font-weight: 500; line-height: 20px; }
@@ -228,7 +237,7 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-reactions button:hover:not(:disabled), .curated-reactions button[aria-pressed="true"] { background: #8883; }
 .curated-reactions button:disabled { cursor: default; opacity: 1; }
 html:not([data-identity="warm"]) .election-details-page a { display: block; cursor: zoom-in; }
-html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; background: #f7f7f7; }
+html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; }
 html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); margin-top: clamp(32px, 5vw, 72px); }
 html:not([data-identity="warm"]) .election-pieces > div { display: flex; flex-direction: column; align-items: center; gap: 32px; }
 html:not([data-identity="warm"]) .election-pieces a { width: 100%; max-width: 393px; }
@@ -238,6 +247,10 @@ html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: 
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
 html[data-motion="off"] .landscape-video { transition: none; }
 html[data-motion="off"] .press-logo { transition: none; }
+
+@media (max-width: 1520px) {
+  html:not([data-identity="warm"]) .edge-news-gallery { grid-template-columns: repeat(2, minmax(0, 328px)); gap: 32px; }
+}
 
 @media (max-width: 1300px) {
   html:not([data-identity="warm"]) .landscape-parallax::after { background: #000b; }

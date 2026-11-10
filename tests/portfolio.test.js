@@ -112,21 +112,28 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(original.includes("MSN / Election coverage"));
 });
 
-test("Edge has only the two requested curated cards with live text and photo-only assets", () => {
+test("Edge has the four confirmed personalized cards with live source text and appropriate attribution", () => {
   const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
   assert.ok(news.includes('<h3 id="edge-news-title">AI-curated news for you</h3>'));
-  assert.equal([...news.matchAll(/<article /g)].length, 2);
-  assert.equal([...news.matchAll(/<h4 /g)].length, 2);
+  assert.equal([...news.matchAll(/<article /g)].length, 4);
+  assert.equal([...news.matchAll(/<h4 /g)].length, 4);
   assert.equal([...news.matchAll(/Curated by Copilot/g)].length, 2);
-  assert.equal([...news.matchAll(/data-curated-reaction=/g)].length, 4);
-  assert.equal([...news.matchAll(/aria-pressed="false" disabled/g)].length, 4);
-  for (const copy of ["A frosty start to your morning", "Schiaparelli gives your London trip a cultural anchor"]) assert.ok(news.includes(copy));
+  assert.equal([...news.matchAll(/<span>Vexel<\/span>/g)].length, 2);
+  assert.equal([...news.matchAll(/data-curated-reaction=/g)].length, 8);
+  assert.equal([...news.matchAll(/aria-pressed="false" disabled/g)].length, 8);
+  for (const copy of ["A frosty start to your morning", "Schiaparelli gives your London trip a cultural anchor", "Microsoft's earnings reveal an interesting AI trade-off", "The key pressure point ahead of kickoff", "You follow the 49ers", "238.78", "3.97%"]) assert.ok(news.includes(copy));
   for (const removed of ["The Universe Is Coming Into Focus", "Congress Returns to Washington", "curated-universe", "curated-congress", "curated-capitol"]) assert.ok(!original.includes(removed));
-  for (const asset of ["curated-weather.jpg", "curated-travel.jpg"]) assert.ok(news.includes(`/media/${asset}`));
+  for (const asset of ["curated-weather.jpg", "curated-travel.jpg", "curated-football.jpg", "curated-vexel.png"]) assert.ok(news.includes(`/media/${asset}`));
   for (const removed of ["edge-news-finance", "edge-news-football", "edge-news-spiderman", "edge-news-sponsored", "edge-news-weather.png", "edge-news-travel.png", "edge-news-congress.png", "edge-news-universe.png"]) assert.ok(!news.includes(removed));
   assert.ok(!news.includes("section-number"));
   assert.ok(!news.includes("<a "));
   assert.ok(!news.includes("<video"));
+});
+
+test("both original election surfaces reuse the actual NTP paper and ink tokens", async () => {
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(styles.includes('html:not([data-identity="warm"]) :is(.project-edge, .project-elections, .election-details-page) { background: var(--paper); color: var(--ink); }'));
+  assert.ok(!styles.includes("border-radius: 8px; background: #f7f7f7;"));
 });
 
 test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {
