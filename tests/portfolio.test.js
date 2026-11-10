@@ -55,7 +55,8 @@ test("original placeholder projects are replaced by the reference-based AI-nativ
   const practice = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
   assert.equal([...practice.matchAll(/class="ai-native-marker"/g)].length, 4);
   for (const topic of ["Content intelligence", "Personal context", "Generative interfaces", "Human voices &amp; trust"]) assert.ok(practice.includes(topic));
-  assert.ok(practice.includes('src="/media/chloe-follies.jpg"'));
+  assert.ok(practice.includes('src="/media/ai-native-design-practice.png" width="921" height="522"'));
+  assert.ok(!practice.includes("chloe-follies.jpg"));
   assert.ok(html.includes('id="warm-tools-project"'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-tools \{[^}]*background: #fefdfa;/);
