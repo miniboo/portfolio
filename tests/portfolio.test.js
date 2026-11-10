@@ -142,7 +142,9 @@ test("Midterm leads with the genuine video then individual source pieces and pre
   assert.ok(elections.includes('src="/media/midterm-elections-results.mp4"'));
   assert.ok(elections.includes('controls muted playsinline preload="none"'));
   assert.ok(!elections.includes("elections-overview.png"));
-  assert.equal([...elections.matchAll(/<img /g)].length, 6);
+  assert.ok(!elections.includes("elections-results.png"));
+  assert.ok(!elections.includes('class="election-map"'));
+  assert.equal([...elections.matchAll(/<img /g)].length, 5);
   assert.ok(html.includes('id="warm-elections-project"'));
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(script.includes('document.querySelector("#warm-elections-project").content'));

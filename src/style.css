@@ -238,7 +238,7 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-reactions button:disabled { cursor: default; opacity: 1; }
 html:not([data-identity="warm"]) .election-details-page a { display: block; cursor: zoom-in; }
 html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; }
-html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); margin-top: clamp(32px, 5vw, 72px); }
+html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }
 html:not([data-identity="warm"]) .election-pieces > div { display: flex; flex-direction: column; align-items: center; gap: 32px; }
 html:not([data-identity="warm"]) .election-pieces a { width: 100%; max-width: 393px; }
 
