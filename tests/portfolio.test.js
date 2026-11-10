@@ -190,7 +190,9 @@ test("Midterm leads with the genuine video then individual source pieces and pre
   assert.ok(elections.includes('src="/media/midterm-elections-results.mp4"'));
   assert.ok(elections.includes('controls muted playsinline preload="none"'));
   assert.ok(!elections.includes("elections-overview.png"));
-  assert.ok(!elections.includes("elections-results.png"));
+  assert.ok(elections.includes('poster="/media/elections-results.png"'));
+  const details = elections.slice(elections.indexOf('class="election-details-page"'));
+  assert.ok(!details.includes("elections-results.png"));
   assert.ok(!elections.includes('class="election-map"'));
   assert.equal([...elections.matchAll(/<img /g)].length, 5);
   assert.ok(html.includes('id="warm-elections-project"'));
@@ -198,6 +200,7 @@ test("Midterm leads with the genuine video then individual source pieces and pre
   assert.ok(script.includes('document.querySelector("#warm-elections-project").content'));
   assert.ok(script.includes('[electionsVideo, "elections-video-status", "Midterm Elections"]'));
   await access(new URL("public/media/midterm-elections-results.mp4", root));
+  await access(new URL("public/media/elections-results.png", root));
 });
 
 test("the second identity uses a distinct route and a scoped stylesheet", async () => {
