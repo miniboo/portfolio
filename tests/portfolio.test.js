@@ -68,7 +68,10 @@ test("original placeholder projects are replaced by the reference-based AI-nativ
   assert.ok(original.includes('id="discover-title" aria-hidden="true"'));
   const practice = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
   assert.equal([...practice.matchAll(/class="ai-native-marker"/g)].length, 4);
-  for (const topic of ["Content intelligence", "Personal context", "Generative interfaces", "Human voices &amp; trust"]) assert.ok(practice.includes(topic));
+  for (const topic of ["Design in code", "Build, tinker, learn", "Research, craft &amp; judgment", "Share &amp; grow ownership"]) assert.ok(practice.includes(topic));
+  assert.ok(practice.includes("A frontier-lab approach to design"));
+  for (const process of ["working experiences we can use, test and refine", "hands-on experiments", "Sketching stays part of the process", "ownership across the design cycle"]) assert.ok(practice.includes(process));
+  for (const removed of ["publisher content", "chat history", "daily brief", "AI-curated experiences"]) assert.ok(!practice.includes(removed));
   assert.ok(practice.includes('src="/media/ai-native-design-practice.png" width="921" height="522"'));
   assert.ok(!practice.includes("chloe-follies.jpg"));
   assert.ok(html.includes('id="warm-tools-project"'));
