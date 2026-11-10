@@ -138,6 +138,7 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(styles.includes('.project .project-heading { display: flex; flex-direction: column; gap: 20px; }'));
   assert.ok(original.includes("Edge / New tab page"));
   assert.ok(original.includes("MSN / Election coverage"));
+  assert.ok(original.includes('class="eyebrow discover-platforms">One Copilot desktop &amp; mobile app</p>'));
 });
 
 test("Edge has the four confirmed personalized cards with live source text and appropriate attribution", () => {
