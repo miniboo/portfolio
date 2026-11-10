@@ -164,22 +164,23 @@ test("both original election surfaces reuse the actual NTP paper and ink tokens"
   assert.ok(!styles.includes("border-radius: 8px; background: #f7f7f7;"));
 });
 
-test("news-card entrance is a once-visible transform-only fan with static fallbacks", async () => {
-  const script = await readFile(new URL("src/main.js", root), "utf8");
-  const entrance = script.slice(script.indexOf("function mountCardEntrance()"), script.indexOf("function syncPress()"));
-  assert.ok(entrance.includes('document.querySelector(".edge-news-gallery")'));
-  assert.ok(entrance.includes("!motionEnabled"));
-  assert.ok(entrance.includes("firstRowHeight * .65"));
-  assert.ok(entrance.includes("duration: 990, delay: index * 70"));
-  assert.ok(entrance.includes('gallery.dataset.entrance = "settled"'));
-  assert.ok(entrance.includes("animation.pause()"));
-  assert.ok(entrance.includes("image.decode()"));
-  assert.ok(entrance.includes('gallery.addEventListener("focusin", finish)'));
-  assert.ok(entrance.includes("resizeObserver.disconnect()"));
-  assert.ok(script.includes("if (!motionEnabled) finishCardEntrance()"));
-  assert.ok(!entrance.includes("opacity"));
-  assert.ok(!entrance.includes("scale("));
-  assert.ok(!entrance.includes("setInterval"));
+test("news cards replace the fan with source prompt editors and honest local actions", async () => {
+  const main = await readFile(new URL("src/main.js", root), "utf8");
+  const script = await readFile(new URL("src/curated-cards.js", root), "utf8");
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.ok(main.includes("mountCuratedCards()"));
+  assert.ok(!main.includes("mountCardEntrance"));
+  for (const copy of ["Make this card more relevant to you", "Describe topics, sources or any updates", "Cancel", "Update card", "stories do not regenerate"]) assert.ok(script.includes(copy));
+  assert.ok(script.includes('toggle.setAttribute("aria-controls", editor.id)'));
+  assert.ok(script.includes("card.inert = open"));
+  assert.ok(script.includes("editor.inert = !open"));
+  assert.ok(script.includes('event.key !== "Escape"'));
+  assert.ok(script.includes('event.pointerType !== "mouse"'));
+  assert.ok(script.includes('card.dataset.prompt = textarea.value'));
+  assert.ok(!script.includes("fetch("));
+  assert.ok(!script.includes("localStorage"));
+  assert.ok(styles.includes('.curated-turn[data-side="editor"] { transform: rotateY(-180deg); }'));
+  assert.ok(styles.includes('html[data-motion="off"] .curated-turn { transition: none; }'));
 });
 
 test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {

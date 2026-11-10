@@ -208,7 +208,7 @@ html:not([data-identity="warm"]) .edge-news { margin-top: clamp(88px, 10vw, 160p
 html:not([data-identity="warm"]) .edge-news > h3 { font-family: var(--serif); font-size: clamp(30px, 3vw, 48px); font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
 html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-template-columns: repeat(4, 328px); justify-content: center; align-items: start; gap: 24px; margin-top: 40px; }
 .curated-symbols { position: absolute; overflow: hidden; }
-.curated-card { position: relative; min-width: 0; width: 100%; border: 1px solid #e6e6e6; border-radius: 24px; background: #fff; color: #191919; font-family: "Segoe Sans", "Segoe UI", Arial, sans-serif; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.curated-card, .curated-editor { position: relative; min-width: 0; width: 100%; border: 1px solid #e6e6e6; border-radius: 24px; background: #fff; color: #191919; font-family: "Segoe Sans", "Segoe UI", Arial, sans-serif; font-size: 14px; line-height: 20px; letter-spacing: 0; }
 .curated-standard { padding: 20px 24px; }
 .curated-topic { font-weight: 500; }
 .curated-weather .curated-topic { color: #a62147; }
@@ -236,6 +236,27 @@ html:not([data-identity="warm"]) .edge-news-gallery { display: grid; grid-templa
 .curated-reactions button { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; min-height: 28px; padding: 6px; border: 0; border-radius: 6px; background: transparent; color: inherit; font-size: 12px; line-height: 16px; cursor: pointer; }
 .curated-reactions button:hover:not(:disabled), .curated-reactions button[aria-pressed="true"] { background: #8883; }
 .curated-reactions button:disabled { cursor: default; opacity: 1; }
+.curated-editor-note { margin-top: 16px; color: #595959; font: 12px/18px "Segoe UI", Arial, sans-serif; }
+.curated-shell { min-width: 0; perspective: 1200px; }
+.curated-turn { position: relative; transform-style: preserve-3d; transition: transform 550ms cubic-bezier(.4, 0, .2, 1); }
+.curated-turn[data-side="editor"] { transform: rotateY(-180deg); }
+.curated-turn > :is(.curated-card, .curated-editor) { backface-visibility: hidden; }
+.curated-turn > article { transform: rotateY(0deg); }
+.curated-editor { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 12px; border-color: #e5e5e5; overflow-y: auto; scrollbar-width: thin; transform: rotateY(180deg); }
+.curated-editor-intro { flex: none; padding: 8px 12px 12px; }
+.curated-editor h5 { margin: 0; font-family: "Segoe Serif", Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 420; line-height: 34px; letter-spacing: 0; color: #000000e6; }
+.curated-editor-intro p { margin-top: 8px; color: #4c4642; font-size: 14px; line-height: 20px; }
+.curated-editor form { display: flex; flex: 1; flex-direction: column; gap: 8px; min-height: 116px; padding: 12px 12px 8px; }
+.curated-editor textarea { display: block; flex: 1; width: calc(100% + 2px); min-height: 56px; padding: 6px 8px; resize: none; border: 1px solid #6f6f6f; border-radius: 8px; background: #fff; color: #000000e6; font: 420 12px/16px "Segoe Sans", "Segoe UI", Arial, sans-serif; letter-spacing: 0; }
+.curated-editor textarea::placeholder { color: #0000008f; opacity: 1; }
+.curated-editor-actions { display: flex; flex: none; justify-content: space-between; gap: 8px; }
+.curated-editor-actions button { min-width: 24px; height: 32px; padding: 0 10px; border: 0; border-radius: 12px; background: transparent; color: #000000e6; font: 500 14px/20px "Segoe Sans", "Segoe UI", Arial, sans-serif; cursor: pointer; }
+.curated-editor-actions .curated-editor-update { background: #242424; color: #ffffffe6; }
+.curated-editor-actions button:hover { box-shadow: inset 0 0 0 1px #0003; }
+.curated-editor-toggle { position: absolute; top: 8px; right: 8px; padding: 6px 10px; border: 1px solid #e6e6e6; border-radius: 12px; background: #fff; color: #191919; font: 12px/18px "Segoe UI", Arial, sans-serif; opacity: 0; pointer-events: none; cursor: pointer; }
+.curated-editor-toggle:focus-visible { opacity: 1; pointer-events: auto; }
+html[data-motion="off"] .curated-turn { transition: none; }
+@media (prefers-reduced-motion: reduce) { .curated-turn { transition: none; } }
 html:not([data-identity="warm"]) .election-details-page a { display: block; cursor: zoom-in; }
 html:not([data-identity="warm"]) .election-details-page { margin-top: clamp(88px, 10vw, 160px); padding: clamp(16px, 3vw, 48px); border-radius: 8px; }
 html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }
