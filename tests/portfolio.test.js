@@ -164,6 +164,24 @@ test("both original election surfaces reuse the actual NTP paper and ink tokens"
   assert.ok(!styles.includes("border-radius: 8px; background: #f7f7f7;"));
 });
 
+test("news-card entrance is a once-visible transform-only fan with static fallbacks", async () => {
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  const entrance = script.slice(script.indexOf("function mountCardEntrance()"), script.indexOf("function syncPress()"));
+  assert.ok(entrance.includes('document.querySelector(".edge-news-gallery")'));
+  assert.ok(entrance.includes("!motionEnabled"));
+  assert.ok(entrance.includes("firstRowHeight * .65"));
+  assert.ok(entrance.includes("duration: 990, delay: index * 70"));
+  assert.ok(entrance.includes('gallery.dataset.entrance = "settled"'));
+  assert.ok(entrance.includes("animation.pause()"));
+  assert.ok(entrance.includes("image.decode()"));
+  assert.ok(entrance.includes('gallery.addEventListener("focusin", finish)'));
+  assert.ok(entrance.includes("resizeObserver.disconnect()"));
+  assert.ok(script.includes("if (!motionEnabled) finishCardEntrance()"));
+  assert.ok(!entrance.includes("opacity"));
+  assert.ok(!entrance.includes("scale("));
+  assert.ok(!entrance.includes("setInterval"));
+});
+
 test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {
   const elections = original.match(/<section class="project project-elections.*?<\/section>/s)[0];
   assert.ok(elections.indexOf('id="elections-video"') < elections.indexOf('class="election-details-page"'));

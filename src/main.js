@@ -94,6 +94,121 @@ let pressVisible = false;
 let pressHovered = false;
 let pressFinished = false;
 let pressTimer;
+const finishCardEntrance = mountCardEntrance();
+
+function mountCardEntrance() {
+  const gallery = document.querySelector(".edge-news-gallery");
+  if (!gallery || !motionEnabled || !Element.prototype.animate) return () => {};
+  const cards = [...gallery.querySelectorAll(".curated-card")];
+  const bounds = gallery.getBoundingClientRect();
+  const boxes = cards.map(card => {
+    const box = card.getBoundingClientRect();
+    return { x: box.left - bounds.left, y: box.top - bounds.top, width: box.width, height: box.height };
+  });
+  const mobile = boxes.every(box => Math.abs(box.x - boxes[0].x) < 1);
+  const firstRowHeight = Math.max(...boxes.filter(box => Math.abs(box.y - boxes[0].y) < 1).map(box => box.height));
+  const pivot = {
+    x: (Math.min(...boxes.map(box => box.x)) + Math.max(...boxes.map(box => box.x + box.width))) / 2,
+    y: mobile ? bounds.height / 2 : firstRowHeight,
+  };
+  const spacing = Math.min(boxes[0].width * .6, (Math.max(...boxes.map(box => box.x + box.width)) - Math.min(...boxes.map(box => box.x))) / 6);
+  const frames = boxes.map((box, index) => {
+    const step = index - (cards.length - 1) / 2;
+    const frame = (x, y, angle) => {
+      let dx = x - box.x - box.width / 2;
+      let dy = y - box.y - box.height;
+      const radians = angle * Math.PI / 180;
+      const cosine = Math.cos(radians);
+      const sine = Math.sin(radians);
+      const edges = [0, box.width].flatMap(cx => [0, box.height].map(cy =>
+        bounds.left + pivot.x + cosine * (box.x + dx + cx - pivot.x) - sine * (box.y + dy + cy - pivot.y)));
+      const shift = Math.max(0, 16 - Math.min(...edges)) + Math.min(0, innerWidth - 16 - Math.max(...edges));
+      dx += cosine * shift;
+      dy -= sine * shift;
+      return { transform: `rotate(${angle}deg) translate3d(${dx}px, ${dy}px, 0)`, easing: "cubic-bezier(.4, 0, .2, 1)" };
+    };
+    return [
+      { ...frame(mobile ? box.x + box.width / 2 : pivot.x + step * spacing, mobile ? box.y + box.height - index * 36 : pivot.y, step * (mobile ? .6 : 4)), offset: 0 },
+      { ...frame(mobile ? box.x + box.width / 2 : pivot.x + (box.x + box.width / 2 - pivot.x) * .88, mobile ? box.y + box.height - index * 14 : pivot.y + (box.y + box.height - pivot.y) * .82, step * (mobile ? .8 : 6)), offset: .38 },
+      { transform: "rotate(0deg) translate3d(0, 0, 0)", offset: 1 },
+    ];
+  });
+  let finished = false;
+  let prepared = false;
+  let preparing = false;
+  const animations = [];
+  gallery.dataset.entrance = "pending";
+  cards.forEach((card, index) => {
+    card.style.transformOrigin = `${pivot.x - boxes[index].x}px ${pivot.y - boxes[index].y}px`;
+    card.style.transform = frames[index][0].transform;
+    card.style.zIndex = String(index + 1);
+  });
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    animations.forEach(animation => animation.cancel());
+    cards.forEach(card => {
+      for (const property of ["transform", "transform-origin", "will-change", "z-index"]) card.style.removeProperty(property);
+    });
+    gallery.dataset.entrance = "settled";
+    observer.disconnect();
+    resizeObserver.disconnect();
+    gallery.removeEventListener("focusin", finish);
+    document.removeEventListener("visibilitychange", sync);
+    window.removeEventListener("resize", sync);
+  }
+
+  function sync() {
+    if (finished) return;
+    const current = gallery.getBoundingClientRect();
+    const visibleHeight = Math.min(current.bottom, innerHeight) - Math.max(current.top, 0);
+    if (document.hidden || visibleHeight <= 0) {
+      animations.forEach(animation => animation.pause());
+      return;
+    }
+    if (animations.length) {
+      animations.forEach(animation => { if (animation.playState === "paused") animation.play(); });
+      return;
+    }
+    if (visibleHeight < Math.min(firstRowHeight * .65, innerHeight * .4)) return;
+    if (!prepared) {
+      if (preparing) return;
+      preparing = true;
+      Promise.all([...gallery.querySelectorAll("img")].map(image => {
+        image.loading = "eager";
+        return image.decode();
+      })).then(() => {
+        prepared = true;
+        sync();
+      }, error => {
+        console.warn("News-card entrance skipped because a source image could not be decoded.", error);
+        finish();
+      });
+      return;
+    }
+    gallery.dataset.entrance = "running";
+    cards.forEach((card, index) => {
+      card.style.willChange = "transform";
+      const animation = card.animate(frames[index], { duration: 990, delay: index * 70, fill: "both" });
+      animation.onfinish = () => {
+        if (animations.every(item => item.playState === "finished")) finish();
+      };
+      animations.push(animation);
+    });
+  }
+
+  const observer = new IntersectionObserver(sync, { threshold: Array.from({ length: 101 }, (_, index) => index / 100) });
+  const resizeObserver = new ResizeObserver(([entry]) => {
+    if (Math.abs(entry.contentRect.width - bounds.width) > 1 || Math.abs(entry.contentRect.height - bounds.height) > 1) finish();
+  });
+  gallery.addEventListener("focusin", finish);
+  document.addEventListener("visibilitychange", sync);
+  window.addEventListener("resize", sync, { passive: true });
+  observer.observe(gallery);
+  resizeObserver.observe(gallery);
+  return finish;
+}
 
 function syncPress() {
   if (!press) return;
@@ -193,6 +308,7 @@ function scheduleScroll() {
 }
 
 function updateMotion() {
+  if (!motionEnabled) finishCardEntrance();
   document.documentElement.dataset.motion = motionEnabled ? "on" : "off";
   if (motionToggle) {
     motionToggle.setAttribute("aria-pressed", String(motionEnabled));
