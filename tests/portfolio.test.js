@@ -253,7 +253,7 @@ test("the landscape remains the second scene without a duplicated backdrop", asy
   const ecosystem = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0];
   const work = html.match(/<section class="work-intro dark section-pad".*?<\/section>/s)[0];
   assert.ok(ecosystem.includes('class="landscape-parallax" data-parallax="0.04"'));
-  assert.ok(ecosystem.includes("She is leading the largest transformation of MSN in its 20-year history"));
+  assert.ok(ecosystem.includes("Leading the largest transformation of MSN in its 20-year history"));
   assert.ok(ecosystem.includes('class="scale"'));
   assert.ok(!work.includes("landscape"));
   assert.equal([...html.matchAll(/class="landscape-image"/g)].length, 1);
@@ -269,11 +269,12 @@ test("the Content Intelligence scene retains all metrics and the confirmed MSN h
   const scene = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0].replace(/<template[^>]*>.*?<\/template>/gs, "");
   const metrics = [...scene.matchAll(/<dt>(.*?)<\/dt><dd>(.*?)<\/dd>/g)].map(([, value, label]) => [value.replace(/<\/?span>/g, ""), label]);
   assert.deepEqual(metrics, [["300m", "Daily desktop users"], ["50m", "Mobile users"], ["$1.4bn", "Annual revenue"], ["4,000", "Publishers"]]);
-  assert.ok(scene.includes("She is leading the largest transformation of MSN in its 20-year history"));
+  assert.ok(scene.includes("<p>Leading the largest transformation of MSN in its 20-year history"));
   const narrative = scene.match(/class="work-context">(.*?)<\/div>/s)[1];
   assert.equal([...narrative.matchAll(/<p>/g)].length, 1);
-  for (const detail of ["generative user interfaces", "news, finance, sports, and games", "Microsoft’s billion-user ecosystem"]) assert.ok(narrative.includes(detail));
-  assert.ok(scene.includes('class="statement-label">Content Intelligence</p>'));
+  assert.ok(narrative.includes("generative user interfaces"));
+  assert.ok(!narrative.includes("Her Content Intelligence team"));
+  assert.ok(!scene.includes('class="statement-label"'));
   assert.ok(html.includes('id="warm-ecosystem"'));
 });
 
