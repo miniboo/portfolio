@@ -227,10 +227,9 @@ test("the original opening foregrounds leadership and the authorized entrepreneu
   const currentRole = bio.slice(bio.indexOf("She currently leads")).replace(/^She /, "Chloe ");
   assert.ok(hero.includes(`<p class="hero-intro">${currentRole}</p>`));
   const experience = hero.match(/<p class="hero-experience">(.*?)<\/p>/)[1];
-  assert.ok(experience.includes("raised more than $4 million to bring STEM to more than 90,000 students in rural Kenya"));
-  assert.ok(experience.includes("leadership positions at Mozilla and littleBits (acquired by Sphero)"));
-  assert.ok(experience.includes("At littleBits, she led product lines with Lucasfilm and Marvel."));
-  assert.ok(experience.includes("She started her career in tech—and learned most of what she knows—by helping start the public school Quest to Learn."));
+  assert.ok(experience.includes("Chloe has raised more than $4 million to bring STEM to over 90,000 students in rural Kenya."));
+  assert.ok(experience.includes("leadership roles at Mozilla and littleBits (acquired by Sphero), where she led product lines with Lucasfilm and Marvel."));
+  assert.ok(experience.includes("Her career in tech began with helping start the public school Quest to Learn—an experience that shaped much of what she knows today."));
   assert.equal([...experience.matchAll(/Quest to Learn/g)].length, 1);
   assert.ok(hero.includes('class="recognition"'));
   assert.ok(hero.indexOf('class="hero-intro"') < hero.indexOf('class="hero-experience"'));
