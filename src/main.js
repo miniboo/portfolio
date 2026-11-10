@@ -33,7 +33,8 @@ if (document.documentElement.dataset.identity === "warm") {
   const index = work.querySelector(".project-index");
   document.querySelector(".discover-cover").closest("#work").remove();
   work.after(document.querySelector("#warm-copilot-project").content);
-  document.querySelector("#ai-content").replaceWith(document.querySelector("#warm-discover-project").content);
+  document.querySelector("#ai-native").before(document.querySelector("#warm-discover-project").content);
+  document.querySelector("#ai-native").replaceWith(document.querySelector("#warm-tools-project").content);
   document.querySelector("#edge-discover").remove();
   document.querySelector("#midterm-elections").replaceWith(document.querySelector("#warm-elections-project").content);
   document.querySelector(".project-elections .section-number").textContent = "02";

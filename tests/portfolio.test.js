@@ -10,9 +10,9 @@ const original = html.replace(/<template[^>]*>.*?<\/template>/gs, "");
 
 test("Copilot Discover and Edge Discover lead the retained project sequence", () => {
   const titles = [...original.matchAll(/class="project-heading".*?<h2[^>]*>(.*?)<\/h2>/gs)].map(([, title]) => title.replace(/<[^>]*>/g, ""));
-  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "AI Generated Content Consumption", "AI-Native Tools / Royal Academy"]);
+  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "AI-native design flows."]);
   const numbers = [...original.matchAll(/class="section-number"[^>]*>(\d+)</g)].map(([, number]) => number);
-  assert.deepEqual(numbers, ["01", "02", "03", "04", "05"]);
+  assert.deepEqual(numbers, ["01", "02", "03", "04"]);
 });
 
 test("the biography preserves its wording apart from authorized role and entrepreneur updates", () => {
@@ -46,9 +46,19 @@ test("all in-page links target existing IDs", () => {
   }
 });
 
-test("unprovided case studies remain explicit placeholders", () => {
-  assert.ok(original.includes("Project details &amp; imagery to follow."));
-  assert.equal([...original.matchAll(/class="project-placeholder"/g)].length, 2);
+test("original placeholder projects are replaced by the reference-based AI-native design practice", async () => {
+  assert.ok(!original.includes("AI Generated Content"));
+  assert.ok(!original.includes("Royal Academy"));
+  assert.equal([...original.matchAll(/class="project-placeholder"/g)].length, 0);
+  assert.ok(original.includes('id="ai-content" aria-hidden="true"'));
+  assert.ok(original.includes('id="discover-title" aria-hidden="true"'));
+  const practice = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
+  assert.equal([...practice.matchAll(/class="ai-native-marker"/g)].length, 4);
+  for (const topic of ["Content intelligence", "Personal context", "Generative interfaces", "Human voices &amp; trust"]) assert.ok(practice.includes(topic));
+  assert.ok(practice.includes('src="/media/chloe-follies.jpg"'));
+  assert.ok(html.includes('id="warm-tools-project"'));
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-tools \{[^}]*background: #fefdfa;/);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
 });
 
@@ -97,8 +107,8 @@ test("the original has a Georgia editorial title and no rendered header or dot g
 });
 
 test("project headings and media use one shared layout without repeated filler", () => {
-  assert.equal([...original.matchAll(/class="project-heading"/g)].length, 5);
-  assert.equal([...original.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 5);
+  assert.equal([...original.matchAll(/class="project-heading"/g)].length, 4);
+  assert.equal([...original.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 4);
   for (const removed of ["Chloe Varelidi / Portfolio", "Microsoft AI / Selected work", "Space for the story", "Results.<br />Coverage.", "A more<br />", "Next chapter", "what comes"]) {
     assert.ok(!html.includes(removed), `Redundant copy remains: ${removed}`);
   }

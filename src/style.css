@@ -242,6 +242,27 @@ html:not([data-identity="warm"]) .election-pieces { display: grid; grid-template
 html:not([data-identity="warm"]) .election-pieces > div { display: flex; flex-direction: column; align-items: center; gap: 32px; }
 html:not([data-identity="warm"]) .election-pieces a { width: 100%; max-width: 393px; }
 
+html:not([data-identity="warm"]) .project-tools { position: relative; padding: 31px clamp(22px, 2.083333vw, 40px) 136px; background: #fefdfa; color: #262626; font-family: Verdana, Geneva, sans-serif; font-weight: 400; }
+html:not([data-identity="warm"]) .project-tools .project-anchor-alias { position: absolute; top: 0; }
+html:not([data-identity="warm"]) .project-tools .project-heading { display: grid; grid-template-columns: 6px 35px minmax(0, 1fr); align-items: center; gap: 26px; max-width: none; margin-inline: 0; }
+html:not([data-identity="warm"]) .project-tools .project-heading::before { content: ""; width: 6px; height: 6px; background: #1e1b1b; }
+html:not([data-identity="warm"]) .project-tools .section-number,
+html:not([data-identity="warm"]) .project-tools .project-heading .eyebrow { font-family: Verdana, Geneva, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px; letter-spacing: .05em; }
+html:not([data-identity="warm"]) .project-tools .project-heading .eyebrow { color: #727272; }
+html:not([data-identity="warm"]) .project-tools .project-body { max-width: none; margin: 59px 0 0; }
+html:not([data-identity="warm"]) .ai-native-composition { display: grid; grid-template-columns: 50.0167% minmax(0, 1fr); column-gap: 7.4293%; }
+html:not([data-identity="warm"]) .ai-native-introduction > img { width: 100%; aspect-ratio: 920.30664 / 521.51367; object-fit: cover; object-position: center; border-radius: 12px; }
+html:not([data-identity="warm"]) .ai-native-caption { margin-top: 37px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(22px, 1.666667vw, 32px); line-height: 1.25; }
+html:not([data-identity="warm"]) .project-tools h2 { max-width: 740px; margin-top: 16px; font-family: Verdana, Geneva, sans-serif; font-size: clamp(38px, 3.125vw, 60px); font-weight: 400; line-height: 1.18; letter-spacing: .02em; }
+html:not([data-identity="warm"]) .ai-native-flows { display: flex; flex-direction: column; justify-content: space-between; gap: 56px; min-height: min(43.75vw, 840px); margin: 0; padding: 0; list-style: none; }
+html:not([data-identity="warm"]) .ai-native-flows > li { display: grid; grid-template-columns: clamp(24px, 2.083333vw, 40px) minmax(0, 1fr); column-gap: clamp(20px, 2.083333vw, 40px); }
+html:not([data-identity="warm"]) .ai-native-marker { aspect-ratio: 1; background: #ff712e; }
+html:not([data-identity="warm"]) .ai-native-flows > li:nth-child(2) .ai-native-marker { background: #ff89c3; }
+html:not([data-identity="warm"]) .ai-native-flows > li:nth-child(3) .ai-native-marker { background: #82ca76; }
+html:not([data-identity="warm"]) .ai-native-flows > li:nth-child(4) .ai-native-marker { background: #f6b936; }
+html:not([data-identity="warm"]) .ai-native-flows h3 { font-size: clamp(25px, 2.083333vw, 40px); font-weight: 400; line-height: 1.1; }
+html:not([data-identity="warm"]) .ai-native-flows p { max-width: 653px; margin-top: 23px; font-size: 18px; line-height: 1.2; }
+
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
 html[data-motion="off"] .landscape-surface { opacity: 1 !important; mask-image: none; }
 html[data-motion="off"] .hero-illustration img { opacity: 1 !important; }
@@ -257,6 +278,9 @@ html[data-motion="off"] .press-logo { transition: none; }
 }
 
 @media (max-width: 1000px) {
+  html:not([data-identity="warm"]) .ai-native-composition { grid-template-columns: minmax(0, 1fr); gap: 64px; }
+  html:not([data-identity="warm"]) .project-tools { padding-bottom: 80px; }
+  html:not([data-identity="warm"]) .ai-native-flows { min-height: 0; }
   html:not([data-identity="warm"]) .election-pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html:not([data-identity="warm"]) .daily-brief-screens { grid-template-columns: repeat(3, min(393px, 100%)); overflow-x: auto; scroll-snap-type: x proximity; }
   html:not([data-identity="warm"]) .discover-statement { grid-template-columns: 1fr; gap: 36px; }
