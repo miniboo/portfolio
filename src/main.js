@@ -272,26 +272,120 @@ for (const [player, statusId, name] of [
 ]) {
   if (!player) continue;
   let failed = false;
-  const reportFailure = () => {
+  let owner = null;
+  let request = 0;
+  let visible = false;
+  let previousLoop = null;
+  let previousControls = null;
+  const status = document.getElementById(statusId);
+  const hoverEnabled = document.documentElement.dataset.identity !== "warm";
+  const restorePreview = () => {
+    if (previousLoop === null) return;
+    player.loop = previousLoop;
+    player.controls = previousControls;
+    previousLoop = null;
+    previousControls = null;
+  };
+  const stop = (hoverOnly = false) => {
+    if (hoverOnly && owner !== "hover") return;
+    request += 1;
+    if (owner === "hover") owner = null;
+    restorePreview();
+    player.pause();
+  };
+  const takeControl = () => {
+    request += 1;
+    restorePreview();
+    player.controls = true;
+    owner = "user";
+  };
+  const reportFailure = (error = player.error) => {
     if (failed) return;
     failed = true;
-    const status = document.getElementById(statusId);
+    stop();
     status.textContent = `The ${name} video could not load. Its poster and case-study description remain available.`;
     status.hidden = false;
-    console.error(`${name} video playback failed`, player.error);
+    console.error(`${name} video playback failed`, error);
   };
-  player.addEventListener("error", reportFailure);
-  player.querySelector("source").addEventListener("error", reportFailure);
+  const reportPlayFailure = (error, currentRequest, preview) => {
+    if (currentRequest !== request) return;
+    stop(preview);
+    if (error.name === "NotAllowedError") {
+      status.textContent = `Use the video’s Play control to start ${name}. Playback is blocked by this browser.`;
+      status.hidden = false;
+      console.warn(`${name} video requires explicit playback in this browser.`, error);
+    } else {
+      reportFailure(error);
+    }
+  };
+  player.addEventListener("error", () => reportFailure());
+  player.querySelector("source").addEventListener("error", () => reportFailure());
+  if (hoverEnabled) {
+    player.tabIndex = 0;
+    player.addEventListener("pointerenter", event => {
+      if (event.pointerType !== "mouse" || !motionEnabled || !visible || document.hidden || failed
+        || owner === "user" || !player.paused || !player.muted || player.ended) return;
+      owner = "hover";
+      previousLoop = player.loop;
+      previousControls = player.controls;
+      player.loop = true;
+      player.controls = false;
+      const currentRequest = ++request;
+      player.play().then(() => {
+        if (currentRequest !== request && owner === null) player.pause();
+        if (currentRequest === request) status.hidden = true;
+      }).catch(error => reportPlayFailure(error, currentRequest, true));
+    });
+    player.addEventListener("pointerleave", event => {
+      if (event.pointerType === "mouse") stop(true);
+    });
+    player.addEventListener("pointerdown", takeControl);
+    player.addEventListener("focus", takeControl);
+    player.addEventListener("keydown", event => {
+      takeControl();
+      if ((event.key !== " " && event.key !== "Enter") || event.altKey || event.ctrlKey || event.metaKey) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.repeat) return;
+      if (!player.paused) {
+        stop();
+        return;
+      }
+      const currentRequest = request;
+      player.play().then(() => {
+        if (currentRequest === request) status.hidden = true;
+      }).catch(error => reportPlayFailure(error, currentRequest, false));
+    }, true);
+    player.addEventListener("keyup", event => {
+      if ((event.key === " " || event.key === "Enter") && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, true);
+    player.addEventListener("play", () => {
+      if (!visible || document.hidden) stop();
+    });
+    player.addEventListener("pause", () => {
+      if (owner === "hover" && player.paused) takeControl();
+    });
+    player.addEventListener("volumechange", () => {
+      if (!player.muted) takeControl();
+    });
+    motionPreference.addEventListener("change", () => {
+      if (motionPreference.matches) stop(true);
+    });
+  }
   new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) player.pause();
+    visible = entry.isIntersecting;
+    if (!visible) stop();
   }).observe(player);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+  });
 }
 document.addEventListener("visibilitychange", () => {
   syncVideo();
   syncPress();
-  if (document.hidden && edgeVideo) edgeVideo.pause();
-  if (document.hidden && discoverVideo) discoverVideo.pause();
-  if (document.hidden && electionsVideo) electionsVideo.pause();
 });
 motionPreference.addEventListener("change", () => {
   manualPlayback = false;
