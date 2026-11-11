@@ -132,32 +132,29 @@ test("project headings and media use one shared layout without repeated filler",
   }
 });
 
-test("Microsoft impact and scale lead into the approved How I work bridge and process", async () => {
-  const process = original.match(/<div class="design-process".*?<\/ol>\s*<\/div>/s)[0];
+test("Microsoft impact and scale lead directly to an accessible Selected projects link", async () => {
+  const cue = '<a class="selected-projects" href="#copilot-content">Selected projects <span aria-hidden="true">↓</span></a>';
   const method = "My story at Microsoft is one of impact. In 18 months, I’ve transformed how our team works—bringing AI-native processes into our everyday practice and partnering closely with product leadership to flight experiments faster than ever before.";
   const context = "Together, we’ve led the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces.";
   assert.ok(original.includes(`<p>${method}</p>`));
   assert.ok(original.includes(`<p>${context}</p>`));
-  assert.ok(original.indexOf(method) < original.indexOf(process));
   assert.ok(original.indexOf(method) < original.indexOf(context));
   assert.ok(original.indexOf(context) < original.indexOf('<dl class="scale"'));
-  assert.ok(original.indexOf('<dl class="scale"') < original.indexOf(process));
+  assert.ok(original.includes(cue));
+  assert.ok(original.indexOf('<dl class="scale"') < original.indexOf(cue));
   assert.ok(!original.includes("engineering evaluations"));
   assert.ok(!original.includes("process-introduction"));
   assert.ok(!original.includes("I partner with product leadership"));
-  assert.deepEqual([...process.matchAll(/<li>(.*?)<\/li>/g)].map(([, text]) => text.replace(/<span class="sr-only">.*?<\/span>/g, "")), ["Product hypothesis", "Design in code", "Evals", "Flight &amp; learn"]);
-  assert.ok(process.includes('<span class="sr-only">: evaluating AI-generated content with engineering</span>'));
-  assert.ok(process.includes('<h3 id="process-title">How I work</h3>'));
-  assert.ok(process.includes('<p class="process-description">Across the projects below, I bring the same approach: turn a shared hypothesis into something we can build, test, and learn from together.</p>'));
-  assert.ok(original.indexOf(process) > original.indexOf('id="ecosystem-title"'));
-  assert.ok(original.indexOf(process) < original.indexOf('<div id="work">'));
-  assert.ok(!process.includes("section-number"));
+  for (const removed of ["How I work", "design-process", "process-steps", "Across the projects below"]) {
+    assert.ok(!original.includes(removed));
+  }
+  assert.ok(original.indexOf(cue) < original.indexOf('<div id="work">'));
   assert.ok(original.includes("A frontier-lab approach to design"));
   const script = await readFile(new URL("src/main.js", root), "utf8");
-  assert.ok(script.includes('document.querySelector(".design-process").remove()'));
+  assert.ok(script.includes('document.querySelector(".selected-projects").remove()'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /\.ecosystem-intro \{[^}]*min-height: 0;/);
-  assert.match(styles, /\.process-steps \{[^}]*max-width: 850px; margin: 0;/);
+  assert.ok(!styles.includes(".process-steps"));
 });
 
 test("original module introductions use a stacked rail and centered, uncropped media", async () => {
