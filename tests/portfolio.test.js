@@ -256,8 +256,8 @@ test("the original opening uses the name-only masthead and exact first-person bi
   assert.equal(heading, "Chloe Varelidi.");
   assert.ok(!hero.includes("hero-greeting"));
   assert.deepEqual([...hero.matchAll(/<p class="hero-(?:intro|experience|origin)">(.*?)<\/p>/g)].map(([, text]) => text), [
-    "I currently lead Content Intelligence at Microsoft, where I focus on how AI can reshape the way people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.",
-    "As an entrepreneur, I’ve led my own digital design studio for clients including LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel.",
+    "Hello, I’m Chloe. I currently lead the Content Intelligence team at Microsoft AI, where I focus on how people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.",
+    "As an entrepreneur, I’ve led 0-to-1 products for clients such as LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel, with an ARR of 300MM.",
     "Most of what I know about design, I learned while helping start Quest to Learn, a public school in New York City.",
   ]);
   assert.ok(hero.includes('class="recognition"'));
@@ -275,7 +275,7 @@ test("the original opening uses the name-only masthead and exact first-person bi
   assert.ok(!hero.includes("orbit-ring"));
   assert.ok(!hero.includes("orbit-square"));
   assert.ok(!hero.includes("Head of Design"));
-  assert.ok(!hero.includes("300"));
+  assert.ok(!hero.includes("Daily desktop users"));
   assert.ok(!hero.includes("$1.4"));
 });
 
