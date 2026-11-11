@@ -132,23 +132,25 @@ test("project headings and media use one shared layout without repeated filler",
   }
 });
 
-test("the method-first narrative and content-evaluation process lead into MSN context and scale", async () => {
+test("Microsoft impact and scale lead into the approved How I work bridge and process", async () => {
   const process = original.match(/<div class="design-process".*?<\/ol>\s*<\/div>/s)[0];
-  const method = "Taking a frontier-lab approach to design: partnering directly with executive product leaders to shape strategy and test hypotheses, building in code, and working with engineering to evaluate AI-generated content before learning from flight experiments.";
-  const context = "Leading the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces.";
+  const method = "My story at Microsoft is one of impact. In 18 months, I’ve transformed how our team works—bringing AI-native processes into our everyday practice, building tools, and partnering closely with product leadership to flight experiments faster than ever before.";
+  const context = "Together, we’ve led the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces.";
   assert.ok(original.includes(`<p>${method}</p>`));
   assert.ok(original.includes(`<p>${context}</p>`));
   assert.ok(original.indexOf(method) < original.indexOf(process));
-  assert.ok(original.indexOf(process) < original.indexOf(context));
+  assert.ok(original.indexOf(method) < original.indexOf(context));
   assert.ok(original.indexOf(context) < original.indexOf('<dl class="scale"'));
+  assert.ok(original.indexOf('<dl class="scale"') < original.indexOf(process));
   assert.ok(!original.includes("engineering evaluations"));
   assert.ok(!original.includes("process-introduction"));
   assert.ok(!original.includes("I partner with product leadership"));
-  assert.deepEqual([...process.matchAll(/<li>(.*?)<\/li>/g)].map(([, text]) => text), ["Frame the hypothesis", "Design in code", "Evaluate AI-generated content", "Flight &amp; learn"]);
-  assert.equal([...process.matchAll(/<p[\s>]/g)].length, 0);
+  assert.deepEqual([...process.matchAll(/<li>(.*?)<\/li>/g)].map(([, text]) => text.replace(/<span class="sr-only">.*?<\/span>/g, "")), ["Product hypothesis", "Design in code", "Evals", "Flight &amp; learn"]);
+  assert.ok(process.includes('<span class="sr-only">: evaluating AI-generated content with engineering</span>'));
+  assert.ok(process.includes('<h3 id="process-title">How I work</h3>'));
+  assert.ok(process.includes('<p class="process-description">Across the projects below, I bring the same approach: turn a shared hypothesis into something we can build, test, and learn from together.</p>'));
   assert.ok(original.indexOf(process) > original.indexOf('id="ecosystem-title"'));
   assert.ok(original.indexOf(process) < original.indexOf('<div id="work">'));
-  assert.ok(!process.includes("<h"));
   assert.ok(!process.includes("section-number"));
   assert.ok(original.includes("A frontier-lab approach to design"));
   const script = await readFile(new URL("src/main.js", root), "utf8");
@@ -280,7 +282,7 @@ test("the landscape remains the second scene without a duplicated backdrop", asy
   const ecosystem = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0];
   const work = html.match(/<section class="work-intro dark section-pad".*?<\/section>/s)[0];
   assert.ok(ecosystem.includes('class="landscape-parallax" data-parallax="0.04"'));
-  assert.ok(ecosystem.includes("Leading the largest transformation of MSN in its 20-year history"));
+  assert.ok(ecosystem.includes("Together, we’ve led the largest transformation of MSN in its 20-year history"));
   assert.ok(ecosystem.includes('class="scale"'));
   assert.ok(!work.includes("landscape"));
   assert.equal([...html.matchAll(/class="landscape-image"/g)].length, 1);
@@ -296,7 +298,7 @@ test("the Content Intelligence scene retains all metrics and the confirmed MSN h
   const scene = html.match(/<section class="ecosystem-intro section-pad".*?<\/section>/s)[0].replace(/<template[^>]*>.*?<\/template>/gs, "");
   const metrics = [...scene.matchAll(/<dt>(.*?)<\/dt><dd>(.*?)<\/dd>/g)].map(([, value, label]) => [value.replace(/<\/?span>/g, ""), label]);
   assert.deepEqual(metrics, [["300m", "Daily desktop users"], ["50m", "Mobile users"], ["$1.4bn", "Annual revenue"], ["4,000", "Publishers"]]);
-  assert.ok(scene.includes("<p>Leading the largest transformation of MSN in its 20-year history"));
+  assert.ok(scene.includes("<p>Together, we’ve led the largest transformation of MSN in its 20-year history"));
   const paragraphs = [...scene.matchAll(/class="work-context">(.*?)<\/div>/gs)].map(([, content]) => content);
   assert.equal(paragraphs.length, 2);
   assert.ok(paragraphs.every(content => [...content.matchAll(/<p>/g)].length === 1));

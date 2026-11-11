@@ -181,7 +181,9 @@ html:not([data-identity="warm"]) #edge-video-status { margin-top: 24px; }
 html:not([data-identity="warm"]) .project-tools .project-placeholder { border-color: var(--ink); }
 
 html[data-identity="warm"] .design-process { display: none; }
-.design-process { width: 100%; }
+.design-process { display: grid; gap: 20px; width: 100%; }
+.design-process h3 { font-size: 24px; font-weight: 400; line-height: 1.3; letter-spacing: -.025em; }
+.process-description { max-width: 680px; font-size: 20px; line-height: 1.4; letter-spacing: -.025em; }
 .process-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 850px; margin: 0; padding: 0; list-style: none; }
 .process-steps li { position: relative; padding: 18px 24px 0 0; border-top: 1px solid #fefdfa40; font-size: 16px; line-height: 1.5; }
 .process-steps li:not(:last-child)::after { content: ""; position: absolute; top: -4px; right: 2px; width: 7px; height: 7px; border-top: 1px solid #fefdfa80; border-right: 1px solid #fefdfa80; transform: rotate(45deg); }
