@@ -71,6 +71,10 @@ The three opening credentials have matched 64×40 symbol/logo footprints and del
 
 Original-only native text selection uses a muted translucent aqua/blue-gray tint, with light selected text on dark sections and dark selected text on paper. This supersedes the earlier vivid petal color; no custom selection overlay is used.
 
+## Résumé
+
+The original has discreet LinkedIn and Résumé navigation, removed on `/2/`. `/resume/` is a standalone editorial page based on the complete supplied résumé, with readable career history, education, practice, teaching and recognition. It shares Georgia/DM Sans with the portfolio and has a dedicated print stylesheet. The multi-page Vite configuration emits both `dist/index.html` and `dist/resume/index.html`, so the résumé supports direct navigation/refresh on standard directory-index hosting. It does not import the portfolio-only motion controller. The supplied PDF remains private and is not copied into public assets; personal phone information and PDF metadata are omitted. The approved newer Microsoft role is included without inventing a start date.
+
 ## Media
 
 The original Discover desktop cover uses the exact 1920×1080 wallpaper exported from `voFVxFCJH528ss63gDWBpi` node `16:92961`, which contains only the backdrop. A single genuine browser toolbar is cropped losslessly from the previously supplied desktop mock at (240, 66), size 1440×92. The window retains that measured left/top/width: 12.5%, 6.1111111111%, 75%. The user's `1109.mov` recording includes its own app sidebar but not browser chrome. Its full 2386×1440 content is shown undistorted directly below the toolbar; the window content height therefore follows the recording's native ratio instead of squeezing/cropping it into the old 1440×808 static viewport. On the 1920×1080 stage, the video bounds are (240, 158), 1440×869.070px, ending at y=1027.070. All dimensions scale together with the stage; no double sidebar/chrome, letterboxing or media parallax is introduced.

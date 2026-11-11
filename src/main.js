@@ -3,6 +3,7 @@ import { mountCuratedCards } from "./curated-cards.js";
 
 const hero = document.querySelector(".hero");
 if (document.documentElement.dataset.identity === "warm") {
+  document.querySelector(".portfolio-nav").remove();
   const layout = document.querySelector(".hero-layout");
   layout.replaceWith(...layout.childNodes);
   const about = document.querySelector("#warm-about");
