@@ -178,13 +178,16 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(original.includes('class="eyebrow discover-platforms">One Copilot desktop &amp; mobile app</p>'));
 });
 
-test("Edge preserves its temporarily hidden introduction and four source-attributed cards", () => {
+test("Edge restores only its brief while preserving the four hidden source-attributed cards", () => {
+  const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
   const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
   assert.ok(news.startsWith('<section class="edge-news" aria-labelledby="edge-news-title" hidden>'));
   assert.ok(news.includes('<h3 id="edge-news-title">A new tab shaped around you.</h3>'));
-  assert.ok(news.includes('<p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>'));
+  assert.ok(edge.includes('<p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>'));
+  for (const removed of ["edge-results", "+6%", "37M", "19%"]) assert.ok(!edge.includes(removed));
+  assert.equal([...edge.matchAll(/class="edge-news-description"/g)].length, 1);
   assert.equal([...news.matchAll(/<h3 /g)].length, 1);
-  assert.ok(news.indexOf('class="edge-news-description"') < news.indexOf("<article "));
+  assert.ok(edge.indexOf('class="edge-news-description"') < edge.indexOf('<section class="edge-news"'));
   assert.equal([...news.matchAll(/<article /g)].length, 4);
   assert.equal([...news.matchAll(/<h4 /g)].length, 4);
   const cards = [...news.matchAll(/<article\b.*?<\/article>/gs)].map(([card]) => card).join("");
@@ -494,14 +497,14 @@ test("the second-screen film replays on hover and press logos rotate only after 
   assert.ok(script.includes("index === next"));
 });
 
-test("Edge keeps its controlled video directly before the cards without the removed case narrative", async () => {
+test("Edge keeps its controlled video and restored brief without the removed case narrative", async () => {
   const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
   assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Discover on the Edge Browser<\/h2>/);
   assert.ok(edge.includes('controls muted playsinline preload="none"'));
   assert.ok(!edge.includes("autoplay"));
   assert.ok(!edge.includes("case-story"));
   for (const removed of ["Close the revenue gap", "A linear feed with a personalized left section", "<strong>11%</strong>", 'class="eyebrow">Problem', 'class="eyebrow">Approach', 'class="eyebrow">Outcome']) assert.ok(!original.includes(removed));
-  assert.match(edge, /<\/figure>\s*<p id="edge-video-status"[^>]*hidden><\/p>\s*<section class="edge-news"/);
+  assert.match(edge, /<\/figure>\s*<p id="edge-video-status"[^>]*hidden><\/p>\s*<p class="edge-news-description">/);
   for (const file of ["discover-edge.mp4", "discover-edge-poster.jpg"]) await access(new URL(`public/media/${file}`, root));
 });
 
