@@ -30,6 +30,7 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   const resume = await readFile(new URL("resume/index.html", root), "utf8");
   assert.doesNotMatch(resume, /spark\s*club/i);
   assert.doesNotMatch(resume, /Experienced design leader|Ever hungry to learn|resume-summary/);
+  assert.doesNotMatch(resume, /skills-title|<h2[^>]*>Practice<\/h2>/);
   assert.ok(resume.includes("Design leader / researcher / technologist"));
   const currentRole = resume.match(/<article class="resume-role">[\s\S]*?<\/article>/)[0];
   assert.ok(currentRole.includes("<h3>Microsoft AI</h3>"));
@@ -39,14 +40,19 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   const [currentAppointment] = appointments;
   assert.ok(currentAppointment.includes('<p class="resume-date">Current</p>'));
   assert.ok(currentAppointment.includes("Principal Design Manager"));
-  assert.ok(currentAppointment.includes("Player-coach leading the Content Intelligence team"));
-  assert.ok(currentAppointment.includes("Selected contributions across my Microsoft AI roles include"));
-  assert.ok(currentAppointment.includes("from sketch to pull request"));
+  assert.doesNotMatch(currentAppointment, /<p>(?:Player-coach|Selected contributions)/);
+  const bullets = [...currentAppointment.matchAll(/<li>(.*?)<\/li>/g)].map(match => match[1]);
+  assert.equal(bullets.length, 5);
+  assert.match(bullets[0], /team of five.*owning a \$1\.4 billion portfolio/);
+  assert.match(bullets[1], /player-coach.*designing, prototyping, and shipping.*sketch to pull request/);
+  assert.match(bullets[2], /executive leadership.*Copilot Discover.*One Copilot ecosystem/);
+  assert.match(bullets[3], /VP of Editorial and CVP.*two months.*hundreds of scenarios/);
+  assert.match(bullets[4], /AI skills.*workshops/);
   assert.doesNotMatch(currentAppointment, /\b20\d{2}\b|Principal Product Designer/);
   const humansWhoPlay = [...resume.matchAll(/<article class="resume-role">[\s\S]*?<\/article>/g)]
     .map(match => match[0]).find(role => role.includes("<h3>humans who play</h3>"));
   assert.ok(humansWhoPlay.includes("2018–2024"));
-  assert.ok(humansWhoPlay.includes("Founder, Principal Designer"));
+  assert.ok(humansWhoPlay.includes("Founder, Design Director"));
   assert.ok(humansWhoPlay.includes("modular AI-powered learning product for non-technical teams"));
   assert.ok(humansWhoPlay.includes("Developed playful behavioral insights design workshops"));
 });
