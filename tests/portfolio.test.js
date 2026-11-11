@@ -46,7 +46,7 @@ test("all in-page links target existing IDs", () => {
   }
 });
 
-test("the original ends at project04 without About, portrait or contact footer", async () => {
+test("the original ends at project04 without About or contact footer", async () => {
   assert.ok(!original.includes('id="about"'));
   assert.ok(!original.includes('class="portrait"'));
   assert.ok(!original.includes('class="site-footer'));
@@ -68,14 +68,18 @@ test("the closing slide uses the Royal Academy source identity, original sticker
   const academy = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
   assert.ok(academy.includes('<span class="sr-only">The Royal Academy of AI</span>'));
   assert.ok(academy.includes("Est. Last Year 2025"));
-  assert.ok(academy.includes("Agere praeponendum est contemplation."));
+  const motto = academy.match(/<p class="academy-motto">(.*?)<\/p>/s)[1];
+  assert.equal(motto.replace(/<[^>]*>/g, ""), "Agere praeponendum est contemplation.");
+  assert.match(motto, /<span class="academy-word">Agere<img[^>]*royal-academy-orange-loop\.svg[^>]*aria-hidden="true" \/><\/span>/);
   const paragraph = academy.match(/<p class="academy-introduction">(.*?)<\/p>/s)[1];
   assert.equal(paragraph.replace(/<[^>]*>/g, ""), "I’m part of the team founding the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.");
   assert.match(paragraph, /<span class="academy-word">curiosity<img[^>]*royal-academy-blue-loop\.svg[^>]*aria-hidden="true" \/><\/span>/);
   assert.ok(!paragraph.includes("royal-academy-orange-loop"));
   assert.equal([...paragraph.matchAll(/class="academy-word"/g)].length, 1);
+  assert.ok(paragraph.includes('<span class="academy-learning">learning</span> together'));
+  assert.match(paragraph, /with AI\.<img[^>]*royal-academy-arrow\.svg[^>]*aria-hidden="true" \/>/);
   assert.ok(academy.includes('<span class="section-number" aria-hidden="true">04</span>'));
-  assert.equal([...academy.matchAll(/class="academy-sticker /g)].length, 6);
+  assert.equal([...academy.matchAll(/class="academy-sticker /g)].length, 7);
   for (const removed of ["ai-native-design-practice.png", "ai-native-flows", "ai-native-marker", "A frontier-lab approach", "chloe-follies.jpg"]) assert.ok(!academy.includes(removed));
   const assets = {
     "mark.svg": "718db5ac56758251d7f10044812f4ce0abf9f2031c04a9aaf207259ffe4d6d48",
@@ -85,6 +89,7 @@ test("the closing slide uses the Royal Academy source identity, original sticker
     "lion.png": "fb761586dc0bfea13fcdaf1f9321f04db4ff4a19b6cd8e8dd77c122adf6f4e82",
     "blue-loop.svg": "2780a3a943415443c2e76327dae212e2c4c29412414e01cbbf270dcbefc75c62",
     "orange-loop.svg": "1952bab11cb0b70ddc617ee8b8aa868c8b62e07ee3c12b5edf683592432caf44",
+    "make-it-weird.png": "40be117df854ad5803eee7d65f177f2aed868551e6306b75a1bf36ef925f54d0",
   };
   for (const [name, hash] of Object.entries(assets)) {
     assert.ok(academy.includes(`src="/media/royal-academy-${name}"`));
@@ -114,7 +119,7 @@ test("the opening is followed directly by the Discover panels without an orange 
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   assert.ok(hero.includes('src="/media/editorial-flowers.svg"'));
   assert.ok(!hero.includes('class="portrait"'));
-  assert.ok(!hero.includes("chloe-follies.jpg"));
+  assert.ok(hero.includes('src="/media/chloe-follies.jpg"'));
   const about = html.match(/<section class="about section-pad".*?<\/section>/s)[0];
   assert.ok(about.includes('src="/media/chloe-follies.jpg"'));
   assert.equal([...original.matchAll(/largest transformation of MSN/g)].length, 1);
@@ -188,7 +193,7 @@ test("Edge restores only its brief while preserving the four hidden source-attri
   const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
   assert.ok(news.startsWith('<section class="edge-news" aria-labelledby="edge-news-title" hidden>'));
   assert.ok(news.includes('<h3 id="edge-news-title">A new tab shaped around you.</h3>'));
-  assert.ok(edge.includes('<p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>'));
+  assert.ok(edge.includes('<p class="edge-news-description">Discover brings personalized stories, videos, and AI-curated perspectives to Microsoft Edge. I lead a squad designing the AI patterns that modernize and personalize the feed, alongside the experience across all content verticals. Over a year of pivots, I partnered directly with our executive team to close the revenue gap in our most profitable content product.</p>'));
   for (const removed of ["edge-results", "+6%", "37M", "19%"]) assert.ok(!edge.includes(removed));
   assert.equal([...edge.matchAll(/class="edge-news-description"/g)].length, 1);
   assert.equal([...news.matchAll(/<h3 /g)].length, 1);
@@ -244,6 +249,8 @@ test("Midterm retains only its genuine video and Microsoft-user introduction, pr
   assert.ok(elections.includes('controls muted playsinline preload="none"'));
   assert.ok(!elections.includes("elections-overview.png"));
   assert.ok(elections.includes('poster="/media/elections-results.png"'));
+  assert.ok(elections.includes('<p class="elections-description">The Midterm Elections experience brings race results, voting information, and reporting to Microsoft users. Partnering with our VP of Editorial and CVP, I led a squad through an end-to-end AI-native process to deliver it in two months—covering hundreds of scenarios before, during, and after election day, and reaching nearly everyone across Microsoft’s user ecosystem.</p>'));
+  assert.ok(elections.indexOf('class="elections-description"') > elections.indexOf('id="elections-video"'));
   for (const removed of ["election-details-page", "election-pieces", "elections-texas-card", "elections-iowa-card", "elections-guide-card", "elections-senate-card", "elections-coverage-card"]) assert.ok(!elections.includes(removed));
   assert.ok(!elections.includes('class="election-map"'));
   assert.equal([...elections.matchAll(/<img /g)].length, 0);
@@ -364,10 +371,10 @@ test("Discover walkthrough uses the real backdrop and one browser toolbar withou
   for (const name of ["discover-desktop.mp4", "discover-wallpaper.png", "discover-browser-toolbar.png", "discover-desktop-poster.jpg"]) await access(new URL(`public/media/${name}`, root));
 });
 
-test("Discover explains its daily brief and human voices in one concise paragraph beside the design", async () => {
+test("Discover explains its daily brief, human voices and executive role above the design", async () => {
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
   const description = story.match(/<div class="discover-description">(.*?)<\/div>/s)[1];
-  assert.equal(description.trim(), "<p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps. It puts the humans behind the stories front and center, highlighting their voices and making sources clear.</p>");
+  assert.equal(description.trim(), "<p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps, putting the humans behind the stories front and center with clear voices and sources. I led the experience end to end, partnering with our executive leadership to shape the 0-to-1 feature demoed by our CEO.</p>");
   for (const text of ["chat history and memory", "agentic experience", "generative UI model", "format, length, and knowledge level"]) assert.ok(!description.includes(text));
   assert.ok(!original.includes("discover-principles"));
   assert.ok(!original.includes("Design principles"));
@@ -378,11 +385,11 @@ test("Discover explains its daily brief and human voices in one concise paragrap
   assert.match(original, /<section class="daily-brief.*?<\/section>\s*<\/div>\s*<section class="project project-edge/s);
 });
 
-test("Daily Brief groups all three actual Figma mocks in one visuals-only section", async () => {
+test("the labeled mobile agentic experience retains all three actual Figma mocks", async () => {
   const work = original.match(/<div id="work">(.*?)<\/div>\s*<section class="project project-edge/s)[1];
   assert.match(work, /class="discover-statement.*?<\/section>\s*<section class="daily-brief/s);
   const brief = work.match(/<section class="daily-brief.*?<\/section>/s)[0];
-  assert.ok(brief.includes('id="daily-brief-title" aria-label="Copilot Discover daily brief"'));
+  assert.ok(brief.includes('id="daily-brief-title" aria-label="Mobile agentic experience"'));
   assert.ok(brief.includes('role="group" tabindex="0"'));
   const sources = [...brief.matchAll(/src="\/media\/(.*?)"/g)].map(match => match[1]);
   const mocks = [
@@ -399,23 +406,38 @@ test("Daily Brief groups all three actual Figma mocks in one visuals-only sectio
   assert.ok(!brief.includes("<source"));
   assert.ok(!brief.includes("discover-feed.png"));
   assert.ok(!brief.includes("discover-mobile-feed.png"));
-  assert.ok(!/<h[1-6]\b|<p\b|figcaption/.test(brief));
+  assert.ok(!/<h[1-6]\b|figcaption/.test(brief));
+  assert.equal([...brief.matchAll(/<p\b/g)].length, 1);
+  assert.ok(brief.includes('<p class="eyebrow daily-brief-label">Mobile agentic experience</p>'));
   assert.ok(!brief.includes('class="section-number"'));
   assert.ok(!brief.includes("figcaption"));
   assert.ok(!brief.includes("data-parallax"));
 });
 
-test("the opening has the exact two-line credibility labels and genuine linked logos", async () => {
+test("the opening has its approved portrait, two-line credibility labels and genuine publication marks", async () => {
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(original.includes("Featured<br />Designer"));
   assert.ok(original.includes("Work<br />published in"));
   assert.ok(original.includes("AIGA50 DC"));
   assert.ok(original.includes('alt="TODAY"'));
   assert.ok(original.includes('alt="Fast Company"'));
+  const hero = original.match(/<section class="hero.*?<\/section>/s)[0];
+  assert.match(hero, /class="hero-photo"[\s\S]*?src="\/media\/chloe-follies\.jpg" width="1500" height="1000" alt="Chloe Varelidi seated among colorful Follies play structures\."/);
+  assert.ok(script.includes('document.querySelector(".hero-photo").remove()'));
+  const press = hero.match(/<div id="press-logos">([\s\S]*?)<\/div>/)[1];
+  assert.equal([...press.matchAll(/class="press-logo"/g)].length, 6);
+  for (const [name, alt] of [["strategist", "The Strategist"], ["good-morning-america", "Good Morning America"], ["goop", "goop"], ["domino", "domino"]]) {
+    assert.match(press, new RegExp(`<span class="press-logo"[^>]+><img src="/media/press-${name}\\.png"[^>]+alt="${alt}"`));
+    assert.ok((await readFile(new URL(`public/media/press-${name}.png`, root))).length > 0);
+  }
+  assert.ok(!press.includes("TOTY"));
   assert.ok(!original.includes('id="press-motion-toggle"'));
   assert.ok(!script.includes("setInterval"));
-  assert.ok(script.includes("pressFinished = true"));
-  assert.ok(script.includes("pressArea.contains(document.activeElement)"));
+  assert.ok(script.includes("pressPaused = !pressPaused"));
+  assert.ok(script.includes("press.contains(document.activeElement)"));
+  assert.ok(script.includes('pressToggle.textContent = "Pause rotation"'));
+  assert.ok(script.includes("}, 2100)"));
+  assert.ok(script.includes('advancePress(true, event.key === "ArrowLeft" ? -1 : 1)'));
   assert.ok(script.includes("document.hidden"));
   assert.ok(script.includes('document.querySelector(".recognition-press").remove()'));
 });
@@ -498,7 +520,8 @@ test("the second-screen film replays on hover and press logos rotate only after 
   assert.ok(script.includes("request !== videoRequest"));
   assert.ok(script.includes('video.addEventListener("ended", pauseLandscape)'));
   assert.ok(script.includes("entry.intersectionRatio >= .8"));
-  assert.ok(script.includes("if (visible && !pressVisible) pressFinished = false"));
+  assert.ok(script.includes("pressVisible = visible"));
+  assert.ok(!script.includes("pressFinished"));
   assert.ok(script.includes('logo.querySelector("img").decode()'));
   assert.ok(script.includes("index === next"));
 });
@@ -534,7 +557,8 @@ test("original accent colors come from the artwork and retain accessible contras
   };
   assert.ok(contrast("#211e1d", palette.green) >= 4.5);
   assert.ok(svg.toLowerCase().includes('fill="#9aeed6"'));
-  assert.ok(styles.includes('html:not([data-identity="warm"]) ::selection { background: rgba(154, 238, 214, .99); color: #211e1d; }'));
+  assert.ok(styles.includes('html:not([data-identity="warm"]) ::selection { background: rgba(170, 200, 198, .35); color: #211e1d; }'));
+  assert.ok(styles.includes(':is(.hero, .ecosystem-intro, .discover-cover, .daily-brief, .project-tools) ::selection { color: #fefdfa; }'));
   assert.ok(contrast("#211e1d", "#98ebd3") >= 4.5);
   assert.ok(contrast("#1e1b1b", palette.orange) >= 4.5);
   assert.ok(contrast(palette.rust, "#f7f5ef") >= 3);

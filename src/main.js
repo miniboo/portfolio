@@ -3,6 +3,8 @@ import { mountCuratedCards } from "./curated-cards.js";
 
 const hero = document.querySelector(".hero");
 if (document.documentElement.dataset.identity === "warm") {
+  const layout = document.querySelector(".hero-layout");
+  layout.replaceWith(...layout.childNodes);
   const about = document.querySelector("#warm-about");
   about.replaceWith(about.content);
   const footer = document.querySelector("#warm-footer");
@@ -12,6 +14,7 @@ if (document.documentElement.dataset.identity === "warm") {
   const header = document.querySelector("#warm-header");
   header.replaceWith(header.content);
   document.querySelector(".hero-illustration").remove();
+  document.querySelector(".hero-photo").remove();
   document.querySelector(".selected-projects").remove();
   document.querySelector(".recognition-press").remove();
   document.querySelector(".recognition-moma").nextElementSibling.innerHTML = "Follies featured<br />in the catalogue";
@@ -63,6 +66,13 @@ const video = document.querySelector("#content-landscape-video");
 const videoStatus = document.querySelector("#video-status");
 const landscapeScene = document.querySelector(".ecosystem-intro");
 const landscapeSurface = document.querySelector(".landscape-surface");
+if (landscapeScene) {
+  const opening = document.createElement("div");
+  opening.className = "opening-scenes";
+  hero.before(opening);
+  opening.append(hero, landscapeScene);
+  opening.prepend(landscapeSurface);
+}
 const botanical = document.querySelector(".hero-illustration img");
 const edgeVideo = document.querySelector("#edge-discover-video");
 const discoverVideo = document.querySelector("#copilot-discover-video");
@@ -71,9 +81,10 @@ const landscapePlay = video ? document.createElement("button") : null;
 const press = document.querySelector(".recognition-press");
 const pressLogos = [...document.querySelectorAll(".press-logo")];
 const pressArea = document.querySelector("#press-logos");
+const pressToggle = press ? document.createElement("button") : null;
 const layers = [...document.querySelectorAll("[data-parallax]")].map(element => ({
   element,
-  scene: element.closest("section"),
+  scene: element.closest("section") || landscapeScene,
   speed: Number(element.dataset.parallax),
 }));
 
@@ -88,25 +99,31 @@ let manualPlayback = false;
 let videoUnavailable = false;
 let pressVisible = false;
 let pressHovered = false;
-let pressFinished = false;
+let pressPaused = false;
 let pressTimer;
 let pressReady = false;
+
+function advancePress(focus = false, direction = 1) {
+  const next = (pressLogos.findIndex(logo => logo.dataset.active === "true") + direction + pressLogos.length) % pressLogos.length;
+  pressLogos.forEach((logo, index) => {
+    const active = index === next;
+    logo.dataset.active = String(active);
+    logo.setAttribute("aria-hidden", String(!active));
+    logo.tabIndex = active ? 0 : -1;
+    logo.inert = !active;
+  });
+  if (focus) pressLogos[next].focus({ preventScroll: true });
+}
 
 function syncPress() {
   if (!press) return;
   clearTimeout(pressTimer);
-  if (!motionEnabled || !pressReady || pressFinished || !pressVisible || document.hidden || pressHovered || pressArea.contains(document.activeElement)) return;
+  pressToggle.hidden = !motionEnabled;
+  if (!motionEnabled || !pressReady || pressPaused || !pressVisible || document.hidden || pressHovered || press.contains(document.activeElement)) return;
   pressTimer = setTimeout(() => {
-    pressFinished = true;
-    const next = (pressLogos.findIndex(logo => logo.dataset.active === "true") + 1) % pressLogos.length;
-    pressLogos.forEach((logo, index) => {
-      const active = index === next;
-      logo.dataset.active = String(active);
-      logo.setAttribute("aria-hidden", String(!active));
-      logo.tabIndex = active ? 0 : -1;
-      logo.inert = !active;
-    });
-  }, 2500);
+    advancePress();
+    syncPress();
+  }, 2100);
 }
 
 function pauseLandscape() {
@@ -193,8 +210,9 @@ function renderScroll() {
   if (landscapeScene) {
     if (motionEnabled) {
       const start = Math.max(0, landscapeScene.getBoundingClientRect().top + window.scrollY - viewport);
-      const blend = Math.min(1, Math.max(0, (window.scrollY - start) / (viewport * .7)));
-      landscapeSurface.style.opacity = String(.6 + blend * .4);
+      const phase = Math.min(1, Math.max(0, (window.scrollY - start) / (viewport * .7)));
+      const blend = phase * phase * (3 - 2 * phase);
+      landscapeSurface.style.opacity = String(blend);
       botanical.style.opacity = String(1 - blend * .55);
     } else {
       landscapeSurface.style.removeProperty("opacity");
@@ -233,17 +251,37 @@ if (motionToggle) {
   });
 }
 if (press) {
+  pressToggle.type = "button";
+  pressToggle.tabIndex = 0;
+  pressToggle.className = "press-rotation-toggle sr-only";
+  pressToggle.textContent = "Pause rotation";
+  pressToggle.setAttribute("aria-controls", "press-logos");
+  pressToggle.addEventListener("click", () => {
+    pressPaused = !pressPaused;
+    pressToggle.textContent = pressPaused ? "Resume rotation" : "Pause rotation";
+    syncPress();
+  });
+  press.append(pressToggle);
   Promise.all(pressLogos.map(logo => logo.querySelector("img").decode())).then(() => {
     pressReady = true;
     syncPress();
   }, error => console.warn("Press-logo rotation is unavailable because a source logo could not decode.", error));
-  pressArea.addEventListener("pointerenter", () => { pressHovered = true; syncPress(); });
-  pressArea.addEventListener("pointerleave", () => { pressHovered = false; syncPress(); });
-  pressArea.addEventListener("focusin", syncPress);
-  pressArea.addEventListener("focusout", () => queueMicrotask(syncPress));
+  press.addEventListener("pointerenter", event => {
+    if (event.pointerType !== "mouse") return;
+    pressHovered = true;
+    syncPress();
+  });
+  press.addEventListener("pointerleave", () => { pressHovered = false; syncPress(); });
+  press.addEventListener("focusin", syncPress);
+  press.addEventListener("focusout", () => queueMicrotask(syncPress));
+  pressArea.addEventListener("keydown", event => {
+    if (!pressReady || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    advancePress(true, event.key === "ArrowLeft" ? -1 : 1);
+    syncPress();
+  });
   new IntersectionObserver(([entry]) => {
     const visible = entry.isIntersecting && entry.intersectionRatio >= .8;
-    if (visible && !pressVisible) pressFinished = false;
     pressVisible = visible;
     syncPress();
   }, { threshold: [0, .8] }).observe(press);

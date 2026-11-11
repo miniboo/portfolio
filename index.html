@@ -35,6 +35,7 @@
 
     <main id="main">
       <section class="hero section-pad" aria-labelledby="hero-title">
+        <div class="hero-layout">
         <div class="hero-heading">
           <h1 id="hero-title"><span>Chloe</span> <span class="surname">Varelidi<span class="name-period">.</span></span></h1>
           <figure class="hero-illustration">
@@ -43,6 +44,9 @@
         </div>
         <div class="hero-orbit" data-parallax="0.08" aria-hidden="true"></div>
         <div class="hero-bottom">
+          <figure class="hero-photo">
+            <img src="/media/chloe-follies.jpg" width="1500" height="1000" alt="Chloe Varelidi seated among colorful Follies play structures." />
+          </figure>
           <p class="hero-intro">Hello, I’m Chloe. I currently lead the Content Intelligence team at Microsoft AI, where I focus on how people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.</p>
           <p class="hero-experience">As an entrepreneur, I’ve led 0-to-1 products for clients such as LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel, with an ARR of 300MM.</p>
           <p class="hero-origin">Most of what I know about design, I learned while helping start Quest to Learn, a public school in New York City.</p>
@@ -53,11 +57,16 @@
               <div id="press-logos">
                 <a class="press-logo" data-active="true" href="https://www.today.com/shop/last-minute-gifts-ideas-t204419" target="_blank" rel="noopener noreferrer" aria-label="TODAY feature linked from the original portfolio (opens in a new tab)"><img src="/media/press-today.png" width="320" height="241" alt="TODAY" /></a>
                 <a class="press-logo" data-active="false" href="https://www.fastcompany.com/90534417/these-pop-up-kits-turn-kids-into-architects-of-their-own-playgrounds" target="_blank" rel="noopener noreferrer" aria-label="Fast Company feature linked from the original portfolio (opens in a new tab)" aria-hidden="true" tabindex="-1" inert><img src="/media/press-fast-company.png" width="320" height="246" alt="Fast Company" /></a>
+                <span class="press-logo" data-active="false" data-knockout aria-hidden="true" tabindex="-1" inert><img src="/media/press-strategist.png" width="292" height="75" alt="The Strategist" /></span>
+                <span class="press-logo" data-active="false" data-knockout aria-hidden="true" tabindex="-1" inert><img src="/media/press-good-morning-america.png" width="315" height="314" alt="Good Morning America" /></span>
+                <span class="press-logo" data-active="false" data-knockout aria-hidden="true" tabindex="-1" inert><img src="/media/press-goop.png" width="309" height="126" alt="goop" /></span>
+                <span class="press-logo" data-active="false" data-knockout aria-hidden="true" tabindex="-1" inert><img src="/media/press-domino.png" width="288" height="61" alt="domino" /></span>
               </div>
               <span class="eyebrow recognition-label">Work<br />published in</span>
             </div>
           </div>
           <template id="warm-work-link"><a class="scroll-link eyebrow" href="#work"><span class="arrow-disc" aria-hidden="true">↓</span> <span class="work-link-label">Selected work</span></a></template>
+        </div>
         </div>
         <template id="warm-introduction">Chloe Varelidi is a designer and technologist harnessing the <span class="play-phrase">power of play</span> to build the future of learning</template>
         <template id="warm-career-history">She has held product leadership positions at Mozilla, the startup littleBits (acq. by Sphero) and Quest to Learn, where she was also a founding staff.</template>
@@ -129,7 +138,7 @@
         <div class="discover-copy">
           <h3 id="discover-story-title">A daily brief made just for you.</h3>
           <div class="discover-description">
-            <p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps. It puts the humans behind the stories front and center, highlighting their voices and making sources clear.</p>
+            <p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps, putting the humans behind the stories front and center with clear voices and sources. I led the experience end to end, partnering with our executive leadership to shape the 0-to-1 feature demoed by our CEO.</p>
           </div>
         </div>
         <figure class="discover-brief-design">
@@ -139,7 +148,8 @@
         </figure>
       </section>
 
-      <section class="daily-brief section-pad" id="daily-brief-title" aria-label="Copilot Discover daily brief">
+      <section class="daily-brief section-pad" id="daily-brief-title" aria-label="Mobile agentic experience">
+        <p class="eyebrow daily-brief-label">Mobile agentic experience</p>
         <div class="daily-brief-screens" role="group" tabindex="0" aria-label="Welcome, feed and your agents" aria-description="On small screens, scroll horizontally to view all three designs.">
           <figure class="daily-brief-screen">
             <img src="/media/discover-daily-brief.png" width="393" height="852" loading="lazy" alt="Copilot Discover welcome design with the AI Daily News card, fanned story images and Get started action." />
@@ -196,7 +206,7 @@
             </video>
           </figure>
           <p id="edge-video-status" class="video-status" role="status" hidden></p>
-          <p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>
+          <p class="edge-news-description">Discover brings personalized stories, videos, and AI-curated perspectives to Microsoft Edge. I lead a squad designing the AI patterns that modernize and personalize the feed, alongside the experience across all content verticals. Over a year of pivots, I partnered directly with our executive team to close the revenue gap in our most profitable content product.</p>
           <section class="edge-news" aria-labelledby="edge-news-title" hidden>
             <h3 id="edge-news-title">A new tab shaped around you.</h3>
             <svg class="curated-symbols" aria-hidden="true" width="0" height="0">
@@ -311,6 +321,7 @@
             </video>
           </figure>
           <p id="elections-video-status" class="video-status" role="status" hidden></p>
+          <p class="elections-description">The Midterm Elections experience brings race results, voting information, and reporting to Microsoft users. Partnering with our VP of Editorial and CVP, I led a squad through an end-to-end AI-native process to deliver it in two months—covering hundreds of scenarios before, during, and after election day, and reaching nearly everyone across Microsoft’s user ecosystem.</p>
         </div>
       </section>
 
@@ -337,21 +348,22 @@
       <section class="project project-tools section-pad" id="ai-native" aria-labelledby="tools-title">
         <span class="project-anchor-alias" id="ai-content" aria-hidden="true"></span>
         <span class="project-anchor-alias" id="discover-title" aria-hidden="true"></span>
-        <span class="section-number" aria-hidden="true">04</span>
-        <p class="academy-established">Est. Last Year 2025</p>
-        <div class="project-heading">
-          <h2 id="tools-title"><span class="sr-only">The Royal Academy of AI</span><img src="/media/royal-academy-mark.svg" width="902" height="364" loading="lazy" alt="" aria-hidden="true" /></h2>
-        </div>
-        <div class="project-body">
-          <p class="academy-introduction">I’m part of the team founding the Royal Academy of AI—a commitment to <span class="academy-word">curiosity<img class="academy-sticker academy-sticker-blue-loop" src="/media/royal-academy-blue-loop.svg" width="47" height="30" loading="lazy" alt="" aria-hidden="true" /></span>, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.</p>
-        </div>
-        <p class="academy-motto">Agere praeponendum est contemplation.</p>
-        <div class="academy-stickers" aria-hidden="true">
-          <img class="academy-sticker academy-sticker-poster" src="/media/royal-academy-poster.png" width="275" height="299" loading="lazy" alt="" aria-hidden="true" />
-          <img class="academy-sticker academy-sticker-year" src="/media/royal-academy-year.png" width="314" height="228" loading="lazy" alt="" aria-hidden="true" />
-          <img class="academy-sticker academy-sticker-arrow" src="/media/royal-academy-arrow.svg" width="69" height="114" loading="lazy" alt="" aria-hidden="true" />
-          <img class="academy-sticker academy-sticker-lion" src="/media/royal-academy-lion.png" width="1200" height="1770" loading="lazy" alt="" aria-hidden="true" />
-          <img class="academy-sticker academy-sticker-orange-loop" src="/media/royal-academy-orange-loop.svg" width="48" height="28" loading="lazy" alt="" aria-hidden="true" />
+        <div class="academy-cover">
+          <span class="section-number" aria-hidden="true">04</span>
+          <p class="academy-established">Est. Last Year 2025</p>
+          <div class="project-heading">
+            <h2 id="tools-title"><span class="sr-only">The Royal Academy of AI</span><img src="/media/royal-academy-mark.svg" width="902" height="364" loading="lazy" alt="" aria-hidden="true" /></h2>
+          </div>
+          <div class="project-body">
+            <p class="academy-introduction">I’m part of the team founding the Royal Academy of AI—a commitment to <span class="academy-word">curiosity<img class="academy-sticker academy-sticker-blue-loop" src="/media/royal-academy-blue-loop.svg" width="47" height="30" loading="lazy" alt="" aria-hidden="true" /></span>, craft, and <span class="academy-learning">learning</span> together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.<img class="academy-sticker academy-sticker-arrow" src="/media/royal-academy-arrow.svg" width="69" height="114" loading="lazy" alt="" aria-hidden="true" /></p>
+          </div>
+          <p class="academy-motto"><span class="academy-word">Agere<img class="academy-sticker academy-sticker-orange-loop" src="/media/royal-academy-orange-loop.svg" width="48" height="28" loading="lazy" alt="" aria-hidden="true" /></span> praeponendum est contemplation.</p>
+          <div class="academy-stickers" aria-hidden="true">
+            <img class="academy-sticker academy-sticker-poster" src="/media/royal-academy-poster.png" width="275" height="299" loading="lazy" alt="" aria-hidden="true" />
+            <img class="academy-sticker academy-sticker-year" src="/media/royal-academy-year.png" width="314" height="228" loading="lazy" alt="" aria-hidden="true" />
+            <img class="academy-sticker academy-sticker-lion" src="/media/royal-academy-lion.png" width="1200" height="1770" loading="lazy" alt="" aria-hidden="true" />
+            <img class="academy-sticker academy-sticker-weird" src="/media/royal-academy-make-it-weird.png" width="1301" height="890" loading="lazy" alt="" aria-hidden="true" />
+          </div>
         </div>
       </section>
 
