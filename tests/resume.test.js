@@ -53,6 +53,9 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
     .map(match => match[0]).find(role => role.includes("<h3>humans who play</h3>"));
   assert.ok(humansWhoPlay.includes("2018–2024"));
   assert.ok(humansWhoPlay.includes("Founder, Design Director"));
-  assert.ok(humansWhoPlay.includes("modular AI-powered learning product for non-technical teams"));
-  assert.ok(humansWhoPlay.includes("Developed playful behavioral insights design workshops"));
+  assert.deepEqual([...humansWhoPlay.matchAll(/<li>(.*?)<\/li>/g)].map(match => match[1]), [
+    "Hired, and grew a team of 6 staff and 20 consultants for clients such as The LEGO Foundation, General Motors, MIT Media Lab, to NY Department of Education and more.",
+    "Led design and research to inform the development of a modular AI-powered learning products for non-technical teams.",
+    "Developed our teams expertise in behavioral design that ultimately lead to our pivot to an AI transformation company.",
+  ]);
 });
