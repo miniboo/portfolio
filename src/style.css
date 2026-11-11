@@ -276,6 +276,7 @@ html:not([data-identity="warm"]) .election-pieces a { width: 100%; max-width: 39
 
 html:not([data-identity="warm"]) .project-tools { position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: center; min-height: min(56.25vw, 1080px); padding: clamp(32px, 3.125vw, 60px) var(--gutter); background: #343434; color: #fff; text-align: center; }
 html:not([data-identity="warm"]) .project-tools .project-anchor-alias { position: absolute; top: 0; }
+html:not([data-identity="warm"]) .project-tools > .section-number { position: absolute; top: clamp(32px, 3.125vw, 60px); left: var(--gutter); }
 html:not([data-identity="warm"]) .academy-established,
 html:not([data-identity="warm"]) .academy-motto { font-family: "Segoe Serif", Georgia, "Times New Roman", serif; font-style: italic; font-size: clamp(16px, 1.354167vw, 26px); line-height: 1.057; }
 html:not([data-identity="warm"]) .academy-established { min-height: clamp(18px, 1.510417vw, 29px); }
@@ -283,15 +284,17 @@ html:not([data-identity="warm"]) .project-tools .project-heading { display: bloc
 html:not([data-identity="warm"]) .project-tools h2 { max-width: none; padding: 0; line-height: 1; }
 html:not([data-identity="warm"]) .project-tools h2 img { aspect-ratio: 901.642 / 364.381; }
 html:not([data-identity="warm"]) .project-tools .project-body { width: min(44vw, 760px); margin: clamp(32px, 3.333333vw, 64px) 0 0; }
-html:not([data-identity="warm"]) .academy-introduction { font-size: clamp(16px, 1.041667vw, 20px); line-height: 1.5; text-wrap: pretty; }
-html:not([data-identity="warm"]) .academy-motto { margin-top: auto; padding-top: clamp(32px, 3.75vw, 72px); }
+html:not([data-identity="warm"]) .academy-introduction { font-size: clamp(16px, 1.041667vw, 20px); line-height: 2.5; text-wrap: pretty; }
+html:not([data-identity="warm"]) .academy-word { position: relative; isolation: isolate; display: inline-block; margin-inline: .15em; padding-inline: .25em; white-space: nowrap; }
+html:not([data-identity="warm"]) .academy-word .academy-sticker { top: 50%; left: 50%; z-index: -1; width: calc(100% + .2em); pointer-events: none; user-select: none; transform: translate(-50%, -50%) rotate(-7deg); }
+html:not([data-identity="warm"]) .academy-motto { margin-top: auto; padding-top: clamp(32px, 2.916667vw, 56px); }
 html:not([data-identity="warm"]) .academy-stickers { position: absolute; inset: 0; z-index: -1; pointer-events: none; user-select: none; }
 html:not([data-identity="warm"]) .academy-sticker { position: absolute; height: auto; }
 html:not([data-identity="warm"]) .academy-sticker-poster { top: 22%; left: 9%; width: clamp(90px, 7.161458vw, 137.5px); transform: rotate(-11deg); }
 html:not([data-identity="warm"]) .academy-sticker-year { top: 14%; right: 10%; width: clamp(110px, 8.177083vw, 157px); transform: rotate(8deg); }
 html:not([data-identity="warm"]) .academy-sticker-arrow { bottom: 16%; left: 18%; width: clamp(45px, 3.59375vw, 69px); aspect-ratio: 68.8525 / 114.111; transform: rotate(-8deg); }
 html:not([data-identity="warm"]) .academy-sticker-lion { top: 52%; right: 12%; width: clamp(65px, 5vw, 96px); transform: rotate(11deg); }
-html:not([data-identity="warm"]) .academy-sticker-blue-loop { top: 55%; left: 13%; width: clamp(48px, 3.645833vw, 70px); aspect-ratio: 47.0429 / 29.8098; transform: rotate(-12deg); }
+html:not([data-identity="warm"]) .academy-sticker-blue-loop { aspect-ratio: 47.0429 / 29.8098; }
 html:not([data-identity="warm"]) .academy-sticker-orange-loop { bottom: 12%; right: 18%; width: clamp(52px, 4.895833vw, 94px); aspect-ratio: 47.6582 / 27.5327; transform: rotate(9deg); }
 
 html:not([data-identity="warm"])[data-motion="off"] { --scene-overlap: 0px; }
@@ -333,7 +336,6 @@ html[data-motion="off"] .press-logo { transition: none; }
   html:not([data-identity="warm"]) .academy-sticker-year { top: 92px; right: 5%; width: 110px; }
   html:not([data-identity="warm"]) .academy-sticker-arrow { top: auto; bottom: 112px; left: 9%; width: 50px; }
   html:not([data-identity="warm"]) .academy-sticker-lion { top: auto; right: 8%; bottom: 96px; width: 64px; }
-  html:not([data-identity="warm"]) .academy-sticker-blue-loop { top: auto; bottom: 150px; left: 42%; width: 58px; }
   html:not([data-identity="warm"]) .academy-sticker-orange-loop { right: 40%; bottom: 85px; width: 65px; }
 }
 

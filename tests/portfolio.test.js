@@ -69,7 +69,12 @@ test("the closing slide uses the Royal Academy source identity, original sticker
   assert.ok(academy.includes('<span class="sr-only">The Royal Academy of AI</span>'));
   assert.ok(academy.includes("Est. Last Year 2025"));
   assert.ok(academy.includes("Agere praeponendum est contemplation."));
-  assert.ok(academy.includes("<p class=\"academy-introduction\">I’m part of the team founding the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.</p>"));
+  const paragraph = academy.match(/<p class="academy-introduction">(.*?)<\/p>/s)[1];
+  assert.equal(paragraph.replace(/<[^>]*>/g, ""), "I’m part of the team founding the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.");
+  assert.match(paragraph, /<span class="academy-word">curiosity<img[^>]*royal-academy-blue-loop\.svg[^>]*aria-hidden="true" \/><\/span>/);
+  assert.ok(!paragraph.includes("royal-academy-orange-loop"));
+  assert.equal([...paragraph.matchAll(/class="academy-word"/g)].length, 1);
+  assert.ok(academy.includes('<span class="section-number" aria-hidden="true">04</span>'));
   assert.equal([...academy.matchAll(/class="academy-sticker /g)].length, 6);
   for (const removed of ["ai-native-design-practice.png", "ai-native-flows", "ai-native-marker", "A frontier-lab approach", "chloe-follies.jpg"]) assert.ok(!academy.includes(removed));
   const assets = {
