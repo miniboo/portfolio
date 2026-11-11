@@ -15,6 +15,7 @@ test("original-only professional navigation opens a standalone private-source-sa
   assert.ok(config.includes('new URL("./resume/index.html", import.meta.url)'));
   assert.ok(resume.includes('<main id="resume" tabindex="-1">'));
   assert.equal([...resume.matchAll(/<h1\b/g)].length, 1);
+  assert.ok(resume.includes('class="resume-header-mark" src="/media/resume-header-mark.svg" width="108" height="108" alt="" aria-hidden="true"'));
   assert.ok(resume.includes('href="/">← Portfolio</a>'));
   assert.ok(resume.includes('href="mailto:chloe@varelidi.com"'));
   assert.ok(!resume.includes("/src/main.js"));
