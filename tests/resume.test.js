@@ -17,6 +17,8 @@ test("original-only professional navigation opens a standalone private-source-sa
   assert.equal([...resume.matchAll(/<h1\b/g)].length, 1);
   assert.ok(resume.includes('href="/">← Portfolio</a>'));
   assert.ok(resume.includes('href="mailto:chloe@varelidi.com"'));
+  assert.ok(resume.includes('<a class="resume-reference" href="https://www.youtube.com/watch?v=7xhxjcejONk">littleBits</a>'));
+  assert.ok(resume.includes('<a class="resume-reference" href="https://www.nytimes.com/2010/09/19/magazine/19video-t.html?unlocked_article_code=1.PlE.wKut.KTlMBY45VmU1&amp;smid=url-share">Quest to Learn</a>'));
   assert.ok(!resume.includes("/src/main.js"));
   assert.ok(!resume.includes(".pdf"));
   assert.ok(!resume.includes("tel:"));
