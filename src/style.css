@@ -122,7 +122,7 @@ html[data-motion="off"] [data-parallax] { transform: none !important; will-chang
 
 html:not([data-identity="warm"]) { --serif: Georgia, "Times New Roman", serif; --green: #aebd80; --orange: #ff5c39; --pink: #ffa38b; --rust: #b94a2b; --scene-overlap: clamp(64px, 8vw, 120px); scroll-padding-top: 0; }
 html:not([data-identity="warm"]) :focus-visible { outline-color: var(--rust); }
-html:not([data-identity="warm"]) ::selection { background: #9aeed6; color: #211e1d; }
+html:not([data-identity="warm"]) ::selection { background: #b9eedf; color: #211e1d; }
 html:not([data-identity="warm"]) .hero { display: flex; flex-direction: column; align-items: start; gap: 56px; min-height: 0; padding-top: clamp(40px, 3.5vw, 64px); padding-bottom: calc(56px + var(--scene-overlap)); background: #1e1b1b; color: #fefdfa; }
 html:not([data-identity="warm"]) .hero-heading { display: flex; align-items: flex-end; gap: 12px; max-width: 100%; }
 html:not([data-identity="warm"]) .hero h1 { flex: 0 1 auto; min-width: 0; font-family: var(--serif); font-size: clamp(64px, 7vw, 112px); font-weight: 400; letter-spacing: 0; line-height: .9; }
