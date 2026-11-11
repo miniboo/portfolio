@@ -308,6 +308,7 @@ html:not([data-identity="warm"]) .project-tools .project-body { width: min(58vw,
 html:not([data-identity="warm"]) .academy-introduction { position: relative; font-size: 20px; line-height: 1.5; text-wrap: pretty; }
 html:not([data-identity="warm"]) .academy-word { position: relative; isolation: isolate; }
 html:not([data-identity="warm"]) .academy-word .academy-sticker { top: 50%; left: 50%; z-index: -1; width: calc(100% + .2em); pointer-events: none; user-select: none; transform: translate(-50%, -50%) rotate(-7deg); }
+html:not([data-identity="warm"]) .academy-word .academy-sticker-blue-loop { width: calc(100% + .6em); height: 1.3em; transform: translate(-50%, -50%) rotate(8deg); }
 html:not([data-identity="warm"]) .academy-word .academy-sticker-orange-loop { transform: translate(-50%, -50%) rotate(9deg); }
 html:not([data-identity="warm"]) .academy-learning { anchor-name: --academy-learning; }
 html:not([data-identity="warm"]) .academy-introduction .academy-sticker-arrow { top: 50%; top: anchor(--academy-learning center, 50%); left: -44px; width: 24px; pointer-events: none; user-select: none; transform: translateY(-50%) rotate(70deg); }
