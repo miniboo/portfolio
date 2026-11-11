@@ -283,6 +283,7 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
 test("the original opening uses the name-only masthead and exact first-person biography", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   const heading = hero.match(/<h1.*?<\/h1>/s)[0].replace(/<[^>]+>/g, "");
+  assert.ok(hero.includes('<a class="bio-reference" href="https://microsoft.ai/">Microsoft AI</a>'));
   assert.ok(hero.includes('<a class="bio-reference" href="https://www.youtube.com/watch?v=7xhxjcejONk">littleBits</a>'));
   assert.ok(hero.includes('<a class="bio-reference" href="https://www.nytimes.com/2010/09/19/magazine/19video-t.html?unlocked_article_code=1.PlE.wKut.KTlMBY45VmU1&amp;smid=url-share">Quest to Learn</a>'));
   assert.equal(heading, "Chloe Varelidi.");
