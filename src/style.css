@@ -295,15 +295,16 @@ html[data-motion="off"] .curated-turn, html[data-motion="off"] .curated-turn > :
 
 html:not([data-identity="warm"]) .project-tools { position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: center; padding: 0; background: #343434; color: #fff; text-align: center; }
 html:not([data-identity="warm"]) .project-tools .project-anchor-alias { position: absolute; top: 0; }
-html:not([data-identity="warm"]) .academy-cover { position: relative; isolation: isolate; width: 100%; max-width: 1920px; aspect-ratio: 1920 / 1240; }
+html:not([data-identity="warm"]) .academy-cover { position: relative; isolation: isolate; display: grid; place-items: center; width: 100%; max-width: 1920px; aspect-ratio: 1920 / 1240; }
 html:not([data-identity="warm"]) .academy-cover > .section-number { position: absolute; top: 5.555556%; left: var(--gutter); }
 html:not([data-identity="warm"]) .academy-established,
 html:not([data-identity="warm"]) .academy-motto { font-family: "Segoe Serif", Georgia, "Times New Roman", serif; font-style: italic; font-size: clamp(12px, 1.354167vw, 26px); line-height: 1.057; }
 html:not([data-identity="warm"]) .academy-established { position: absolute; top: 5.555556%; left: 0; width: 100%; height: clamp(13px, 1.510417vw, 29px); }
-html:not([data-identity="warm"]) .project-tools .project-heading { position: absolute; top: 22.580645%; left: 49.9890625%; transform: translateX(-50%); display: block; width: 46.9605%; max-width: none; margin: 0; }
+html:not([data-identity="warm"]) .academy-composition { --academy-copy-gap: clamp(32px, 3.333333vw, 64px); --academy-copy-lift: min(50px, calc(var(--academy-copy-gap) - 12px)); display: flex; flex-direction: column; align-items: center; gap: calc(var(--academy-copy-gap) - var(--academy-copy-lift)); width: 100%; }
+html:not([data-identity="warm"]) .project-tools .project-heading { display: block; width: 46.9605%; max-width: none; margin: 0; }
 html:not([data-identity="warm"]) .project-tools h2 { max-width: none; padding: 0; line-height: 1; }
 html:not([data-identity="warm"]) .project-tools h2 img { aspect-ratio: 901.642 / 364.381; }
-html:not([data-identity="warm"]) .project-tools .project-body { --academy-copy-gap: clamp(32px, 3.333333vw, 64px); --academy-copy-lift: min(50px, calc(var(--academy-copy-gap) - 12px)); position: absolute; top: calc(51.966129% + var(--academy-copy-gap)); left: 50%; width: min(58vw, 1040px); margin: 0; text-align: center; transform: translate(-50%, calc(-1 * var(--academy-copy-lift))); }
+html:not([data-identity="warm"]) .project-tools .project-body { width: min(58vw, 1040px); margin: 0; text-align: center; }
 html:not([data-identity="warm"]) .academy-introduction { position: relative; font-size: 20px; line-height: 1.5; text-wrap: pretty; }
 html:not([data-identity="warm"]) .academy-word { position: relative; isolation: isolate; }
 html:not([data-identity="warm"]) .academy-word .academy-sticker { top: 50%; left: 50%; z-index: -1; width: calc(100% + .2em); pointer-events: none; user-select: none; transform: translate(-50%, -50%) rotate(-7deg); }
@@ -351,12 +352,11 @@ html[data-motion="off"] .press-logo { transition: none; }
 }
 
 @media (max-width: 1400px) {
-  html:not([data-identity="warm"]) .academy-cover { display: flex; flex-direction: column; align-items: center; min-height: max(64.583333vw, 860px); aspect-ratio: auto; padding: clamp(32px, 3.125vw, 60px) var(--gutter); }
+  html:not([data-identity="warm"]) .academy-cover { min-height: max(64.583333vw, 860px); aspect-ratio: auto; padding: clamp(32px, 3.125vw, 60px) var(--gutter); }
   html:not([data-identity="warm"]) .academy-cover > .section-number { top: clamp(32px, 3.125vw, 60px); }
-  html:not([data-identity="warm"]) .academy-established { position: static; min-height: clamp(18px, 1.510417vw, 29px); height: auto; font-size: clamp(16px, 1.354167vw, 26px); }
-  html:not([data-identity="warm"]) .project-tools .project-heading { position: static; transform: none; width: min(46.9605vw, 901.642px); margin: clamp(100px, 10vw, 200px) 0 0; }
-  html:not([data-identity="warm"]) .project-tools .project-body { position: relative; top: auto; left: auto; width: min(58vw, 1040px); margin: var(--academy-copy-gap) 0 0; transform: translateY(calc(-1 * var(--academy-copy-lift))); }
-  html:not([data-identity="warm"]) .academy-motto { position: static; height: auto; margin-top: auto; padding-top: clamp(72px, 6.25vw, 120px); font-size: clamp(16px, 1.354167vw, 26px); }
+  html:not([data-identity="warm"]) .academy-established { top: clamp(32px, 3.125vw, 60px); min-height: clamp(18px, 1.510417vw, 29px); height: auto; font-size: clamp(16px, 1.354167vw, 26px); }
+  html:not([data-identity="warm"]) .project-tools .project-heading { width: min(46.9605vw, 901.642px); }
+  html:not([data-identity="warm"]) .academy-motto { bottom: clamp(32px, 3.125vw, 60px); left: var(--gutter); width: calc(100% - 2 * var(--gutter)); height: auto; font-size: clamp(16px, 1.354167vw, 26px); }
   html:not([data-identity="warm"]) .academy-sticker-weird { bottom: 14%; }
 }
 
@@ -373,9 +373,11 @@ html[data-motion="off"] .press-logo { transition: none; }
   html:not([data-identity="warm"]) .academy-cover > .section-number { top: 32px; }
   html:not([data-identity="warm"]) .academy-established,
   html:not([data-identity="warm"]) .academy-motto { height: auto; min-height: 18px; font-size: 16px; }
-  html:not([data-identity="warm"]) .project-tools .project-heading { width: min(80vw, 600px); margin-top: 130px; }
-  html:not([data-identity="warm"]) .project-tools .project-body { width: min(100%, 760px); margin: 48px 0 0; transform: none; }
-  html:not([data-identity="warm"]) .academy-motto { padding-top: 250px; }
+  html:not([data-identity="warm"]) .academy-composition { gap: 48px; }
+  html:not([data-identity="warm"]) .project-tools .project-heading { width: min(80vw, 600px); }
+  html:not([data-identity="warm"]) .project-tools .project-body { width: min(100%, 760px); }
+  html:not([data-identity="warm"]) .academy-established { top: 32px; }
+  html:not([data-identity="warm"]) .academy-motto { bottom: 32px; }
   html:not([data-identity="warm"]) .academy-introduction .academy-sticker-arrow { left: -16px; width: 10px; }
   html:not([data-identity="warm"]) .academy-sticker-poster { top: 86px; left: 34%; width: 56px; }
   html:not([data-identity="warm"]) .academy-sticker-year { top: 92px; right: 5%; width: 110px; }
