@@ -1,6 +1,6 @@
 export function mountCuratedCards() {
   const gallery = document.querySelector(".edge-news-gallery");
-  if (!gallery) return;
+  if (!gallery || gallery.closest("[hidden]")) return;
   const hint = document.createElement("p");
   hint.className = "curated-editor-note";
   hint.textContent = "Hover over or tap a card to edit its prompt. Local prototype: edits are kept for this visit; stories do not regenerate.";

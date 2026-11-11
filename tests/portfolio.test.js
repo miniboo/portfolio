@@ -166,8 +166,9 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(original.includes('class="eyebrow discover-platforms">One Copilot desktop &amp; mobile app</p>'));
 });
 
-test("Edge has the four confirmed personalized cards with live source text and appropriate attribution", () => {
+test("Edge preserves its temporarily hidden introduction and four source-attributed cards", () => {
   const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
+  assert.ok(news.startsWith('<section class="edge-news" aria-labelledby="edge-news-title" hidden>'));
   assert.ok(news.includes('<h3 id="edge-news-title">A new tab shaped around you.</h3>'));
   assert.ok(news.includes('<p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>'));
   assert.equal([...news.matchAll(/<h3 /g)].length, 1);
@@ -483,6 +484,7 @@ test("the second-screen film replays on hover and press logos rotate only after 
 
 test("Edge keeps its controlled video directly before the cards without the removed case narrative", async () => {
   const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
+  assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Discover on the Edge Browser<\/h2>/);
   assert.ok(edge.includes('controls muted playsinline preload="none"'));
   assert.ok(!edge.includes("autoplay"));
   assert.ok(!edge.includes("case-story"));
