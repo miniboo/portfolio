@@ -3,8 +3,6 @@ html:has(body.resume) { background: #f6f5f3; }
 .resume-page { width: min(1120px, calc(100% - 2 * var(--gutter))); margin-inline: auto; padding: 32px 0 48px; }
 .resume-navigation { display: flex; justify-content: space-between; gap: 24px; font-size: 13px; }
 .resume a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.resume a.resume-reference { text-decoration: underline dotted #b94a2b; text-decoration-thickness: 1px; text-underline-offset: 5px; }
-.resume a.resume-reference:hover, .resume a.resume-reference:focus-visible { text-decoration-thickness: 2px; }
 .resume :focus-visible { outline-color: #b94a2b; }
 .resume-header { padding: clamp(56px, 7vw, 88px) 0 48px; border-bottom: 1px solid #211e1d33; }
 .resume h1 { margin: 20px 0 24px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(44px, 6vw, 76px); font-weight: 400; line-height: 1.04; letter-spacing: -.035em; }
@@ -56,6 +54,6 @@ html:has(body.resume) { background: #f6f5f3; }
   .resume-details h2 { font-size: 15pt; }
   .resume-details h3 { font-size: 10pt; }
   .resume-position, .resume-date, .resume-detail-note { font-size: 9pt; }
-  .resume a, .resume a.resume-reference { text-decoration: none; }
+  .resume a { text-decoration: none; }
   .resume :focus-visible { outline: none; }
 }

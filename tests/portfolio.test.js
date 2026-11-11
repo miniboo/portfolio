@@ -283,9 +283,11 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
 test("the original opening uses the name-only masthead and exact first-person biography", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   const heading = hero.match(/<h1.*?<\/h1>/s)[0].replace(/<[^>]+>/g, "");
+  assert.ok(hero.includes('<a class="bio-reference" href="https://www.youtube.com/watch?v=7xhxjcejONk">littleBits</a>'));
+  assert.ok(hero.includes('<a class="bio-reference" href="https://www.nytimes.com/2010/09/19/magazine/19video-t.html?unlocked_article_code=1.PlE.wKut.KTlMBY45VmU1&amp;smid=url-share">Quest to Learn</a>'));
   assert.equal(heading, "Chloe Varelidi.");
   assert.ok(!hero.includes("hero-greeting"));
-  assert.deepEqual([...hero.matchAll(/<p class="hero-(?:intro|experience|origin)">(.*?)<\/p>/g)].map(([, text]) => text), [
+  assert.deepEqual([...hero.matchAll(/<p class="hero-(?:intro|experience|origin)">(.*?)<\/p>/g)].map(([, text]) => text.replace(/<[^>]*>/g, "")), [
     "Hello, I’m Chloe. I currently lead the Content Intelligence team at Microsoft AI, where I focus on how people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.",
     "As an entrepreneur, I’ve led 0-to-1 products for clients such as LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel, with an ARR of 300MM.",
     "Most of what I know about design, I learned while helping start Quest to Learn, a public school in New York City.",
