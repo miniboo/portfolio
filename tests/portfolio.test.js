@@ -371,10 +371,10 @@ test("Discover walkthrough uses the real backdrop and one browser toolbar withou
   for (const name of ["discover-desktop.mp4", "discover-wallpaper.png", "discover-browser-toolbar.png", "discover-desktop-poster.jpg"]) await access(new URL(`public/media/${name}`, root));
 });
 
-test("Discover explains its daily brief, human voices and executive role above the design", async () => {
+test("Discover explains its chat-history brief, publisher ecosystem and One Copilot scaling role above the design", async () => {
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
   const description = story.match(/<div class="discover-description">(.*?)<\/div>/s)[1];
-  assert.equal(description.trim(), "<p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps, putting the humans behind the stories front and center with clear voices and sources. I led the experience end to end, partnering with our executive leadership to shape the 0-to-1 feature demoed by our CEO.</p>");
+  assert.equal(description.trim(), "<p>Copilot Discover turns your chat history into a daily brief tailored to what matters to you, connecting your interests with relevant stories from our publisher ecosystem across desktop and mobile. I led the experience end to end, partnering with executive leadership to take it from 0-to-1 and scale it across the One Copilot ecosystem.</p>");
   for (const text of ["chat history and memory", "agentic experience", "generative UI model", "format, length, and knowledge level"]) assert.ok(!description.includes(text));
   assert.ok(!original.includes("discover-principles"));
   assert.ok(!original.includes("Design principles"));
