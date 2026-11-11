@@ -27,7 +27,7 @@ npm run preview
 
 ## Content and motion
 
-The original opening pairs a modest “Hi, I’m” greeting with the existing name masthead and botanical illustration. Its three first-person paragraphs use the approved current-role, studio/entrepreneurship and Quest to Learn wording verbatim. Recognition and press interactions remain below; the warm route retains its original heading and biography.
+The original opening sets “Hi, I’m” in the same responsive Georgia serif size as the name, forming a three-line masthead beside the botanical illustration. Its three first-person paragraphs use the approved current-role, studio/entrepreneurship and Quest to Learn wording verbatim. Recognition and press interactions remain below; the warm route retains its original heading and biography.
 
 The landscape leads with the approved 18-month Microsoft impact story and collective MSN transformation statement, followed by the four unchanged scale metrics. A modest “How I work” heading and warm collaborative bridge introduce the process line: Product hypothesis, Design in code, Evals, Flight & learn. A screen-reader explanation clarifies that Evals means evaluating AI-generated content with engineering. Everything shares one natural-height landscape section, an 850px layout rail and compact 32–40px gaps. A fine connector runs horizontally on desktop and vertically on mobile. No cards, extra slides or animations are added, and project04's design-practice content remains unchanged. The warm route removes this original-only section.
 
