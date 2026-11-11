@@ -31,7 +31,7 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   assert.doesNotMatch(resume, /spark\s*club/i);
   assert.doesNotMatch(resume, /Experienced design leader|Ever hungry to learn|resume-summary/);
   assert.doesNotMatch(resume, /skills-title|<h2[^>]*>Practice<\/h2>/);
-  assert.ok(resume.includes("Design leader / researcher / technologist"));
+  assert.ok(resume.includes("Design leader / technologist / educator"));
   const currentRole = resume.match(/<article class="resume-role">[\s\S]*?<\/article>/)[0];
   assert.ok(currentRole.includes("<h3>Microsoft AI</h3>"));
   const appointments = [...currentRole.matchAll(/<section class="resume-appointment"[\s\S]*?<\/section>/g)]
