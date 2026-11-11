@@ -309,7 +309,6 @@ test("the Content Intelligence scene retains all metrics and the confirmed MSN h
 
 test("Discover has the exact personalized-brief title and supplied replacement design", async () => {
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
-  for (const copy of ["Copilot Discover", "desktop app and One Copilot", "chat history and memory", "current publishers and AI-curated sources", "generative UI model", "adds augments to stories"]) assert.ok(story.includes(copy));
   assert.ok(story.includes('<h3 id="discover-story-title">A daily brief made just for you.</h3>'));
   assert.ok(story.includes('src="/media/discover-personalized-brief.png" width="1128" height="1605" loading="lazy"'));
   assert.ok(story.includes("Zahra Bello's profile, publisher attribution"));
@@ -339,11 +338,11 @@ test("Discover walkthrough uses the real backdrop and one browser toolbar withou
   for (const name of ["discover-desktop.mp4", "discover-wallpaper.png", "discover-browser-toolbar.png", "discover-desktop-poster.jpg"]) await access(new URL(`public/media/${name}`, root));
 });
 
-test("Discover principles are integrated into the existing narrative beside the design", async () => {
+test("Discover explains its daily brief and human voices in one concise paragraph beside the design", async () => {
   const story = original.match(/<section class="discover-statement.*?<\/section>/s)[0];
   const description = story.match(/<div class="discover-description">(.*?)<\/div>/s)[1];
-  assert.equal([...description.matchAll(/<p>/g)].length, 3);
-  for (const text of ["agentic experience centered on human voices", "Real voices and clear provenance", "format, length, and knowledge level", "guiding intent is to earn your trust"]) assert.ok(description.includes(text));
+  assert.equal(description.trim(), "<p>Copilot Discover brings you a personalized daily brief across the desktop and mobile apps. It puts the humans behind the stories front and center, highlighting their voices and making sources clear.</p>");
+  for (const text of ["chat history and memory", "agentic experience", "generative UI model", "format, length, and knowledge level"]) assert.ok(!description.includes(text));
   assert.ok(!original.includes("discover-principles"));
   assert.ok(!original.includes("Design principles"));
   assert.ok(!story.includes("<dl"));
