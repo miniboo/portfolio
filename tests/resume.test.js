@@ -18,11 +18,10 @@ test("original-only professional navigation opens a standalone private-source-sa
   assert.ok(resume.includes('class="resume-header-mark" src="/media/resume-header-mark.svg" width="108" height="108" alt="" aria-hidden="true"'));
   assert.ok(resume.includes('href="%BASE_URL%">← Portfolio</a>'));
   const contacts = resume.match(/<div class="resume-contact">[\s\S]*?<\/div>/)[0];
-  assert.equal([...contacts.matchAll(/<a\b/g)].length, 2);
+  assert.equal([...contacts.matchAll(/<a\b/g)].length, 1);
   const links = [...contacts.matchAll(/<a href="([^"]+)">([\s\S]*?)<\/a>/g)];
   assert.deepEqual(links.map(([, href, content]) => [href, content.replace(/<[^>]+>/g, "")]), [
     ["mailto:chloe@varelidi.com", "chloe@varelidi.com"],
-    ["tel:+13472418764", "347 241 8764"],
   ]);
   for (const [, , content] of links) {
     assert.match(content, /<svg\b[^>]*aria-hidden="true"[^>]*focusable="false"/);
@@ -30,7 +29,7 @@ test("original-only professional navigation opens a standalone private-source-sa
   assert.doesNotMatch(resume, /Washington, DC|https:\/\/www\.varelidi\.com\//);
   assert.ok(!resume.includes("/src/main.js"));
   assert.ok(!resume.includes(".pdf"));
-  assert.deepEqual(resume.match(/\b\d{3}[ .-]\d{3}[ .-]\d{4}\b/g), ["347 241 8764"]);
+  assert.doesNotMatch(resume, /tel:|resume-phone-icon|\b\d{3}[ .-]\d{3}[ .-]\d{4}\b/);
   for (const id of [...resume.matchAll(/href="#([^"]+)"/g)].map(match => match[1])) {
     assert.ok(resume.includes(`id="${id}"`));
   }
