@@ -10,7 +10,7 @@ const original = html.replace(/<template[^>]*>.*?<\/template>/gs, "");
 
 test("Copilot Discover and Edge Discover lead the retained project sequence", () => {
   const titles = [...original.matchAll(/class="project-heading".*?<h2[^>]*>(.*?)<\/h2>/gs)].map(([, title]) => title.replace(/<[^>]*>/g, ""));
-  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "The Royal Academy of AI"]);
+  assert.deepEqual(titles, ["Shipped Copilot Discover", "Shipped Discover on the Edge Browser", "Shipped Midterm Elections", "The Royal Academy of AI"]);
   const numbers = [...original.matchAll(/class="section-number"[^>]*>(\d+)</g)].map(([, number]) => number);
   assert.deepEqual(numbers, ["01", "02", "03", "04"]);
 });
@@ -349,6 +349,13 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   assert.ok(story.includes('<h3 id="discover-story-title">A daily brief made just for you.</h3>'));
   assert.ok(story.includes('src="/media/discover-personalized-brief.png" width="1128" height="1605" loading="lazy"'));
   assert.ok(story.includes("Zahra Bello's profile, publisher attribution"));
+  assert.ok(story.includes('data-discover-gallery role="region"'));
+  assert.ok(story.includes('aria-label="Previous design"'));
+  assert.ok(story.includes('aria-label="Next design"'));
+  assert.ok(story.includes('src="/media/discover-morning-edition.png" width="2568" height="3396"'));
+  assert.ok(story.includes('aria-label="2 of 3: Morning edition" aria-hidden="true" inert'));
+  assert.ok(story.includes('aria-label="3 of 3: Story consumption" aria-hidden="true" inert'));
+  assert.ok(story.includes('src="/media/discover-consumption.png" width="2510" height="3176"'));
   assert.ok(!story.includes("Thursday"));
   assert.ok(story.includes('href="/media/discover-personalized-brief.png" target="_blank" rel="noopener"'));
   assert.ok(!original.includes("Browser prototype pending."));
@@ -532,7 +539,7 @@ test("the second-screen film replays on hover and press logos rotate only after 
 
 test("Edge keeps its controlled video and restored brief without the removed case narrative", async () => {
   const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
-  assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Discover on the Edge Browser<\/h2>/);
+  assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Shipped Discover on the Edge Browser<\/h2>/);
   assert.ok(edge.includes('controls muted playsinline preload="none"'));
   assert.ok(!edge.includes("autoplay"));
   assert.ok(!edge.includes("case-story"));

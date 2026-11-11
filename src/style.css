@@ -218,8 +218,24 @@ html:not([data-identity="warm"]) .discover-statement { display: grid; grid-templ
 html:not([data-identity="warm"]) .discover-copy { display: flex; flex-direction: column; gap: clamp(28px, 2.2vw, 40px); width: 100%; max-width: 1400px; margin-inline: auto; }
 html:not([data-identity="warm"]) :is(.discover-copy h3, .edge-news > h3) { font-size: clamp(28px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.025em; line-height: 1.3; text-wrap: balance; }
 html:not([data-identity="warm"]) :is(.discover-description, .edge-news-description, .elections-description) { display: grid; gap: 24px; max-width: 556px; font-size: 20px; line-height: 1.4; }
-html:not([data-identity="warm"]) .discover-brief-design { width: 100%; max-width: 800px; margin-inline: auto; align-self: start; }
+html:not([data-identity="warm"]) .discover-brief-design { position: relative; width: 100%; max-width: 800px; margin-inline: auto; align-self: start; }
 html:not([data-identity="warm"]) .discover-brief-design a { display: block; cursor: zoom-in; }
+html:not([data-identity="warm"]) .discover-gallery-controls:not([hidden]) { position: absolute; z-index: 1; inset: 0; pointer-events: none; }
+html:not([data-identity="warm"]) .discover-flipper { position: absolute; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 48px; padding: 0; border: 0; background: transparent; cursor: pointer; touch-action: manipulation; pointer-events: auto; }
+html:not([data-identity="warm"]) .discover-flipper:first-child { left: -18px; }
+html:not([data-identity="warm"]) .discover-flipper:last-child { right: -18px; }
+@media (min-width: 1000px) {
+  html:not([data-identity="warm"]) .discover-flipper:first-child { left: -52px; }
+  html:not([data-identity="warm"]) .discover-flipper:last-child { right: -52px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  html:not([data-identity="warm"]) .discover-flipper { opacity: 0; }
+  html:not([data-identity="warm"]) .discover-brief-design:hover .discover-flipper,
+  html:not([data-identity="warm"]) .discover-brief-design:focus-within .discover-flipper { opacity: 1; }
+}
+html:not([data-identity="warm"]) .discover-gallery-slides { display: grid; }
+html:not([data-identity="warm"]) .discover-gallery-slide { grid-area: 1 / 1; align-self: center; min-width: 0; }
+html:not([data-identity="warm"]) .discover-gallery-slide[aria-hidden="true"] { visibility: hidden; pointer-events: none; }
 
 html:not([data-identity="warm"]) .daily-brief { background: #1e1b1b; color: #fefdfa; }
 html:not([data-identity="warm"]) .daily-brief-label { max-width: 1400px; margin: 0 auto 32px; }

@@ -1,5 +1,6 @@
 import { mountDiscoverPhones } from "./discover-phones.js";
 import { mountCuratedCards } from "./curated-cards.js";
+import { mountDiscoverGallery } from "./discover-gallery.js";
 
 const hero = document.querySelector(".hero");
 if (document.documentElement.dataset.identity === "warm") {
@@ -60,6 +61,7 @@ if (document.documentElement.dataset.identity === "warm") {
 
 mountDiscoverPhones();
 mountCuratedCards();
+mountDiscoverGallery();
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector("#motion-toggle");
