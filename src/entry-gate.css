@@ -7,7 +7,7 @@
 .entry-form button { min-width: 48px; min-height: 44px; border: 0; padding: 10px 4px; background: transparent; color: #211e1d; cursor: pointer; font-size: 13px; }
 .entry-form button:hover { color: #9e3026; }
 .entry-form button:disabled { cursor: wait; opacity: .6; }
-.entry-form input:focus { outline: none; border-bottom: 2px solid #b94a2b; }
+.entry-form input:focus { outline: none; border-bottom: 1px solid #ff5c39; }
 .entry-form button:focus-visible { outline: 2px solid #b94a2b; outline-offset: 4px; }
 .entry-error { margin-top: 16px; color: #9e3026; font-size: 13px; line-height: 1.5; }
 .entry-notice { margin-top: 16px; color: #58534e; font-size: 12px; line-height: 1.5; }
