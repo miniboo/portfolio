@@ -177,7 +177,6 @@ html:not([data-identity="warm"]) .ecosystem-intro { position: relative; isolatio
 html:not([data-identity="warm"]) .ecosystem-intro h2 { font-size: clamp(30px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.03em; line-height: 1.3; }
 html:not([data-identity="warm"]) .ecosystem-intro .green { color: inherit; }
 html:not([data-identity="warm"]) .ecosystem-intro .scale { width: 100%; max-width: 850px; margin: 0; }
-html:not([data-identity="warm"]) .ecosystem-intro .scale > div { border-left: 1px solid var(--orange); padding-left: clamp(10px, 1.3vw, 18px); }
 html:not([data-identity="warm"]) .ecosystem-intro .scale dt { font-size: clamp(48px, 4.7vw, 90px); }
 html:not([data-identity="warm"]) .ecosystem-intro .scale dd { color: inherit; }
 html:not([data-identity="warm"]) .ecosystem-statement { display: flex; flex-direction: column; align-items: start; gap: clamp(32px, 3vw, 40px); width: 100%; max-width: 850px; }

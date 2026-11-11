@@ -52,6 +52,7 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelectorAll(".warm-image-caption").forEach(template => template.replaceWith(template.content));
   const previous = document.querySelector("#warm-ecosystem").content;
   work.querySelector("#work-title").innerHTML = ecosystem.querySelector("h2").innerHTML;
+  work.querySelector("#work-title .green").append(".");
   work.insertBefore(previous.querySelector(".work-context"), index);
   work.insertBefore(previous.querySelector(".scale"), index);
   ecosystem.remove();

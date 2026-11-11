@@ -155,6 +155,7 @@ test("project headings and media use one shared layout without repeated filler",
 });
 
 test("Microsoft impact and scale lead directly to an accessible Selected projects link", async () => {
+  assert.equal(original.match(/<h2 id="ecosystem-title">(.*?)<\/h2>/)[1].replace(/<[^>]+>/g, ""), "Microsoft AI");
   const cue = '<a class="selected-projects" href="#copilot-content">Selected projects <span aria-hidden="true">↓</span></a>';
   const method = "My story at Microsoft is one of impact. In 18 months, I’ve transformed how our team works—bringing AI-native processes into our everyday practice and partnering closely with product leadership to flight experiments faster than ever before.";
   const context = "Together, we’ve led the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces.";
