@@ -168,11 +168,15 @@ test("original module introductions use a stacked rail and centered, uncropped m
 
 test("Edge has the four confirmed personalized cards with live source text and appropriate attribution", () => {
   const news = original.match(/<section class="edge-news".*?<\/section>/s)[0];
-  assert.ok(news.includes('<h3 id="edge-news-title">AI-curated news for you</h3>'));
+  assert.ok(news.includes('<h3 id="edge-news-title">A new tab shaped around you.</h3>'));
+  assert.ok(news.includes('<p class="edge-news-description">Discover brings together stories, videos, and perspectives tailored to your interests in Microsoft Edge. Curated by Copilot draws on multiple articles to help you make sense of a topic, with clear sources so you can explore the original reporting.</p>'));
+  assert.equal([...news.matchAll(/<h3 /g)].length, 1);
+  assert.ok(news.indexOf('class="edge-news-description"') < news.indexOf("<article "));
   assert.equal([...news.matchAll(/<article /g)].length, 4);
   assert.equal([...news.matchAll(/<h4 /g)].length, 4);
-  assert.equal([...news.matchAll(/Curated by Copilot/g)].length, 2);
-  assert.equal([...news.matchAll(/<span>Vexel<\/span>/g)].length, 2);
+  const cards = [...news.matchAll(/<article\b.*?<\/article>/gs)].map(([card]) => card).join("");
+  assert.equal([...cards.matchAll(/Curated by Copilot/g)].length, 2);
+  assert.equal([...cards.matchAll(/<span>Vexel<\/span>/g)].length, 2);
   assert.equal([...news.matchAll(/data-curated-reaction=/g)].length, 8);
   assert.equal([...news.matchAll(/aria-pressed="false" disabled/g)].length, 8);
   for (const copy of ["A frosty start to your morning", "Schiaparelli gives your London trip a cultural anchor", "Microsoft's earnings reveal an interesting AI trade-off", "The key pressure point ahead of kickoff", "You follow the 49ers", "238.78", "3.97%"]) assert.ok(news.includes(copy));
