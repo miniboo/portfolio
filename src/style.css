@@ -139,7 +139,7 @@ html:not([data-identity="warm"]) .hero h1 > span { display: block; }
 html[data-identity="warm"] .hero-origin { display: none; }
 html:not([data-identity="warm"]) .hero h1 .surname { margin-top: 0; margin-left: .65em; }
 html:not([data-identity="warm"]) .hero .name-period { color: var(--orange); }
-html:not([data-identity="warm"]) .bio-reference { text-decoration: underline dotted var(--orange); text-decoration-thickness: 1px; text-underline-offset: 5px; }
+html:not([data-identity="warm"]) .bio-reference { text-decoration: underline dotted currentColor; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 html:not([data-identity="warm"]) .bio-reference:hover, html:not([data-identity="warm"]) .bio-reference:focus-visible { text-decoration-thickness: 2px; }
 html:not([data-identity="warm"]) .hero-illustration { flex: 0 0 auto; width: clamp(140px, 10vw, 180px); margin-left: 0; margin-bottom: -8px; }
 html:not([data-identity="warm"]) .hero-illustration img { width: 100%; }

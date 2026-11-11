@@ -249,7 +249,7 @@ test("Midterm retains only its genuine video and Microsoft-user introduction, pr
   assert.ok(elections.includes('controls muted playsinline preload="none"'));
   assert.ok(!elections.includes("elections-overview.png"));
   assert.ok(elections.includes('poster="/media/elections-results.png"'));
-  assert.ok(elections.includes('<p class="elections-description">The Midterm Elections experience brings race results, voting information, and reporting to Microsoft users. Partnering with our VP of Editorial and CVP, I led a squad through an end-to-end AI-native process to deliver it in two months—covering hundreds of scenarios before, during, and after election day, and reaching nearly everyone across Microsoft’s user ecosystem.</p>'));
+  assert.ok(elections.includes('<p class="elections-description">The Midterm Elections experience brings race results, voting information, and reporting to Microsoft users. Partnering with our VP of Editorial and CPO, I led an end-to-end AI-native process to deliver it in two months—covering hundreds of scenarios before, during, and after election day, and reaching nearly everyone across Microsoft’s user ecosystem.</p>'));
   assert.ok(elections.indexOf('class="elections-description"') > elections.indexOf('id="elections-video"'));
   for (const removed of ["election-details-page", "election-pieces", "elections-texas-card", "elections-iowa-card", "elections-guide-card", "elections-senate-card", "elections-coverage-card"]) assert.ok(!elections.includes(removed));
   assert.ok(!elections.includes('class="election-map"'));
