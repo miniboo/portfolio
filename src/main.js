@@ -26,7 +26,7 @@ if (document.documentElement.dataset.identity === "warm") {
   workLink.replaceWith(workLink.content);
   const image = portrait.querySelector("img");
   image.loading = "eager";
-  image.src = "/media/chloe-portrait.webp";
+  image.src = `${import.meta.env.BASE_URL}media/chloe-portrait.webp`;
   image.width = 1767;
   image.height = 2650;
   image.alt = "Chloe Varelidi smiling, seated in a floral dress surrounded by colorful Follies play shapes.";

@@ -18,7 +18,7 @@ const categories = [
   { title: "Local family events", images: ["welcome-family-zoo.jpg", "feed-goblin.jpg", "welcome-family-3.jpg"], stories: [["SF Funcheap · Sat Oct 31", "Halloween at San Francisco Zoo"], ["Bay Area Kid Fun · Sat Oct 31", "A costume weekend at Oakland Zoo"], ["Marin IJ · Sun Nov 1", "A hands-on Halloween in Sausalito"]] },
 ];
 const cardOrbits = new Set();
-const image = (name, width, height) => `<img src="/media/${name}" width="${width}" height="${height}" alt="" aria-hidden="true" loading="lazy" draggable="false" />`;
+const image = (name, width, height) => `<img src="${import.meta.env.BASE_URL}media/${name}" width="${width}" height="${height}" alt="" aria-hidden="true" loading="lazy" draggable="false" />`;
 const bottom = () => `<div class="phone-bottom">${image("phone-bottom-chrome.png", 393, 80)}</div>`;
 const familyIcon = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="5" r="2"/><circle cx="14" cy="7" r="1.5"/><path d="M2 16v-3a5 5 0 0 1 10 0v3m1-5a4 4 0 0 1 5 4v1"/></svg>`;
 

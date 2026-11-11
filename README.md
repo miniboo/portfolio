@@ -25,6 +25,21 @@ npm run build
 npm run preview
 ```
 
+## Personal GitHub Pages preparation
+
+The site needs only static HTML, CSS, JavaScript, fonts and media; no application server, account system or password gate is required. Build for the `miniboo/portfolio` project path with:
+
+```sh
+npm run build:pages
+npm run preview:pages
+```
+
+The local preview opens at `http://127.0.0.1:4173/portfolio/`. The ignored `dist/` output contains real directory-index entries for `/portfolio/`, `/portfolio/resume/` and `/portfolio/2/`, plus shared local assets and `.nojekyll`. Each route supports direct navigation and refresh without an SPA rewrite. Full-size design links, video fallbacks, résumé back links and dynamically generated phone/portrait images respect the same base path. `npm run build` remains the root-domain build.
+
+Publishing remains a separate, explicitly authorized action. `.github/workflows/pages.yml` is manual-only (`workflow_dispatch`), has no push trigger and refuses to publish outside `miniboo/portfolio`. After publishing is approved and the latest source is synchronized to that personal repository, select **Settings → Pages → Source → GitHub Actions**, then manually run **Publish personal portfolio** on the approved branch. It builds and uploads only `dist/`, not the source repository or private résumé inputs. No workflow has been run, website archive exported, repository visibility changed or site deployed as part of this preparation.
+
+GitHub Pages requires a public repository on GitHub Free, or an eligible paid plan for a private repository. A private source repository does not, by itself, make a Pages site private. Confirm eligibility and approve any visibility change before publishing; see [GitHub’s hosting requirements](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site). The site is approximately 137MB, and every individual media file is below GitHub’s 100MiB file limit.
+
 ## Content and motion
 
 On the original route, the three project videos preview muted and loop while mouse-hovered, then pause on leave, offscreen or page hiding, retaining their playback position. Hover previews temporarily hide native controls so the recording remains unobscured; leave, focus or intentional pointer/keyboard interaction restores them. Looping is hover-owned only; the prior native loop setting is restored on leave or control interaction. Native pointer/keyboard controls and unmuting take ownership, so leaving does not interrupt deliberate playback or override a sound choice. Focused videos support Space/Enter playback; reduced motion disables hover previews, not manual playback, and touch uses native controls. Posters and no-JavaScript controls remain intact. Browser-policy blocks are announced beside the affected video. The landscape keeps its separate finite restart-on-hover behavior, and the warm route gains no hover playback.

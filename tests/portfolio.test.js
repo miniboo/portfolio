@@ -113,7 +113,7 @@ test("the later project design stays restored and the selected portrait remains 
     assert.ok(styles.includes(value));
   }
   assert.ok(html.includes('src="/media/chloe-follies.jpg" width="1500" height="1000"'));
-  assert.ok(script.includes('image.src = "/media/chloe-portrait.webp"'));
+  assert.ok(script.includes('image.src = `${import.meta.env.BASE_URL}media/chloe-portrait.webp`'));
   assert.ok(!html.includes('class="project-images'));
 });
 
@@ -272,7 +272,7 @@ test("Midterm retains only its genuine video and Microsoft-user introduction, pr
 test("the second identity uses a distinct route and a scoped stylesheet", async () => {
   const warm = await readFile(new URL("src/warm.css", root), "utf8");
   const script = await readFile(new URL("src/main.js", root), "utf8");
-  assert.ok(html.includes('=== "/2"'));
+  assert.ok(html.includes('=== "%BASE_URL%2"'));
   assert.ok(html.includes('document.title = "2"'));
   assert.ok(script.includes('if (document.documentElement.dataset.identity === "warm")'));
   assert.ok(warm.includes('html[data-identity="warm"] .hero .portrait'));
@@ -363,7 +363,7 @@ test("Discover has the exact personalized-brief title and supplied replacement d
   assert.ok(story.includes('aria-label="3 of 3: Story consumption" aria-hidden="true" inert'));
   assert.ok(story.includes('src="/media/discover-consumption.png" width="2510" height="3176"'));
   assert.ok(!story.includes("Thursday"));
-  assert.ok(story.includes('href="/media/discover-personalized-brief.png" target="_blank" rel="noopener"'));
+  assert.ok(story.includes('href="%BASE_URL%media/discover-personalized-brief.png" target="_blank" rel="noopener"'));
   assert.ok(!original.includes("Browser prototype pending."));
   assert.ok(!story.includes("discover-video-placeholder"));
   const image = await readFile(new URL("public/media/discover-personalized-brief.png", root));

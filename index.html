@@ -7,7 +7,7 @@
     <meta name="description" content="Chloe Varelidi is a designer and technologist harnessing the power of play to build the future of learning." />
     <title>Chloe Varelidi — Design &amp; Technology</title>
     <script>
-      if (window.location.pathname.replace(/\/+$/, "") === "/2") {
+      if (window.location.pathname.replace(/\/+$/, "") === "%BASE_URL%2") {
         document.documentElement.dataset.identity = "warm";
         document.title = "2";
         document.querySelector('meta[name="theme-color"]').content = "#faf5e9";
@@ -37,7 +37,7 @@
       <section class="hero section-pad" aria-labelledby="hero-title">
         <nav class="portfolio-nav" aria-label="Professional links">
           <a href="https://www.linkedin.com/in/chloevarelidi/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
-          <a href="/resume/">Résumé ↗</a>
+          <a href="%BASE_URL%resume/">Résumé ↗</a>
         </nav>
         <div class="hero-layout">
         <div class="hero-heading">
@@ -128,7 +128,7 @@
                 <img src="/media/discover-browser-toolbar.png" width="1440" height="92" loading="lazy" alt="" aria-hidden="true" />
                 <video id="copilot-discover-video" controls muted playsinline preload="none" poster="/media/discover-desktop-poster.jpg" width="2386" height="1440" aria-label="Copilot Discover personalized daily brief walkthrough" aria-describedby="copilot-video-description">
                   <source src="/media/discover-desktop.mp4" type="video/mp4" />
-                  Your browser does not support this video. <a href="/media/discover-desktop.mp4">Open the Discover walkthrough.</a>
+                  Your browser does not support this video. <a href="%BASE_URL%media/discover-desktop.mp4">Open the Discover walkthrough.</a>
                 </video>
               </div>
             </div>
@@ -156,17 +156,17 @@
           </div>
           <div class="discover-gallery-slides" id="discover-gallery-slides">
             <figure class="discover-gallery-slide" role="group" aria-roledescription="slide" aria-label="1 of 3: Zahra Bello">
-              <a href="/media/discover-personalized-brief.png" target="_blank" rel="noopener" aria-label="View the personalized daily brief design at full size">
+              <a href="%BASE_URL%media/discover-personalized-brief.png" target="_blank" rel="noopener" aria-label="View the personalized daily brief design at full size">
                 <img src="/media/discover-personalized-brief.png" width="1128" height="1605" loading="lazy" alt="Copilot Discover creator-led brief with Zahra Bello's profile, publisher attribution, topic chips, a mixed-media feed and the Ask about any story composer." />
               </a>
             </figure>
             <figure class="discover-gallery-slide" role="group" aria-roledescription="slide" aria-label="2 of 3: Morning edition" aria-hidden="true" inert>
-              <a href="/media/discover-morning-edition.png" target="_blank" rel="noopener" aria-label="View the morning edition design at full size">
+              <a href="%BASE_URL%media/discover-morning-edition.png" target="_blank" rel="noopener" aria-label="View the morning edition design at full size">
                 <img src="/media/discover-morning-edition.png" width="2568" height="3396" loading="lazy" alt="Copilot Discover morning edition for Olivia, with topic filters, oil-price coverage, a developing-story timeline, voices on the ground and the Ask more about any story composer." />
               </a>
             </figure>
             <figure class="discover-gallery-slide" role="group" aria-roledescription="slide" aria-label="3 of 3: Story consumption" aria-hidden="true" inert>
-              <a href="/media/discover-consumption.png" target="_blank" rel="noopener" aria-label="View the story consumption design at full size">
+              <a href="%BASE_URL%media/discover-consumption.png" target="_blank" rel="noopener" aria-label="View the story consumption design at full size">
                 <img src="/media/discover-consumption.png" width="2510" height="3176" loading="lazy" alt="Copilot Discover story consumption design with publisher attribution, an AI commencement story, key-point summaries, a graduation photograph, cited sections and the Ask about this story composer." />
               </a>
             </figure>
@@ -344,7 +344,7 @@
           <figure>
             <video id="elections-video" controls muted playsinline preload="none" poster="/media/elections-results.png" width="1920" height="1080" aria-label="Midterm Elections results and coverage design video">
               <source src="/media/midterm-elections-results.mp4" type="video/mp4" />
-              Your browser does not support this video. <a href="/media/midterm-elections-results.mp4">Open the Midterm Elections video.</a>
+              Your browser does not support this video. <a href="%BASE_URL%media/midterm-elections-results.mp4">Open the Midterm Elections video.</a>
             </video>
           </figure>
           <p id="elections-video-status" class="video-status" role="status" hidden></p>

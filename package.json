@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
+    "build:pages": "vite build --base=/portfolio/",
     "preview": "vite preview --host 127.0.0.1",
+    "preview:pages": "vite preview --host 127.0.0.1 --base=/portfolio/",
     "test": "node --test"
   },
   "devDependencies": {
