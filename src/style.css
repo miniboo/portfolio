@@ -150,7 +150,7 @@ html:not([data-identity="warm"]) .press-logo img { width: 100%; height: 100%; ob
 
 html[data-identity="warm"] .ecosystem-intro { display: none; }
 html[data-identity="warm"] .hero-illustration { display: none; }
-html:not([data-identity="warm"]) .ecosystem-intro { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; margin-top: calc(-1 * var(--scene-overlap)); padding-top: calc(88px + var(--scene-overlap)); display: flex; flex-direction: column; justify-content: center; align-items: start; gap: 40px; background: #1e1b1b; color: #fefdfa; }
+html:not([data-identity="warm"]) .ecosystem-intro { position: relative; isolation: isolate; overflow: hidden; min-height: 0; margin-top: calc(-1 * var(--scene-overlap)); padding-top: calc(88px + var(--scene-overlap)); padding-bottom: 0; display: flex; flex-direction: column; align-items: start; gap: 40px; background: #1e1b1b; color: #fefdfa; }
 html:not([data-identity="warm"]) .ecosystem-intro h2 { font-size: clamp(30px, 2.3vw, 44px); font-weight: 400; letter-spacing: -.03em; line-height: 1.3; }
 html:not([data-identity="warm"]) .ecosystem-intro .green { color: inherit; }
 html:not([data-identity="warm"]) .ecosystem-intro .scale { width: 100%; max-width: 850px; margin: 0; }
@@ -178,9 +178,9 @@ html:not([data-identity="warm"]) #edge-video-status { margin-top: 24px; }
 html:not([data-identity="warm"]) .project-tools .project-placeholder { border-color: var(--ink); }
 
 html[data-identity="warm"] .design-process { display: none; }
-html:not([data-identity="warm"]) .design-process { padding-block: clamp(40px, 5vw, 72px); background: #1e1b1b; color: #fefdfa; }
-.process-introduction { max-width: 900px; font-family: var(--serif); font-size: clamp(26px, 2.5vw, 40px); font-weight: 400; line-height: 1.3; letter-spacing: -.025em; text-wrap: pretty; }
-.process-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 1100px; margin: 40px 0 0; padding: 0; list-style: none; }
+html:not([data-identity="warm"]) .design-process { padding-top: clamp(40px, 4vw, 56px); padding-bottom: clamp(40px, 5vw, 72px); background: #1e1b1b; color: #fefdfa; }
+.process-introduction { max-width: 850px; font-family: var(--serif); font-size: clamp(26px, 2.5vw, 40px); font-weight: 400; line-height: 1.3; letter-spacing: -.025em; text-wrap: pretty; }
+.process-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 850px; margin: 40px 0 0; padding: 0; list-style: none; }
 .process-steps li { position: relative; padding: 18px 24px 0 0; border-top: 1px solid #fefdfa40; font-size: 16px; line-height: 1.5; }
 .process-steps li:not(:last-child)::after { content: ""; position: absolute; top: -4px; right: 2px; width: 7px; height: 7px; border-top: 1px solid #fefdfa80; border-right: 1px solid #fefdfa80; transform: rotate(45deg); }
 @media (max-width: 700px) {

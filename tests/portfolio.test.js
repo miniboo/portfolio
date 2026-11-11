@@ -144,6 +144,10 @@ test("the concise design process sits between role context and projects without 
   assert.ok(original.includes("A frontier-lab approach to design"));
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(script.includes('document.querySelector(".design-process").remove()'));
+  const styles = await readFile(new URL("src/style.css", root), "utf8");
+  assert.match(styles, /\.ecosystem-intro \{[^}]*min-height: 0;[^}]*padding-bottom: 0;/);
+  assert.match(styles, /\.process-introduction \{ max-width: 850px;/);
+  assert.match(styles, /\.process-steps \{[^}]*max-width: 850px;/);
 });
 
 test("original module introductions use a stacked rail and centered, uncropped media", async () => {
