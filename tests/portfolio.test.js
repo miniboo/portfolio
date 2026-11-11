@@ -134,9 +134,13 @@ test("project headings and media use one shared layout without repeated filler",
 
 test("the concise design process sits between role context and projects without replacing charter content", async () => {
   const process = original.match(/<div class="design-process section-pad".*?<\/ol>\s*<\/div>/s)[0];
-  assert.ok(process.includes("I partner with product leadership to turn strategy into working experiences—and evidence for what comes next."));
+  const narrative = "Leading the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces. Partnering directly with executive product leaders to shape strategy, frame testable hypotheses, and bring them to life through design in code, engineering evaluations, and flight experiments.";
+  assert.ok(original.includes(`<p>${narrative}</p>`));
+  assert.ok(original.indexOf(narrative) < original.indexOf('<dl class="scale"'));
+  assert.ok(!original.includes("process-introduction"));
+  assert.ok(!original.includes("I partner with product leadership"));
   assert.deepEqual([...process.matchAll(/<li>(.*?)<\/li>/g)].map(([, text]) => text), ["Frame the hypothesis", "Design in code", "Evaluate with engineering", "Flight &amp; learn"]);
-  assert.equal([...process.matchAll(/<p /g)].length, 1);
+  assert.equal([...process.matchAll(/<p[\s>]/g)].length, 0);
   assert.ok(original.indexOf(process) > original.indexOf('id="ecosystem-title"'));
   assert.ok(original.indexOf(process) < original.indexOf('<div id="work">'));
   assert.ok(!process.includes("<h"));
@@ -146,8 +150,7 @@ test("the concise design process sits between role context and projects without 
   assert.ok(script.includes('document.querySelector(".design-process").remove()'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /\.ecosystem-intro \{[^}]*min-height: 0;[^}]*padding-bottom: 0;/);
-  assert.match(styles, /\.process-introduction \{ max-width: 850px;/);
-  assert.match(styles, /\.process-steps \{[^}]*max-width: 850px;/);
+  assert.match(styles, /\.process-steps \{[^}]*max-width: 850px; margin: 0;/);
 });
 
 test("original module introductions use a stacked rail and centered, uncropped media", async () => {
