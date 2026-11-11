@@ -1,16 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-entry-gate="locked">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f6f5f3" />
     <meta name="description" content="Chloe Varelidi — design, research and technology. Experience, education and selected recognition." />
     <title>Chloe Varelidi — Résumé</title>
+    <style>
+      html[data-entry-gate="locked"] body > :not(.entry-gate) { display: none !important; }
+      html:not([data-entry-gate="locked"]) .entry-gate { display: none; }
+    </style>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/style.css" />
     <link rel="stylesheet" href="/src/resume.css" />
+    <link rel="stylesheet" href="/src/entry-gate.css" />
+    <script type="module" src="/src/entry-gate.js"></script>
   </head>
   <body class="resume">
+    <section class="entry-gate" aria-labelledby="entry-title">
+      <div class="entry-panel">
+        <h2 class="entry-title" id="entry-title">Chloe Varelidi<span aria-hidden="true">.</span></h2>
+        <form class="entry-form">
+          <label class="sr-only" for="entry-password">Password</label>
+          <input id="entry-password" type="password" placeholder="Password" autocomplete="current-password" aria-describedby="entry-error" required disabled />
+          <button type="submit" disabled>Enter</button>
+        </form>
+        <p class="entry-error" id="entry-error" role="alert" hidden></p>
+        <p class="entry-notice" id="entry-notice" role="status" hidden></p>
+        <noscript><p class="entry-notice">Please enable JavaScript to use this entry screen.</p></noscript>
+      </div>
+    </section>
     <a class="skip-link" href="#resume">Skip to résumé</a>
     <div class="resume-page">
       <nav class="resume-navigation" aria-label="Résumé navigation">
@@ -21,8 +40,7 @@
         <header class="resume-header">
           <p class="eyebrow">Design leader / technologist / educator</p>
           <div class="resume-name">
-            <h1>Chloe Varelidi<span aria-hidden="true">.</span></h1>
-            <img class="resume-header-mark" src="/media/resume-header-mark.svg" width="108" height="108" alt="" aria-hidden="true" />
+            <h1>Chloe Varelidi<span class="resume-period" aria-hidden="true">.<img class="resume-header-mark" src="/media/resume-header-mark.svg" width="108" height="108" alt="" aria-hidden="true" /></span></h1>
           </div>
           <div class="resume-contact">
             <span>Washington, DC</span>

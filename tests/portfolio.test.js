@@ -118,7 +118,7 @@ test("the later project design stays restored and the selected portrait remains 
 });
 
 test("the opening is followed directly by the Discover panels without an orange index", async () => {
-  const sections = [...original.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]);
+  const sections = [...original.matchAll(/<section class="([^"]+)"/g)].map(match => match[1]).filter(section => section !== "entry-gate");
   assert.deepEqual(sections.slice(0, 5), ["hero section-pad", "ecosystem-intro section-pad", "project project-copilot discover-cover dark section-pad", "discover-statement section-pad", "daily-brief section-pad"]);
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   assert.ok(hero.includes('src="/media/editorial-flowers.svg"'));

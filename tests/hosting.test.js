@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { build } from "vite";
 
-for (const base of ["/", "/portfolio/"]) {
+for (const base of ["/", "/varelidi/"]) {
   test(`static build supports direct routes and local links at ${base}`, async () => {
     const result = await build({
       configFile: fileURLToPath(new URL("../vite.config.js", import.meta.url)),
@@ -19,6 +19,9 @@ for (const base of ["/", "/portfolio/"]) {
       assert.equal(typeof html, "string", `Missing direct route: ${route}`);
       assert.ok(!html.includes("%BASE_URL%"));
       assert.ok(!html.includes("/src/"));
+      assert.ok(html.includes('data-entry-gate="locked"'));
+      assert.ok(html.includes('type="password"'));
+      assert.ok(html.includes('html[data-entry-gate="locked"] body > :not(.entry-gate)'));
       for (const [, url] of html.matchAll(/(?:href|src|poster)="([^"]+)"/g)) {
         if (/^(?:[a-z][a-z\d+.-]*:|#)/i.test(url)) continue;
         assert.ok(url.startsWith(base), `${route} escapes ${base}: ${url}`);
@@ -26,6 +29,7 @@ for (const base of ["/", "/portfolio/"]) {
     }
     assert.ok(assets.get("index.html").includes(`=== "${base}2"`));
     assert.ok(assets.get("index.html").includes(`href="${base}resume/"`));
+    assert.ok(assets.get("index.html").includes(`href="${base}resume/">Résumé</a>`));
     assert.ok(assets.get("resume/index.html").includes(`href="${base}">← Portfolio`));
   });
 }

@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.repository == 'miniboo/portfolio'
+    if: github.repository == 'miniboo/varelidi'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

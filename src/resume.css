@@ -7,9 +7,11 @@ html:has(body.resume) { background: #f6f5f3; }
 .resume-header { padding: clamp(56px, 7vw, 88px) 0 48px; border-bottom: 1px solid #211e1d33; }
 .resume h1 { margin: 20px 0 24px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(44px, 6vw, 76px); font-weight: 400; line-height: 1.04; letter-spacing: -.035em; }
 .resume h1 span { color: var(--orange); }
-.resume-name { display: flex; align-items: flex-start; gap: clamp(12px, 2vw, 24px); }
-.resume-name h1 { min-width: 0; }
-.resume-header-mark { flex: 0 0 auto; width: clamp(64px, 9vw, 120px); height: auto; margin-top: 12px; transform: translateY(-30px); }
+.resume-name { --resume-mark-size: clamp(64px, 9vw, 120px); display: flow-root; min-height: calc(var(--resume-mark-size) + 12px); padding-right: calc(var(--resume-mark-size) * .84 + 4px); }
+.resume-name h1 { width: fit-content; max-width: 100%; min-width: 0; }
+.resume-period { position: relative; }
+/* The source nib is at (18, 101.2) within its 108px viewBox. */
+.resume-header-mark { position: absolute; width: var(--resume-mark-size); height: auto; left: calc(100% + 1px - var(--resume-mark-size) / 6); bottom: calc(.28em - var(--resume-mark-size) * .063); }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 28px; font-size: 13px; }
 .resume-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(48px, 7vw, 88px); padding-top: 48px; }
 .resume h2 { margin-bottom: 28px; font-family: Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
@@ -47,8 +49,9 @@ html:has(body.resume) { background: #f6f5f3; }
   .resume-page { width: 100%; padding: 0; }
   .resume-navigation, .resume-footer, .resume > .skip-link { display: none; }
   .resume-header { padding: 0 0 20px; }
+  .resume-header .eyebrow { max-width: 230px; }
   .resume h1 { font-size: 34pt; margin: 12px 0 16px; }
-  .resume-header-mark { width: 64pt; margin-top: 4px; transform: translateY(-20px); }
+  .resume-name { --resume-mark-size: 64pt; min-height: calc(var(--resume-mark-size) + 4px); }
   .resume-contact { margin-top: 16px; font-size: 9pt; }
   .resume-grid { grid-template-columns: minmax(0, 1fr) 180px; gap: 32px; padding-top: 24px; }
   .resume h2 { margin-bottom: 16px; font-size: 18pt; break-after: avoid; }
