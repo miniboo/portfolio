@@ -508,8 +508,8 @@ test("original accent colors come from the artwork and retain accessible contras
   };
   assert.ok(contrast("#211e1d", palette.green) >= 4.5);
   assert.ok(svg.toLowerCase().includes('fill="#9aeed6"'));
-  assert.ok(styles.includes('html:not([data-identity="warm"]) ::selection { background: #b9eedf; color: #211e1d; }'));
-  assert.ok(contrast("#211e1d", "#b9eedf") >= 4.5);
+  assert.ok(styles.includes('html:not([data-identity="warm"]) ::selection { background: rgba(154, 238, 214, .99); color: #211e1d; }'));
+  assert.ok(contrast("#211e1d", "#98ebd3") >= 4.5);
   assert.ok(contrast("#1e1b1b", palette.orange) >= 4.5);
   assert.ok(contrast(palette.rust, "#f7f5ef") >= 3);
   assert.ok(contrast(palette.rust, "#1e1b1b") >= 3);
