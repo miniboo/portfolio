@@ -248,19 +248,19 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
 });
 
-test("the original opening foregrounds leadership and the authorized entrepreneur history", () => {
+test("the original opening uses the approved greeting and exact first-person biography", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
-  const bio = html.match(/<div class="bio">\s*<p>(.*?)<\/p>/s)[1];
-  const currentRole = bio.slice(bio.indexOf("She currently leads")).replace(/^She /, "Chloe ");
-  assert.ok(hero.includes(`<p class="hero-intro">${currentRole}</p>`));
-  const experience = hero.match(/<p class="hero-experience">(.*?)<\/p>/)[1];
-  assert.ok(experience.includes("Chloe has raised more than $4 million to bring STEM to over 90,000 students in rural Kenya."));
-  assert.ok(experience.includes("leadership roles at Mozilla and littleBits (acquired by Sphero), where she led product lines with Lucasfilm and Marvel."));
-  assert.ok(experience.includes("Her career in tech began with helping start the public school Quest to Learn—an experience that shaped much of what she knows today."));
-  assert.equal([...experience.matchAll(/Quest to Learn/g)].length, 1);
+  const heading = hero.match(/<h1.*?<\/h1>/s)[0].replace(/<[^>]+>/g, "");
+  assert.equal(heading, "Hi, I’m Chloe Varelidi.");
+  assert.deepEqual([...hero.matchAll(/<p class="hero-(?:intro|experience|origin)">(.*?)<\/p>/g)].map(([, text]) => text), [
+    "I currently lead Content Intelligence at Microsoft, where I focus on how AI can reshape the way people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.",
+    "As an entrepreneur, I’ve led my own digital design studio for clients including LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel.",
+    "Most of what I know about design, I learned while helping start Quest to Learn, a public school in New York City.",
+  ]);
   assert.ok(hero.includes('class="recognition"'));
   assert.ok(hero.indexOf('class="hero-intro"') < hero.indexOf('class="hero-experience"'));
-  assert.ok(hero.indexOf('class="hero-experience"') < hero.indexOf('class="recognition"'));
+  assert.ok(hero.indexOf('class="hero-experience"') < hero.indexOf('class="hero-origin"'));
+  assert.ok(hero.indexOf('class="hero-origin"') < hero.indexOf('class="recognition"'));
   const warmLink = hero.match(/<template id="warm-work-link">.*?<\/template>/s)?.[0];
   assert.ok(warmLink?.includes('class="scroll-link'));
   assert.ok(!hero.replace(warmLink, "").includes('class="scroll-link'));

@@ -16,6 +16,7 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelector(".recognition-press").remove();
   document.querySelector(".recognition-moma").nextElementSibling.innerHTML = "Follies featured<br />in the catalogue";
   const heading = document.querySelector(".hero-heading");
+  heading.querySelector(".hero-greeting").remove();
   heading.replaceWith(heading.querySelector("h1"));
   const workLink = document.querySelector("#warm-work-link");
   workLink.replaceWith(workLink.content);
@@ -28,6 +29,7 @@ if (document.documentElement.dataset.identity === "warm") {
   hero.append(portrait);
   document.querySelector(".hero-intro").innerHTML = document.querySelector("#warm-introduction").innerHTML;
   document.querySelector(".hero-experience").remove();
+  document.querySelector(".hero-origin").remove();
   document.querySelector(".work-link-label").textContent = "View work";
   document.querySelector(".career-history").textContent = document.querySelector("#warm-career-history").content.textContent;
   document.querySelector(".bio").append(document.querySelector(".recognition"));
