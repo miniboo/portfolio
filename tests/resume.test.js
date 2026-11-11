@@ -33,10 +33,15 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   assert.ok(resume.includes("Design leader / researcher / technologist"));
   const currentRole = resume.match(/<article class="resume-role">[\s\S]*?<\/article>/)[0];
   assert.ok(currentRole.includes("<h3>Microsoft AI</h3>"));
-  assert.ok(currentRole.includes('<p class="resume-date">Current</p>'));
-  assert.ok(currentRole.includes('<p class="resume-position">Principal Design Manager</p>'));
-  assert.ok(currentRole.includes("I currently lead the Content Intelligence team at Microsoft AI"));
-  assert.doesNotMatch(currentRole, /\b20\d{2}\b|Principal Product Designer/);
+  const [currentAppointment, previousAppointment] = [...currentRole.matchAll(/<section class="resume-appointment"[\s\S]*?<\/section>/g)]
+    .map(match => match[0]);
+  assert.ok(currentAppointment.includes('<p class="resume-date">Current</p>'));
+  assert.ok(currentAppointment.includes("Principal Design Manager"));
+  assert.ok(currentAppointment.includes("Leading the team that builds 0-to-1 AI content experiences"));
+  assert.doesNotMatch(currentAppointment, /\b20\d{2}\b|Principal Product Designer/);
+  assert.ok(previousAppointment.includes("Principal Product Designer"));
+  assert.ok(previousAppointment.includes("Apr 2025–Oct 2026"));
+  assert.ok(previousAppointment.includes("from sketch to pull request"));
   const humansWhoPlay = [...resume.matchAll(/<article class="resume-role">[\s\S]*?<\/article>/g)]
     .map(match => match[0]).find(role => role.includes("<h3>humans who play</h3>"));
   assert.ok(humansWhoPlay.includes("2018–2024"));

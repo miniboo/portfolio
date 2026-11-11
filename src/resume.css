@@ -15,6 +15,11 @@ html:has(body.resume) { background: #f6f5f3; }
 .resume-role-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; }
 .resume-date { flex: 0 0 auto; color: #58534e; font-size: 12px; }
 .resume-position { margin: 4px 0 14px; font-size: 13px; color: #58534e; }
+.resume-appointment { margin-top: 12px; }
+.resume-appointment + .resume-appointment { margin-top: 24px; }
+.resume-appointment .resume-position { margin: 0; font-weight: 500; }
+.resume-appointment > .resume-role-heading { margin-bottom: 12px; }
+.resume-appointment > p + ul { margin-top: 12px; }
 .resume ul { padding-left: 18px; margin: 0; }
 .resume li + li { margin-top: 8px; }
 .resume-project > p { margin-top: 14px; }
