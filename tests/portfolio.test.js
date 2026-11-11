@@ -250,10 +250,11 @@ test("the second identity uses a distinct route and a scoped stylesheet", async 
   assert.equal([...html.matchAll(/class="portrait"/g)].length, 1);
 });
 
-test("the original opening uses the approved greeting and exact first-person biography", () => {
+test("the original opening uses the name-only masthead and exact first-person biography", () => {
   const hero = html.match(/<section class="hero section-pad".*?<\/section>/s)[0];
   const heading = hero.match(/<h1.*?<\/h1>/s)[0].replace(/<[^>]+>/g, "");
-  assert.equal(heading, "Hi, I’m Chloe Varelidi.");
+  assert.equal(heading, "Chloe Varelidi.");
+  assert.ok(!hero.includes("hero-greeting"));
   assert.deepEqual([...hero.matchAll(/<p class="hero-(?:intro|experience|origin)">(.*?)<\/p>/g)].map(([, text]) => text), [
     "I currently lead Content Intelligence at Microsoft, where I focus on how AI can reshape the way people discover and engage with content across Microsoft’s billion-user ecosystem, in verticals such as news, finance, sports, and games.",
     "As an entrepreneur, I’ve led my own digital design studio for clients including LEGO and General Motors, and raised more than $4 million to bring STEM to over 90,000 students in rural Kenya. Previously, I held leadership roles at Mozilla and littleBits, where I led product lines with Lucasfilm and Marvel.",

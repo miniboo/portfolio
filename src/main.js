@@ -16,7 +16,6 @@ if (document.documentElement.dataset.identity === "warm") {
   document.querySelector(".recognition-press").remove();
   document.querySelector(".recognition-moma").nextElementSibling.innerHTML = "Follies featured<br />in the catalogue";
   const heading = document.querySelector(".hero-heading");
-  heading.querySelector(".hero-greeting").remove();
   heading.replaceWith(heading.querySelector("h1"));
   const workLink = document.querySelector("#warm-work-link");
   workLink.replaceWith(workLink.content);
