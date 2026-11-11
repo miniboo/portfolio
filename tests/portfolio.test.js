@@ -179,7 +179,7 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(styles.includes('.project .project-body { width: 100%; max-width: 1400px; margin-inline: auto; }'));
   assert.ok(styles.includes('.project .project-heading { display: flex; flex-direction: column; gap: 20px; }'));
   assert.ok(original.includes("Edge / New tab page"));
-  assert.ok(original.includes("MSN / Election coverage"));
+  assert.ok(original.includes("Election coverage for Microsoft users"));
   assert.ok(original.includes('class="eyebrow discover-platforms">One Copilot desktop &amp; mobile app</p>'));
 });
 
@@ -209,9 +209,9 @@ test("Edge restores only its brief while preserving the four hidden source-attri
   assert.ok(!news.includes("<video"));
 });
 
-test("both original election surfaces reuse the actual NTP paper and ink tokens", async () => {
+test("the original election video uses the actual NTP paper and ink tokens", async () => {
   const styles = await readFile(new URL("src/style.css", root), "utf8");
-  assert.ok(styles.includes('html:not([data-identity="warm"]) :is(.project-edge, .project-elections, .election-details-page) { background: var(--paper); color: var(--ink); }'));
+  assert.ok(styles.includes('html:not([data-identity="warm"]) :is(.project-edge, .project-elections) { background: var(--paper); color: var(--ink); }'));
   assert.ok(!styles.includes("border-radius: 8px; background: #f7f7f7;"));
 });
 
@@ -235,17 +235,18 @@ test("news cards replace the fan with source prompt editors and honest local act
   assert.ok(styles.includes("transition: opacity 0s 275ms"));
 });
 
-test("Midterm leads with the genuine video then individual source pieces and preserves the warm gallery", async () => {
+test("Midterm retains only its genuine video and Microsoft-user introduction, preserving the warm gallery", async () => {
   const elections = original.match(/<section class="project project-elections.*?<\/section>/s)[0];
-  assert.ok(elections.indexOf('id="elections-video"') < elections.indexOf('class="election-details-page"'));
+  assert.ok(elections.includes('id="elections-video"'));
+  assert.ok(elections.includes("Election coverage for Microsoft users"));
+  assert.ok(!elections.includes("MSN / Election coverage"));
   assert.ok(elections.includes('src="/media/midterm-elections-results.mp4"'));
   assert.ok(elections.includes('controls muted playsinline preload="none"'));
   assert.ok(!elections.includes("elections-overview.png"));
   assert.ok(elections.includes('poster="/media/elections-results.png"'));
-  const details = elections.slice(elections.indexOf('class="election-details-page"'));
-  assert.ok(!details.includes("elections-results.png"));
+  for (const removed of ["election-details-page", "election-pieces", "elections-texas-card", "elections-iowa-card", "elections-guide-card", "elections-senate-card", "elections-coverage-card"]) assert.ok(!elections.includes(removed));
   assert.ok(!elections.includes('class="election-map"'));
-  assert.equal([...elections.matchAll(/<img /g)].length, 5);
+  assert.equal([...elections.matchAll(/<img /g)].length, 0);
   assert.ok(html.includes('id="warm-elections-project"'));
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(script.includes('document.querySelector("#warm-elections-project").content'));
