@@ -42,12 +42,12 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   assert.ok(currentAppointment.includes("Principal Design Manager"));
   assert.doesNotMatch(currentAppointment, /<p>(?:Player-coach|Selected contributions)/);
   const bullets = [...currentAppointment.matchAll(/<li>(.*?)<\/li>/g)].map(match => match[1]);
-  assert.equal(bullets.length, 5);
-  assert.match(bullets[0], /team of five.*owning a \$1\.4 billion portfolio/);
-  assert.match(bullets[1], /player-coach.*designing, prototyping, and shipping.*sketch to pull request/);
-  assert.match(bullets[2], /executive leadership.*Copilot Discover.*One Copilot ecosystem/);
-  assert.match(bullets[3], /VP of Editorial and CVP.*two months.*hundreds of scenarios/);
-  assert.match(bullets[4], /AI skills.*workshops/);
+  assert.deepEqual(bullets, [
+    "Leads a team of five owning a $1.4 billion portfolio across news, sports, finance, shopping, and elections.",
+    "Player-coach, personally designing, prototyping, and shipping experiences from sketch to pull request",
+    "Directly partnering with executive leadership to take entire product features from 0-to-1 and scale across the One Copilot ecosystem.",
+    "Leads AI native design through workshops and building new design tools.",
+  ]);
   assert.doesNotMatch(currentAppointment, /\b20\d{2}\b|Principal Product Designer/);
   const humansWhoPlay = [...resume.matchAll(/<article class="resume-role">[\s\S]*?<\/article>/g)]
     .map(match => match[0]).find(role => role.includes("<h3>humans who play</h3>"));
