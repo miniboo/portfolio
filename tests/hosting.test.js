@@ -22,6 +22,8 @@ for (const base of ["/", "/varelidi/"]) {
       assert.ok(html.includes('data-entry-gate="locked"'));
       assert.ok(html.includes('type="password"'));
       assert.ok(html.includes('html[data-entry-gate="locked"] body > :not(.entry-gate)'));
+      assert.ok(html.includes(`rel="icon" href="${base}favicon-32.png" type="image/png" sizes="32x32"`));
+      assert.ok(html.includes(`rel="icon" href="${base}media/resume-header-mark.svg" type="image/svg+xml" sizes="any"`));
       for (const [, url] of html.matchAll(/(?:href|src|poster)="([^"]+)"/g)) {
         if (/^(?:[a-z][a-z\d+.-]*:|#)/i.test(url)) continue;
         assert.ok(url.startsWith(base), `${route} escapes ${base}: ${url}`);

@@ -17,7 +17,7 @@ test("original-only professional navigation opens a standalone private-source-sa
   assert.equal([...resume.matchAll(/<h1\b/g)].length, 1);
   assert.ok(resume.includes('class="resume-header-mark" src="/media/resume-header-mark.svg" width="108" height="108" alt="" aria-hidden="true"'));
   assert.ok(resume.includes('href="%BASE_URL%">← Portfolio</a>'));
-  assert.ok(resume.includes('href="mailto:chloe@varelidi.com"'));
+  assert.doesNotMatch(resume, /resume-contact|Washington, DC|chloe@varelidi\.com|https:\/\/www\.varelidi\.com\//);
   assert.ok(!resume.includes("/src/main.js"));
   assert.ok(!resume.includes(".pdf"));
   assert.ok(!resume.includes("tel:"));
