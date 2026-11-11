@@ -134,7 +134,7 @@ test("project headings and media use one shared layout without repeated filler",
 
 test("Microsoft impact and scale lead into the approved How I work bridge and process", async () => {
   const process = original.match(/<div class="design-process".*?<\/ol>\s*<\/div>/s)[0];
-  const method = "My story at Microsoft is one of impact. In 18 months, I’ve transformed how our team works—bringing AI-native processes into our everyday practice, building tools, and partnering closely with product leadership to flight experiments faster than ever before.";
+  const method = "My story at Microsoft is one of impact. In 18 months, I’ve transformed how our team works—bringing AI-native processes into our everyday practice and partnering closely with product leadership to flight experiments faster than ever before.";
   const context = "Together, we’ve led the largest transformation of MSN in its 20-year history, reshaping how people discover and engage with content through generative user interfaces.";
   assert.ok(original.includes(`<p>${method}</p>`));
   assert.ok(original.includes(`<p>${context}</p>`));
