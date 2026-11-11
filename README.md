@@ -27,7 +27,7 @@ npm run preview
 
 ## Personal GitHub Pages preparation
 
-The browser favicon reuses the genuine résumé pencil SVG, with a transparent 32×32 PNG fallback. Both icons load before the entry screen is unlocked and use the same production base path as the site. The résumé header omits its former location/email/website row on screen and in print, collapsing its space while retaining the gray divider.
+The browser favicon reuses the genuine résumé pencil SVG, with a transparent 32×32 PNG fallback. Both icons load before the entry screen is unlocked and use the same production base path as the site. The résumé header has a compact email/phone row on screen and in print, with working email/call links and the user-approved number. Location and website are omitted; tighter spacing retains the gray divider and current pencil placement.
 
 The site needs only static HTML, CSS, JavaScript, fonts and media; no application server or account system is required. Build for the `miniboo/varelidi` project path with:
 
