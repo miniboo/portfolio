@@ -477,13 +477,13 @@ test("the second-screen film replays on hover and press logos rotate only after 
   assert.ok(script.includes("index === next"));
 });
 
-test("Edge has a native controlled video and the authorized problem, intervention and outcome", async () => {
+test("Edge keeps its controlled video directly before the cards without the removed case narrative", async () => {
   const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
   assert.ok(edge.includes('controls muted playsinline preload="none"'));
   assert.ok(!edge.includes("autoplay"));
-  assert.ok(edge.includes("Close the revenue gap while changing the business model."));
-  assert.ok(edge.includes("A linear feed with a personalized left section."));
-  assert.ok(edge.includes("<strong>11%</strong> increase in engagement and a closed revenue gap."));
+  assert.ok(!edge.includes("case-story"));
+  for (const removed of ["Close the revenue gap", "A linear feed with a personalized left section", "<strong>11%</strong>", 'class="eyebrow">Problem', 'class="eyebrow">Approach', 'class="eyebrow">Outcome']) assert.ok(!original.includes(removed));
+  assert.match(edge, /<\/figure>\s*<p id="edge-video-status"[^>]*hidden><\/p>\s*<section class="edge-news"/);
   for (const file of ["discover-edge.mp4", "discover-edge-poster.jpg"]) await access(new URL(`public/media/${file}`, root));
 });
 

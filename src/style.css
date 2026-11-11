@@ -175,8 +175,6 @@ html:not([data-identity="warm"]) .landscape-video[data-ready="true"] { opacity: 
 @media (hover: none), (pointer: coarse) { .landscape-play { opacity: 1; pointer-events: auto; } }
 .video-status { max-width: 500px; font-size: 14px; line-height: 1.5; }
 html:not([data-identity="warm"]) #edge-discover-video { display: block; width: 100%; height: auto; border-radius: 8px; background: #1e1b1b; }
-html:not([data-identity="warm"]) .case-story { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 40px; }
-html:not([data-identity="warm"]) .case-story p { margin-top: 12px; font-size: 18px; line-height: 1.5; letter-spacing: -.015em; }
 html:not([data-identity="warm"]) #edge-video-status { margin-top: 24px; }
 
 html:not([data-identity="warm"]) .project-tools .project-placeholder { border-color: var(--ink); }
@@ -320,7 +318,6 @@ html[data-motion="off"] .press-logo { transition: none; }
   html:not([data-identity="warm"]) .discover-statement { grid-template-columns: 1fr; gap: 36px; }
   html:not([data-identity="warm"]) .discover-copy { gap: 28px; }
   html:not([data-identity="warm"]) .discover-description { gap: 20px; }
-  html:not([data-identity="warm"]) .case-story { grid-template-columns: 1fr; gap: 24px; }
   :root { --number-rail: 18vw; --rail-gap: 32px; }
   .site-header { gap: 28px; }
   .site-header nav { gap: 25px; }
