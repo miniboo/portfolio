@@ -4,12 +4,13 @@ html:has(body.resume) { background: #f6f5f3; }
 .resume-navigation { display: flex; justify-content: space-between; gap: 24px; font-size: 13px; }
 .resume a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .resume :focus-visible { outline-color: #b94a2b; }
-.resume-header { padding: clamp(56px, 7vw, 88px) 0 48px; border-bottom: 1px solid #211e1d33; }
+.resume-header { padding: clamp(56px, 7vw, 88px) 0 48px; border-bottom: 1px solid var(--orange); }
 .resume h1 { margin: 20px 0 24px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(44px, 6vw, 76px); font-weight: 400; line-height: 1.04; letter-spacing: -.035em; }
-.resume h1 span { color: #b94a2b; }
+.resume h1 span { color: var(--orange); }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 28px; font-size: 13px; }
 .resume-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(48px, 7vw, 88px); padding-top: 48px; }
 .resume h2 { margin-bottom: 28px; font-family: Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
+.resume h2::before { content: ""; display: inline-block; width: 14px; margin-right: 10px; border-top: 2px solid var(--orange); vertical-align: middle; }
 .resume h3 { font-size: 18px; font-weight: 550; line-height: 1.4; letter-spacing: -.02em; }
 .resume-role { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #211e1d24; }
 .resume-role-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; }
@@ -56,4 +57,5 @@ html:has(body.resume) { background: #f6f5f3; }
   .resume-position, .resume-date, .resume-detail-note { font-size: 9pt; }
   .resume a { text-decoration: none; }
   .resume :focus-visible { outline: none; }
+  .resume-header, .resume h1 span, .resume h2::before { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
