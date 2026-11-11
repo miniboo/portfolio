@@ -10,7 +10,7 @@ const original = html.replace(/<template[^>]*>.*?<\/template>/gs, "");
 
 test("Copilot Discover and Edge Discover lead the retained project sequence", () => {
   const titles = [...original.matchAll(/class="project-heading".*?<h2[^>]*>(.*?)<\/h2>/gs)].map(([, title]) => title.replace(/<[^>]*>/g, ""));
-  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "AI-native design flows."]);
+  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "The Royal Academy of AI"]);
   const numbers = [...original.matchAll(/class="section-number"[^>]*>(\d+)</g)].map(([, number]) => number);
   assert.deepEqual(numbers, ["01", "02", "03", "04"]);
 });
@@ -60,23 +60,35 @@ test("the original ends at project04 without About, portrait or contact footer",
   assert.ok(script.indexOf('const portrait = document.querySelector(".portrait")') > script.indexOf('dataset.identity === "warm"'));
 });
 
-test("original placeholder projects are replaced by the reference-based AI-native design practice", async () => {
+test("the closing slide uses the Royal Academy source identity, original stickers and approved team paragraph", async () => {
   assert.ok(!original.includes("AI Generated Content"));
-  assert.ok(!original.includes("Royal Academy"));
   assert.equal([...original.matchAll(/class="project-placeholder"/g)].length, 0);
   assert.ok(original.includes('id="ai-content" aria-hidden="true"'));
   assert.ok(original.includes('id="discover-title" aria-hidden="true"'));
-  const practice = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
-  assert.equal([...practice.matchAll(/class="ai-native-marker"/g)].length, 4);
-  for (const topic of ["Design in code", "Build, tinker, learn", "Research, craft &amp; judgment", "Share &amp; grow ownership"]) assert.ok(practice.includes(topic));
-  assert.ok(practice.includes("A frontier-lab approach to design"));
-  for (const process of ["working experiences we can use, test and refine", "hands-on experiments", "Sketching stays part of the process", "ownership across the design cycle"]) assert.ok(practice.includes(process));
-  for (const removed of ["publisher content", "chat history", "daily brief", "AI-curated experiences"]) assert.ok(!practice.includes(removed));
-  assert.ok(practice.includes('src="/media/ai-native-design-practice.png" width="921" height="522"'));
-  assert.ok(!practice.includes("chloe-follies.jpg"));
+  const academy = original.match(/<section class="project project-tools.*?<\/section>/s)[0];
+  assert.ok(academy.includes('<span class="sr-only">The Royal Academy of AI</span>'));
+  assert.ok(academy.includes("Est. Last Year 2025"));
+  assert.ok(academy.includes("Agere praeponendum est contemplation."));
+  assert.ok(academy.includes("<p class=\"academy-introduction\">I’m part of the team founding the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.</p>"));
+  assert.equal([...academy.matchAll(/class="academy-sticker /g)].length, 6);
+  for (const removed of ["ai-native-design-practice.png", "ai-native-flows", "ai-native-marker", "A frontier-lab approach", "chloe-follies.jpg"]) assert.ok(!academy.includes(removed));
+  const assets = {
+    "mark.svg": "718db5ac56758251d7f10044812f4ce0abf9f2031c04a9aaf207259ffe4d6d48",
+    "poster.png": "daada371075d455f94ae939fb53967019f06322f879e72aa5ea72ccee2999421",
+    "year.png": "c60721e0965a7ff408402da87914d0dfc3e6eb907c30ab88bca3962fa227a6f8",
+    "arrow.svg": "901393ebe3d8ebe4a1022575716379622a771154206bcb92a069e1c40ce8a15d",
+    "lion.png": "fb761586dc0bfea13fcdaf1f9321f04db4ff4a19b6cd8e8dd77c122adf6f4e82",
+    "blue-loop.svg": "2780a3a943415443c2e76327dae212e2c4c29412414e01cbbf270dcbefc75c62",
+    "orange-loop.svg": "1952bab11cb0b70ddc617ee8b8aa868c8b62e07ee3c12b5edf683592432caf44",
+  };
+  for (const [name, hash] of Object.entries(assets)) {
+    assert.ok(academy.includes(`src="/media/royal-academy-${name}"`));
+    const asset = await readFile(new URL(`public/media/royal-academy-${name}`, root));
+    assert.equal(createHash("sha256").update(asset).digest("hex"), hash);
+  }
   assert.ok(html.includes('id="warm-tools-project"'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
-  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-tools \{[^}]*background: #fefdfa;/);
+  assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-tools \{[^}]*background: #343434;/);
   assert.ok(!html.includes("figma.com/api/mcp/asset"));
 });
 
@@ -149,7 +161,7 @@ test("Microsoft impact and scale lead directly to an accessible Selected project
     assert.ok(!original.includes(removed));
   }
   assert.ok(original.indexOf(cue) < original.indexOf('<div id="work">'));
-  assert.ok(original.includes("A frontier-lab approach to design"));
+  assert.ok(original.includes("The Royal Academy of AI"));
   const script = await readFile(new URL("src/main.js", root), "utf8");
   assert.ok(script.includes('document.querySelector(".selected-projects").remove()'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
