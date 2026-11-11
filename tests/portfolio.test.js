@@ -127,9 +127,23 @@ test("the original has a Georgia editorial title and no rendered header or dot g
 test("project headings and media use one shared layout without repeated filler", () => {
   assert.equal([...original.matchAll(/class="project-heading"/g)].length, 4);
   assert.equal([...original.matchAll(/class="project-body(?: [^"]*)?"/g)].length, 4);
-  for (const removed of ["Chloe Varelidi / Portfolio", "Microsoft AI / Selected work", "Space for the story", "Results.<br />Coverage.", "A more<br />", "Next chapter", "what comes"]) {
+  for (const removed of ["Chloe Varelidi / Portfolio", "Microsoft AI / Selected work", "Space for the story", "Results.<br />Coverage.", "A more<br />", "Next chapter"]) {
     assert.ok(!html.includes(removed), `Redundant copy remains: ${removed}`);
   }
+});
+
+test("the concise design process sits between role context and projects without replacing charter content", async () => {
+  const process = original.match(/<div class="design-process section-pad".*?<\/ol>\s*<\/div>/s)[0];
+  assert.ok(process.includes("I partner with product leadership to turn strategy into working experiences—and evidence for what comes next."));
+  assert.deepEqual([...process.matchAll(/<li>(.*?)<\/li>/g)].map(([, text]) => text), ["Frame the hypothesis", "Design in code", "Evaluate with engineering", "Flight &amp; learn"]);
+  assert.equal([...process.matchAll(/<p /g)].length, 1);
+  assert.ok(original.indexOf(process) > original.indexOf('id="ecosystem-title"'));
+  assert.ok(original.indexOf(process) < original.indexOf('<div id="work">'));
+  assert.ok(!process.includes("<h"));
+  assert.ok(!process.includes("section-number"));
+  assert.ok(original.includes("A frontier-lab approach to design"));
+  const script = await readFile(new URL("src/main.js", root), "utf8");
+  assert.ok(script.includes('document.querySelector(".design-process").remove()'));
 });
 
 test("original module introductions use a stacked rail and centered, uncropped media", async () => {

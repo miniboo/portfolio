@@ -12,6 +12,7 @@ if (document.documentElement.dataset.identity === "warm") {
   const header = document.querySelector("#warm-header");
   header.replaceWith(header.content);
   document.querySelector(".hero-illustration").remove();
+  document.querySelector(".design-process").remove();
   document.querySelector(".recognition-press").remove();
   document.querySelector(".recognition-moma").nextElementSibling.innerHTML = "Follies featured<br />in the catalogue";
   const heading = document.querySelector(".hero-heading");
