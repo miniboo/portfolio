@@ -233,9 +233,10 @@ html:not([data-identity="warm"]) .discover-flipper:last-child { right: -18px; }
   html:not([data-identity="warm"]) .discover-brief-design:hover .discover-flipper,
   html:not([data-identity="warm"]) .discover-brief-design:focus-within .discover-flipper { opacity: 1; }
 }
-html:not([data-identity="warm"]) .discover-gallery-slides { display: grid; }
+html:not([data-identity="warm"]) .discover-gallery-slides { display: grid; overflow: hidden; }
 html:not([data-identity="warm"]) .discover-gallery-slide { grid-area: 1 / 1; align-self: center; min-width: 0; }
 html:not([data-identity="warm"]) .discover-gallery-slide[aria-hidden="true"] { visibility: hidden; pointer-events: none; }
+html:not([data-identity="warm"]) .discover-gallery-slide[data-leaving] { visibility: visible; pointer-events: none; }
 
 html:not([data-identity="warm"]) .daily-brief { background: #1e1b1b; color: #fefdfa; }
 html:not([data-identity="warm"]) .daily-brief-label { max-width: 1400px; margin: 0 auto 32px; }

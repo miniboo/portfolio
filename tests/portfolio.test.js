@@ -10,7 +10,7 @@ const original = html.replace(/<template[^>]*>.*?<\/template>/gs, "");
 
 test("Copilot Discover and Edge Discover lead the retained project sequence", () => {
   const titles = [...original.matchAll(/class="project-heading".*?<h2[^>]*>(.*?)<\/h2>/gs)].map(([, title]) => title.replace(/<[^>]*>/g, ""));
-  assert.deepEqual(titles, ["Shipped Copilot Discover", "Shipped Discover on the Edge Browser", "Shipped Midterm Elections", "The Royal Academy of AI"]);
+  assert.deepEqual(titles, ["Copilot Discover", "Discover on the Edge Browser", "Midterm Elections", "The Royal Academy of AI"]);
   const numbers = [...original.matchAll(/class="section-number"[^>]*>(\d+)</g)].map(([, number]) => number);
   assert.deepEqual(numbers, ["01", "02", "03", "04"]);
 });
@@ -72,7 +72,7 @@ test("the closing slide uses the Royal Academy source identity, original sticker
   assert.equal(motto.replace(/<[^>]*>/g, ""), "Agere praeponendum est contemplation.");
   assert.match(motto, /<span class="academy-word">Agere<img[^>]*royal-academy-orange-loop\.svg[^>]*aria-hidden="true" \/><\/span>/);
   const paragraph = academy.match(/<p class="academy-introduction">(.*?)<\/p>/s)[1];
-  assert.equal(paragraph.replace(/<[^>]*>/g, ""), "I’m part of the team founding the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.");
+  assert.equal(paragraph.replace(/<[^>]*>/g, ""), "I’m part of the team who founded the Royal Academy of AI—a commitment to curiosity, craft, and learning together. Each week, MAI Design sets aside two hours to explore, play, and make with AI.");
   assert.match(paragraph, /<span class="academy-word">curiosity<img[^>]*royal-academy-blue-loop\.svg[^>]*aria-hidden="true" \/><\/span>/);
   assert.ok(!paragraph.includes("royal-academy-orange-loop"));
   assert.equal([...paragraph.matchAll(/class="academy-word"/g)].length, 1);
@@ -84,7 +84,6 @@ test("the closing slide uses the Royal Academy source identity, original sticker
   const assets = {
     "mark.svg": "718db5ac56758251d7f10044812f4ce0abf9f2031c04a9aaf207259ffe4d6d48",
     "poster.png": "daada371075d455f94ae939fb53967019f06322f879e72aa5ea72ccee2999421",
-    "year.png": "c60721e0965a7ff408402da87914d0dfc3e6eb907c30ab88bca3962fa227a6f8",
     "arrow.svg": "901393ebe3d8ebe4a1022575716379622a771154206bcb92a069e1c40ce8a15d",
     "lion.png": "fb761586dc0bfea13fcdaf1f9321f04db4ff4a19b6cd8e8dd77c122adf6f4e82",
     "blue-loop.svg": "2780a3a943415443c2e76327dae212e2c4c29412414e01cbbf270dcbefc75c62",
@@ -96,6 +95,11 @@ test("the closing slide uses the Royal Academy source identity, original sticker
     const asset = await readFile(new URL(`public/media/royal-academy-${name}`, root));
     assert.equal(createHash("sha256").update(asset).digest("hex"), hash);
   }
+  assert.ok(academy.includes('src="/media/royal-academy-play.svg" width="314" height="228"'));
+  assert.ok(!academy.includes('src="/media/royal-academy-year.png"'));
+  const tape = await readFile(new URL("public/media/royal-academy-play.svg", root), "utf8");
+  assert.ok(tape.includes("<title>PLAY</title>"));
+  assert.ok(tape.includes('fill="#c4e285"'));
   assert.ok(html.includes('id="warm-tools-project"'));
   const styles = await readFile(new URL("src/style.css", root), "utf8");
   assert.match(styles, /html:not\(\[data-identity="warm"\]\) \.project-tools \{[^}]*background: #343434;/);
@@ -186,7 +190,9 @@ test("original module introductions use a stacked rail and centered, uncropped m
   assert.ok(styles.includes('.project .project-heading { display: flex; flex-direction: column; gap: 20px; }'));
   assert.ok(original.includes("Edge / New tab page"));
   assert.ok(original.includes("Election coverage for Microsoft users"));
-  assert.ok(original.includes('class="eyebrow discover-platforms">One Copilot desktop &amp; mobile app</p>'));
+  assert.ok(original.includes('class="eyebrow discover-platforms">Shipped · One Copilot desktop &amp; mobile app</p>'));
+  assert.ok(original.includes('<p class="eyebrow">Shipped · Edge / New tab page</p>'));
+  assert.ok(original.includes('<p class="eyebrow">Shipped · Election coverage for Microsoft users</p>'));
 });
 
 test("Edge restores only its brief while preserving the four hidden source-attributed cards", () => {
@@ -539,7 +545,7 @@ test("the second-screen film replays on hover and press logos rotate only after 
 
 test("Edge keeps its controlled video and restored brief without the removed case narrative", async () => {
   const edge = original.match(/<section class="project project-edge.*?<\/section>/s)[0];
-  assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Shipped Discover on the Edge Browser<\/h2>/);
+  assert.match(edge, /<span class="section-number" aria-hidden="true">02<\/span>\s*<div>\s*<h2 id="edge-title">Discover on the Edge Browser<\/h2>/);
   assert.ok(edge.includes('controls muted playsinline preload="none"'));
   assert.ok(!edge.includes("autoplay"));
   assert.ok(!edge.includes("case-story"));

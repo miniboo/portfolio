@@ -33,6 +33,8 @@ test("résumé folds Spark work into Humans Who Play and keeps the approved curr
   assert.doesNotMatch(resume, /Experienced design leader|Ever hungry to learn|resume-summary/);
   assert.doesNotMatch(resume, /skills-title|<h2[^>]*>Practice<\/h2>/);
   assert.ok(resume.includes("Design leader / technologist / educator"));
+  assert.ok(resume.includes('<h2 id="project-title">Special project</h2>'));
+  assert.ok(resume.includes("Invented Follies and led its development into an award-winning STEM toy brand."));
   assert.ok(resume.includes("Part of the MoMA catalogue and available in 150+ retailers, including Nordstrom, Getty Museum, and The NY Hall of Science."));
   assert.doesNotMatch(resume, /placement in 50\+ retailers|permanent (?:museum )?collection/i);
   const currentRole = resume.match(/<article class="resume-role">[\s\S]*?<\/article>/)[0];

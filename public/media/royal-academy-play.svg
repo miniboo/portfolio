@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="314" height="228" viewBox="0 0 314 228">
+  <title>PLAY</title>
+  <path d="M0 157 274 0 314 71 40 228Z" fill="#c4e285"/>
+  <g transform="translate(157 114) rotate(-30)" fill="none" stroke="#3d4434" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-70 21-69-20Q-48-25-47-9T-69 4"/>
+    <path d="M-30-21-32 19-11 20"/>
+    <path d="M1 21 15-22 32 20M7 5 25 4"/>
+    <path d="M43-21 57-2 72-22M57-2 55 21"/>
+  </g>
+</svg>
